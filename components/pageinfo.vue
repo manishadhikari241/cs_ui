@@ -1,16 +1,30 @@
 <template>
   <div class="component pageinfo">
     <div class="pageinfo-head">
-      <h1 class="pageinfo-title" v-if="pageInfo">{{ pageInfo.translations[$i18n.locale].info_title }}</h1>
-      <b-button class="action-btn" v-if="button" :id="buttonId" v-show="pageInfo">{{ button }}</b-button>
+      <h1 class="pageinfo-title" v-if="pageInfo">
+        {{ pageInfo.translations[$i18n.locale].info_title }}
+      </h1>
+      <b-button
+        class="action-btn"
+        v-if="button"
+        :id="buttonId"
+        v-show="pageInfo"
+        >{{ button }}</b-button
+      >
     </div>
     <div class="d-flex description">
-      <p class="pageinfo-description" v-if="pageInfo" v-html="pageInfo.translations[$i18n.locale].info_body"></p>
-            <b-button v-if="requestButton && routeCheck" @click="checkAndRedirect(localePath('/request/create'))" class="primary">{{ $t('send_a_request_btn') }}</b-button>
-
- </div>
-  
-
+      <p
+        class="pageinfo-description"
+        v-if="pageInfo"
+        v-html="pageInfo.translations[$i18n.locale].info_body"
+      ></p>
+      <b-button
+        v-if="requestButton && routeCheck"
+        @click="checkAndRedirect(localePath('/request/create'))"
+        class="primary"
+        >{{ $t("send_a_request_btn") }}</b-button
+      >
+    </div>
   </div>
 </template>
 
@@ -139,6 +153,9 @@ export default {
     padding: 0;
     color: #bbb;
     font-size: 20px;
+    br {
+      display: none;
+    }
 
     a {
       color: #000 !important;
@@ -149,7 +166,7 @@ export default {
   }
 }
 
-@media screen and (max-width: 1164px) {
+@media screen and (max-width: 768px) {
   .component.pageinfo {
     .pageinfo-head {
       display: block;
@@ -162,14 +179,12 @@ export default {
 
     .pageinfo-title {
       font-size: 30px;
+      // white-space: break-spaces;
     }
 
     .pageinfo-description {
       font-size: 20px;
       max-width: 100%;
-    }
-    .pageinfo-description br {
-      display: none;
     }
   }
 }

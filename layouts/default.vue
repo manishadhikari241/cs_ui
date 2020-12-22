@@ -12,8 +12,6 @@
     <AuthModal v-if="!$auth.loggedIn" />
     <PaymentsModal v-if="$auth.loggedIn" />
     <QuotaModal v-if="$auth.loggedIn" />
-
-
   </div>
 </template>
 
@@ -28,13 +26,12 @@ import QuotaModal from "~/components/modals/quota";
 import "@fortawesome/fontawesome-free/css/all.css";
 import "@fortawesome/fontawesome-free/js/all.js";
 
-
 export default {
   components: {
     CSHeader,
     CSNavigation,
     BTT,
-    CSFooter, 
+    CSFooter,
     AuthModal,
     PaymentsModal,
     QuotaModal
@@ -50,10 +47,14 @@ export default {
   mounted() {
     this.$nextTick(() => {
       this.init();
-      if (this.$auth.loggedIn && (typeof this.$auth.user != 'object' || !('first_name' in this.$auth.user))) {
+      if (
+        this.$auth.loggedIn &&
+        (typeof this.$auth.user != "object" ||
+          !("first_name" in this.$auth.user))
+      ) {
         this.$auth.logout();
       }
-    })
+    });
   }
 };
 </script>
@@ -95,7 +96,7 @@ body {
 
 @media screen and (max-width: 1220px) {
   .page {
-    width: 100%;
+    width: 90%;
     padding: 0 20px;
   }
 }
