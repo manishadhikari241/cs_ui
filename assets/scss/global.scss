@@ -1,0 +1,92 @@
+.modal-dialog {
+  .confirm-box-body {
+    text-align: center;
+  }
+
+  .confirm-box-body-confirm{
+    text-align: center;
+        padding-top:40px;
+
+  }
+    .confirm-box-footer-confirm{
+      height: 120px;
+      padding-bottom:50px;
+       border-top: none;
+    justify-content: center;
+
+    .btn-secondary {
+          background-color: #363636;
+    font-size: 13px;
+    color:#363636;
+    border: 1px solid #363636;
+    border-radius: 30px;
+    padding: 5px 45px;
+    margin-left: -163px;
+    background-color:white;
+    font-weight: 700;
+    margin-right: -163px;
+    }
+    .btn-primary {
+          background-color: #363636;
+    font-size: 13px;
+    color: white;
+    border: 1px solid #363636;
+    border-radius: 30px;
+    padding: 5px 45px;
+    margin-left: -163px;
+    background-color: #363636;
+    font-weight: 700;
+    margin-right: -163px;
+    }
+  }
+
+  .confirm-box-footer {
+    border-top: none;
+    justify-content: center;
+
+    button {
+      background: $black;
+      color: #fff;
+      border: none;
+      outline: none;
+
+      &.btn-secondary {
+        opacity: .5;
+      }
+    }
+  }
+
+}
+
+.modal-content .modal-header{
+      margin-left: -1px;
+    margin-top: -1px;
+    background-color: #363636;
+    color: #fff;
+}
+.white-button{
+       background-color: #363636;
+    font-size: 13px;
+    color: #363636;
+    border: 1px solid #363636;
+    border-radius: 30px;
+    padding: 5px 45px;
+    margin-left: 20px;
+    background-color:white;
+    font-weight: 600;
+    margin-right: 20px;
+    text-transform: uppercase;
+}
+.black-button{
+       background-color: #363636;
+    font-size: 13px;
+    color: white;
+    border: 1px solid #363636;
+    border-radius: 30px;
+    padding: 5px 45px;
+    margin-left: 20px;
+    background-color:#363636;
+    font-weight: 600;
+    margin-right: 20px;
+    text-transform: uppercase;
+}
