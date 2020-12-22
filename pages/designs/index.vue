@@ -3,27 +3,34 @@
     <PageInfo v-if="!isTop" :slug="'designs'" />
     <div v-if="isTop" class="component pageinfo">
       <div class="pageinfo-head">
-        <h1 class="pageinfo-title">{{ $t('top_100') }}</h1>
+        <h1 class="pageinfo-title">{{ $t("top_100") }}</h1>
       </div>
-      <p class="pageinfo-description">{{ $t('top_100_desc') }}</p>
+      <p class="pageinfo-description">{{ $t("top_100_desc") }}</p>
     </div>
 
-    <br>
-
-    <div class="search-details" v-if="!isTop">
-     
-          <b-form-select v-model="selected" :options="options" size="sm" class="color_select"></b-form-select>
+    <div
+      class="search-details d-flex justify-content-center flex-wrap justify-content-md-end "
+      v-if="!isTop"
+    >
+      <b-form-select
+        v-model="selected"
+        :options="options"
+        size="sm"
+        class="color_select"
+      ></b-form-select>
 
       <span class="keyword" v-if="term">{{ term }}</span>
-      <span v-if="term">&nbsp;&nbsp;</span>
-      <span class="total">{{ $t('designs') }}</span>
-      <span v-if="term">&nbsp;&nbsp;</span>
-      <span>({{ total }} {{ $t('results') }})</span>
-      <span v-if="term">&nbsp;&nbsp;</span>
-      <a class="reset" v-if="term" @click="reset">{{ $t('reset') }}</a>
+      <!-- <span v-if="term"></span> -->
+      <span class="total ml-2">{{ $t("designs") }}</span>
+      <!-- <span v-if="term"></span> -->
+      <span class="ml-2">({{ total }} {{ $t("results") }})</span>
+      <!-- <span v-if="term"></span> -->
+      <a class="reset font-weight-bold ml-2" v-if="term" @click="reset">{{
+        $t("reset")
+      }}</a>
     </div>
 
-    <br>
+    <!-- <br /> -->
 
     <div class="designs-list">
       <client-only>
@@ -44,11 +51,10 @@ export default {
     PageInfo,
     DesignList
   },
-  asyncData (context) {
-    return context.$axios.get('/pages/designs')
-      .then((res) => {
-        return { pageData: res.data }
-      })
+  asyncData(context) {
+    return context.$axios.get("/pages/designs").then(res => {
+      return { pageData: res.data };
+    });
   },
   head() {
     return {
@@ -91,9 +97,7 @@ export default {
     };
   },
   methods: {
-    getColors() {
-      
-    },
+    getColors() {},
     loadMore() {
       let defaultURL = `/design?take=${this.itemsPerPage}&randomKey=${
         this.randomKey
@@ -101,19 +105,20 @@ export default {
       let topURL = `/design?take=${this.itemsPerPage}&page=${this.page +
         1}&sort=-pseudo_downloads`;
       let requestURL = this.isTop ? topURL : defaultURL;
-      this.$axios.$get(requestURL+'&scope[]=keywords')
-        .then((response) => {
-          this.page = response.current_page;
-          this.maxPage = response.last_page;
-          this.total = response.total;
-          this.data.push(...response.data);
-          this.$refs.infload.stateChanger.loaded();
-          let maxNofPages = this.$auth.loggedIn
-            ? this.isTop ? 5 : this.maxPage
-            : this.maxPageForGuest;
-          if (this.page >= maxNofPages)
-            this.$refs.infload.stateChanger.complete();
-        });
+      this.$axios.$get(requestURL + "&scope[]=keywords").then(response => {
+        this.page = response.current_page;
+        this.maxPage = response.last_page;
+        this.total = response.total;
+        this.data.push(...response.data);
+        this.$refs.infload.stateChanger.loaded();
+        let maxNofPages = this.$auth.loggedIn
+          ? this.isTop
+            ? 5
+            : this.maxPage
+          : this.maxPageForGuest;
+        if (this.page >= maxNofPages)
+          this.$refs.infload.stateChanger.complete();
+      });
     },
 
     resetList() {
@@ -155,19 +160,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.designs-list {
-  margin-top: 20px;
-}
+// .designs-list {
+//   margin-top: 20px;
+// }
 .color_select {
   width: 90px;
   border: 0px;
   outline: 0px;
   padding-bottom: 7px;
 }
-.search-details {
-  display: flex;
-  float: right;
-}
+// .search-details {
+//   display: flex;
+//   float: right;
+// }
 .search-details {
   text-align: right;
   font-size: 16px;

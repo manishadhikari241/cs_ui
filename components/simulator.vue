@@ -1,127 +1,198 @@
 <template>
-    <!-- <div style="padding: 10px; text-align: center; font-size: 20px; color: #f30; font-weight: 600;">Simulator under construction</div> -->
-    <div class="component simulator">
-        <div style="text-align: center" v-if="!goods">
-            <b-spinner type="grow" label="Loading..."></b-spinner>
-        </div>
-        <b-container v-if="goods">
-            <b-row>
-                <b-col :md="mode == 'fs' ? '6' : '5'">
-                    <DesignSlider :id="'designSliderSimulator'" :mode="'simulator'" :designURL="designURL"
-                                  :designCode="design ? design.code : null"
-                                  :mask="currentMaskIndex !== null ? (tab === 1 ? goods[currentMaskIndex] : requests[currentMaskIndex]['good']) : null"/>
-                    <br>
-                </b-col>
-                <b-col :md="mode == 'fs' ? '6' : '7'">
-                    <b-container class="masks-container">
-                        <div class="tab-buttons">
-                            <b-button @click="switchTab(1)" :class="{'active': tab === 1}">{{$t('library')}}</b-button>
-                            <b-button @click="switchTab(2)" :class="{'active': tab === 2}">{{$t('your_products')}}
-                            </b-button>
-                        </div>
-                        <br>
-                        <div class="goods-list" v-if="tab === 1">
-                            <div class="good-container plus">
-                                <b-button @click="switchTab(2)">
-                                    <b-icon-plus-circle-fill></b-icon-plus-circle-fill>
-                                </b-button>
-                            </div>
-                            <div class="good-container" v-for="(good, $index) in goods"
-                                 :key="`good-container-${$index}`" @click="setMask($index)"
-                                 :style="`background-image: url(${getGoodBackgroundURL()})`">
-                                <img :src="`${cloudfrontURL}/uploads/good/${good.image}`">
-                            </div>
-                        </div>
-                        <div v-if="tab === 2">
-                            <div v-if="!requestFormVisible">
-                                <div class="requests-empty-cover" v-if="!requests.length">
-                                    <div><img src="@/assets/simulator-empty.png"></div>
-                                    <br>
-                                    <p>{{ $t('do_you_want_to_simulate') }}</p>
-                                    <p>{{ $t('buy_quota_and_simulate_now') }}</p>
-                                    <br>
-                                    <b-button class="start-now" @click="showRequestForm()">{{ $t('start_now') }}
-                                    </b-button>
-                                </div>
-                                <div class="goods-list" v-else>
-                                    <div class="good-container plus">
-                                        <b-button @click="showRequestForm()">
-                                            <b-icon-plus-circle-fill></b-icon-plus-circle-fill>
-                                        </b-button>
-                                    </div>
-                                    <div class="good-container" v-for="(request, $index) in requests"
-                                         :key="`request-container-${$index}`" @click="setMask($index)"
-                                         :style="`background-image: url(${getGoodBackgroundURL()})`">
-                                        <img v-if="request.good"
-                                             :src="`${cloudfrontURL}/uploads/good/${request.good.image}`">
-                                        <img v-if="!request.good"
-                                             :src="`${cloudfrontURL}/uploads/good-request/${request.image}`">
-                                        <img v-if="!request.good && !request.message" class="pending"
-                                             src="~@/assets/icons/pending.png">
-                                        <img v-if="!request.good && request.message && deletingGoodRequestIndex != $index"
-                                             class="rejected" @click="showRequestDetails(request, $index)"
-                                             src="~@/assets/icons/x.png">
-                                        <b-spinner
-                                                v-if="!request.good && request.message && deletingGoodRequestIndex == $index"
-                                                class="rejected" type="grow" label="Loading..."></b-spinner>
-                                    </div>
-                                </div>
-                            </div>
-                            <div v-if="requestFormVisible">
-                                <form class="requestForm" @submit.prevent="submitRequest">
-                                    <div>
-                                        <b-button @click="requestFormVisible = false" class="go-back">
-                                            <b-icon-chevron-left></b-icon-chevron-left>
-                                            {{$t('back')}}
-                                        </b-button>
-                                    </div>
-                                    <br>
-                                    <p class="title">{{$t('add_your_product_into_simulator')}}
-                                        <b-icon-info @click="showGuide"></b-icon-info>
-                                    </p>
-                                    <guideLine></guideLine>
-                                    <div class="input-container">
-                                        <b-input :placeholder="$t('product_name')" autocomplete="off"
-                                                 v-model="request.name"></b-input>
-                                    </div>
-
-                                    <div class="input-container">
-                                        <b-form-file class="inputImage" v-model="request.image"
-                                                     :browse-text="$t('browse')"
-                                                     :state="Boolean(request.preview)"
-                                                     :placeholder="$t('upload_or_drop')"
-                                                     drop-placeholder="Drop file here..."
-                                                     @change="generatePreview"></b-form-file>
-                                    </div>
-
-                                    <div class="input-container">
-                                        <b-input :placeholder="$t('where_on_your_product')"
-                                                 autocomplete="off" v-model="request.remarks"></b-input>
-                                    </div>
-                                    <b-row>
-                                        <b-col cols="8">
-                                            <p class="notice">{{$t('only_front_view_and_top')}}</p>
-                                            <p class="notice">{{$t('upload_a_square_image')}}</p>
-                                        </b-col>
-                                        <b-col cols="4">
-                                            <div class="preview"><img :src="request.preview"></div>
-                                        </b-col>
-                                    </b-row>
-                                    <div class="actions">
-                                        <b-button variant="success" class="upload" type="submit"
-                                                  :disabled="!formIsValid() || submitting">{{$t('add_now')}} <span
-                                                v-if="init.quota">({{ init.quota.simulator }})</span></b-button>
-                                        <b-button class="reset" @click="resetRequest" :disabled="submitting">{{$t('reset')}}
-                                        </b-button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </b-container>
-                </b-col>
-            </b-row>
-        </b-container>
+  <!-- <div style="padding: 10px; text-align: center; font-size: 20px; color: #f30; font-weight: 600;">Simulator under construction</div> -->
+  <div class="component simulator">
+    <div style="text-align: center" v-if="!goods">
+      <b-spinner type="grow" label="Loading..."></b-spinner>
     </div>
+    <div v-if="goods">
+      <b-row>
+        <b-col :md="mode == 'fs' ? '6' : '6'">
+          <DesignSlider
+            :id="'designSliderSimulator'"
+            :mode="'simulator'"
+            :designURL="designURL"
+            :designCode="design ? design.code : null"
+            :mask="
+              currentMaskIndex !== null
+                ? tab === 1
+                  ? goods[currentMaskIndex]
+                  : requests[currentMaskIndex]['good']
+                : null
+            "
+          />
+          <br />
+        </b-col>
+        <b-col :md="mode == 'fs' ? '6' : '6'">
+          <div class="masks-container">
+            <div class="tab-buttons">
+              <b-button @click="switchTab(1)" :class="{ active: tab === 1 }">{{
+                $t("library")
+              }}</b-button>
+              <b-button @click="switchTab(2)" :class="{ active: tab === 2 }"
+                >{{ $t("your_products") }}
+              </b-button>
+            </div>
+            <br />
+            <div class="goods-list" v-if="tab === 1">
+              <div class="good-container plus">
+                <b-button @click="switchTab(2)">
+                  <b-icon-plus-circle-fill></b-icon-plus-circle-fill>
+                </b-button>
+              </div>
+              <div
+                class="good-container"
+                v-for="(good, $index) in goods"
+                :key="`good-container-${$index}`"
+                @click="setMask($index)"
+                :style="`background-image: url(${getGoodBackgroundURL()})`"
+              >
+                <img :src="`${cloudfrontURL}/uploads/good/${good.image}`" />
+              </div>
+            </div>
+            <div v-if="tab === 2">
+              <div v-if="!requestFormVisible">
+                <div class="requests-empty-cover" v-if="!requests.length">
+                  <div><img src="@/assets/simulator-empty.png" /></div>
+                  <br />
+                  <p>{{ $t("do_you_want_to_simulate") }}</p>
+                  <p>{{ $t("buy_quota_and_simulate_now") }}</p>
+                  <br />
+                  <b-button class="start-now" @click="showRequestForm()"
+                    >{{ $t("start_now") }}
+                  </b-button>
+                </div>
+                <div class="goods-list" v-else>
+                  <div class="good-container plus">
+                    <b-button @click="showRequestForm()">
+                      <b-icon-plus-circle-fill></b-icon-plus-circle-fill>
+                    </b-button>
+                  </div>
+                  <div
+                    class="good-container"
+                    v-for="(request, $index) in requests"
+                    :key="`request-container-${$index}`"
+                    @click="setMask($index)"
+                    :style="`background-image: url(${getGoodBackgroundURL()})`"
+                  >
+                    <img
+                      v-if="request.good"
+                      :src="
+                        `${cloudfrontURL}/uploads/good/${request.good.image}`
+                      "
+                    />
+                    <img
+                      v-if="!request.good"
+                      :src="
+                        `${cloudfrontURL}/uploads/good-request/${request.image}`
+                      "
+                    />
+                    <img
+                      v-if="!request.good && !request.message"
+                      class="pending"
+                      src="~@/assets/icons/pending.png"
+                    />
+                    <img
+                      v-if="
+                        !request.good &&
+                          request.message &&
+                          deletingGoodRequestIndex != $index
+                      "
+                      class="rejected"
+                      @click="showRequestDetails(request, $index)"
+                      src="~@/assets/icons/x.png"
+                    />
+                    <b-spinner
+                      v-if="
+                        !request.good &&
+                          request.message &&
+                          deletingGoodRequestIndex == $index
+                      "
+                      class="rejected"
+                      type="grow"
+                      label="Loading..."
+                    ></b-spinner>
+                  </div>
+                </div>
+              </div>
+              <div v-if="requestFormVisible">
+                <form class="requestForm" @submit.prevent="submitRequest">
+                  <div>
+                    <b-button
+                      @click="requestFormVisible = false"
+                      class="go-back"
+                    >
+                      <b-icon-chevron-left></b-icon-chevron-left>
+                      {{ $t("back") }}
+                    </b-button>
+                  </div>
+                  <br />
+                  <p class="title">
+                    {{ $t("add_your_product_into_simulator") }}
+                    <b-icon-info @click="showGuide"></b-icon-info>
+                  </p>
+                  <guideLine></guideLine>
+                  <div class="input-container">
+                    <b-input
+                      :placeholder="$t('product_name')"
+                      autocomplete="off"
+                      v-model="request.name"
+                    ></b-input>
+                  </div>
+
+                  <div class="input-container">
+                    <b-form-file
+                      class="inputImage"
+                      v-model="request.image"
+                      :browse-text="$t('browse')"
+                      :state="Boolean(request.preview)"
+                      :placeholder="$t('upload_or_drop')"
+                      drop-placeholder="Drop file here..."
+                      @change="generatePreview"
+                    ></b-form-file>
+                  </div>
+
+                  <div class="input-container">
+                    <b-input
+                      :placeholder="$t('where_on_your_product')"
+                      autocomplete="off"
+                      v-model="request.remarks"
+                    ></b-input>
+                  </div>
+                  <b-row>
+                    <b-col cols="8">
+                      <p class="notice">{{ $t("only_front_view_and_top") }}</p>
+                      <p class="notice">{{ $t("upload_a_square_image") }}</p>
+                    </b-col>
+                    <b-col cols="4">
+                      <div class="preview"><img :src="request.preview" /></div>
+                    </b-col>
+                  </b-row>
+                  <div class="actions">
+                    <b-button
+                      variant="success"
+                      class="upload"
+                      type="submit"
+                      :disabled="!formIsValid() || submitting"
+                      >{{ $t("add_now") }}
+                      <span v-if="init.quota"
+                        >({{ init.quota.simulator }})</span
+                      ></b-button
+                    >
+                    <b-button
+                      class="reset"
+                      @click="resetRequest"
+                      :disabled="submitting"
+                      >{{ $t("reset") }}
+                    </b-button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </b-col>
+      </b-row>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -202,9 +273,7 @@ export default {
 
     getGoodBackgroundURL() {
       if (this.design)
-        return `${this.designBaseURL}/api/v1/image/detail/design/${
-          this.design.code
-        }`;
+        return `${this.designBaseURL}/api/v1/image/detail/design/${this.design.code}`;
       else return this.designURL;
     },
 
@@ -227,9 +296,9 @@ export default {
       const h = this.$createElement;
       const message = h("div", {
         domProps: {
-          innerHTML: `${this.$t('could_not_add_simulator')}.<br>${this.$t('reason')}: <strong>${
-            request.message
-          }</strong>`
+          innerHTML: `${this.$t("could_not_add_simulator")}.<br>${this.$t(
+            "reason"
+          )}: <strong>${request.message}</strong>`
         }
       });
       this.$bvModal
@@ -239,8 +308,8 @@ export default {
           footerClass: "confirm-box-footer",
           okVariant: "delete-btn",
           cancelVariant: "cancel-btn",
-          okTitle: this.$t('delete'),
-          cancelTitle: this.$t('cancel')
+          okTitle: this.$t("delete"),
+          cancelTitle: this.$t("cancel")
         })
         .then(value => {
           if (value) {
@@ -508,7 +577,7 @@ export default {
 
     .tab-buttons {
       border: 1px solid red;
-      width: 480px;
+      // width: 480px;
       display: flex;
       border: 1px solid #aaa;
       border-radius: 6px;
@@ -531,12 +600,13 @@ export default {
     }
 
     .goods-list {
-      width: 480px;
+      // width: 480px;
       max-height: 500px;
       overflow: auto;
       display: flex;
       justify-content: flex-start;
       flex-wrap: wrap;
+      justify-content: space-between;
 
       .good-container {
         position: relative;
@@ -656,19 +726,19 @@ export default {
   }
 }
 
-@media screen and (max-width: 767px) {
-  .component.simulator {
-    .masks-container {
-      .tab-buttons {
-        width: 400px;
-      }
+// @media screen and (max-width: 767px) {
+//   .component.simulator {
+//     .masks-container {
+//       .tab-buttons {
+//         width: 400px;
+//       }
 
-      .goods-list {
-        width: 400px;
-      }
-    }
-  }
-}
+//       .goods-list {
+//         width: 400px;
+//       }
+//     }
+//   }
+// }
 
 @media screen and (max-width: 500px) {
   .component.simulator {

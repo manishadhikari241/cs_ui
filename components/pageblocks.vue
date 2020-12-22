@@ -1,8 +1,9 @@
 <template>
   <div class="component pageblocks">
     <b-container class="pageblock-container">
-      <b-row v-for="(block, $index) in blocks" :key="block.id">
-        <b-col md="6" :order="$index%2===0?(changedirection?2:1):(changedirection?1:2)">
+    <b-row v-for="(block, $index) in blocks" :key="block.id">
+    <!-- <b-row v-for="block in blocks" :key="block.id"> -->
+    <b-col md="6" :order="$index%2===0?(changedirection?2:1):(changedirection?1:2)">
           <div class="pageblock image">
             <img :src="`${imgBaseURL}/storage/${block.image_url}`">
           </div>
@@ -16,20 +17,43 @@
             </div>
           </div>
         </b-col>
-      </b-row>
-    </b-container>
+
+    </b-row>
+    </b-container> 
+
+    <!-- <div class="container pageblock-container">
+      <div class="d-flex flex-column" v-for="block in blocks" :key="block.id">
+        <div class="pageblock image order-2" >
+          <img :src="`${imgBaseURL}/storage/${block.image_url}`" />
+        </div>
+        <div class="pageblock text d-flex flex-column">
+          <div class="order-1">
+            <h1>{{ block.translations[$i18n.locale].title }}</h1>
+            <p>{{ block.translations[$i18n.locale].description }}</p>
+          </div>
+          <nuxt-link
+          class="order-3"
+            :to="localePath(block.button_url)"
+            v-if="
+              block.button_url && block.translations[$i18n.locale].button_text
+            "
+            >{{ block.translations[$i18n.locale].button_text }}</nuxt-link
+          >
+        </div>
+      </div>
+    </div> -->
   </div>
 </template>
 
 <script>
 export default {
-  props: ['blocks', 'changedirection'],
+  props: ["blocks", "changedirection"],
   data() {
     return {
       imgBaseURL: process.env.NUXT_ENV_SERVER
-    }
+    };
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -50,7 +74,6 @@ export default {
     align-items: center;
 
     &.text {
-
       h1 {
         margin: 0;
         padding: 0;
@@ -90,7 +113,6 @@ export default {
 
 @media screen and (max-width: 767px) {
   .component.pageblocks {
-
     .order-1 {
       order: 2 !important;
     }

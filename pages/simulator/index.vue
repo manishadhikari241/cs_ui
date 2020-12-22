@@ -1,12 +1,16 @@
 <template>
   <div class="page simulator">
     <PageInfo :slug="'simulator'" />
-    <br><br>
+    <span class="mb-2 d-block"></span>
     <Simulator ref="simulator" :designURL="url" @loaded="simulatorLoaded" />
     <div class="simulator-footer" v-show="isSimulatorLoaded">
-      <hr>
-      <input id="simulatorFileUploader" type="file" @change="onUploadChange">
-      <b-button @click="revokeFileUploader" class="btn-upload-design"><b-icon-upload></b-icon-upload>&nbsp;&nbsp;{{$t('upload_design')}}</b-button>
+      <hr />
+      <input id="simulatorFileUploader" type="file" @change="onUploadChange" />
+      <b-button @click="revokeFileUploader" class="btn-upload-design"
+        ><b-icon-upload></b-icon-upload>&nbsp;&nbsp;{{
+          $t("upload_design")
+        }}</b-button
+      >
     </div>
   </div>
 </template>

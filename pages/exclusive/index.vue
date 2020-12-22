@@ -1,102 +1,153 @@
 <template>
   <div class="page exclusive">
     <PageInfo :slug="'exclusive'" />
-    <br>
+    <br />
     <div class="intro">
       <div class="intro-row">
         <span class="icon"><i class="fas fa-pen"></i></span>
-        <span class="text">{{ $t('exclusive_1') }}</span>
+        <span class="text">{{ $t("exclusive_1") }}</span>
       </div>
       <div class="intro-row">
         <span class="icon"><i class="fas fa-key"></i></span>
-        <span class="text">{{ $t('exclusive_2') }}</span>
+        <span class="text">{{ $t("exclusive_2") }}</span>
       </div>
       <div class="intro-row">
         <span class="icon"><i class="fas fa-copyright"></i></span>
-        <span class="text">{{ $t('exclusive_3') }}</span>
+        <span class="text">{{ $t("exclusive_3") }}</span>
       </div>
       <div class="intro-row">
         <span class="icon"><i class="fas fa-fingerprint"></i></span>
-        <span class="text">{{ $t('exclusive_4') }}</span>
+        <span class="text">{{ $t("exclusive_4") }}</span>
       </div>
     </div>
-    <br><br>
+    <br /><br />
     <div class="buttons">
-      <b-button v-if="yourDesignButton" @click="checkAndRedirect(localePath('/exclusive/list'))">{{ $t('your_designs') }}</b-button>
-      <b-button @click="checkQuota( () => { checkAndRedirect(localePath('/exclusive/create')) } )" class="primary">{{ $t('order_a_design') }} <span v-if="init.quota">({{ init.quota.exclusive }})</span></b-button>
+      <b-button
+        v-if="yourDesignButton"
+        @click="checkAndRedirect(localePath('/exclusive/list'))"
+        >{{ $t("your_designs") }}</b-button
+      >
+      <b-button
+        @click="
+          checkQuota(() => {
+            checkAndRedirect(localePath('/exclusive/create'));
+          })
+        "
+        class="primary"
+        >{{ $t("order_a_design") }}
+        <span v-if="init.quota">({{ init.quota.exclusive }})</span></b-button
+      >
     </div>
 
-    <br><br><br>
+    <br /><br /><br />
 
     <div class="price-info" v-if="init.pricing">
       <b-row>
-        <b-col md="6">
+        <b-col md="7">
           <div class="component pageinfo">
             <div class="pageinfo-head">
-              <h1 class="pageinfo-title">{{ $t('tailor_made') }}</h1>
+              <h1 class="pageinfo-title">{{ $t("tailor_made") }}</h1>
             </div>
-            <p class="pageinfo-description">{{ $t('just_for_you') }}</p>
+            <p class="description">{{ $t("just_for_you") }}</p>
           </div>
-          <br>
-          <p class="description">{{ $t('exclusive_body') }} <b>{{$t('exclusive_ownership_certificate_bold')}}</b></p>
+          <br />
+          <p class="description">
+            {{ $t("exclusive_body") }}
+            <b>{{ $t("exclusive_ownership_certificate_bold") }}</b>
+          </p>
         </b-col>
-        <b-col md="6">
+        <b-col md="5">
           <div class="plan">
-            <div class="title">{{ $t('our_pricing') }}</div>
-            <br><br>
+            <div class="title">{{ $t("our_pricing") }}</div>
+            <br /><br />
             <div class="buttons">
-              <b-button @click="plan.selected = 0" :class="{'active': plan.selected == 0}">
-                {{ init.pricing.exclusive_min_count }} {{ $t('single_design') }}
+              <b-button
+                @click="plan.selected = 0"
+                :class="{ active: plan.selected == 0 }"
+              >
+                {{ init.pricing.exclusive_min_count }} {{ $t("single_design") }}
               </b-button>
-              <b-button @click="plan.selected = 1" :class="{'active': plan.selected == 1}">
-                {{ init.pricing.exclusive_max_count }} {{ $t('five_designs') }}
+              <b-button
+                @click="plan.selected = 1"
+                :class="{ active: plan.selected == 1 }"
+              >
+                {{ init.pricing.exclusive_max_count }} {{ $t("five_designs") }}
               </b-button>
             </div>
             <div class="price">
-              <p class="large">${{ init.pricing[`exclusive_${plan.selected == 0 ? 'min' : 'max'}_price`] * init.pricing[`exclusive_${plan.selected == 0 ? 'min' : 'max'}_count`] }}</p>
-              <p class="small">${{ init.pricing[`exclusive_${plan.selected == 0 ? 'min' : 'max'}_price`] }} / {{ $t('request') }}</p>
+              <p class="large">
+                ${{
+                  init.pricing[
+                    `exclusive_${plan.selected == 0 ? "min" : "max"}_price`
+                  ] *
+                    init.pricing[
+                      `exclusive_${plan.selected == 0 ? "min" : "max"}_count`
+                    ]
+                }}
+              </p>
+              <p class="small">
+                ${{
+                  init.pricing[
+                    `exclusive_${plan.selected == 0 ? "min" : "max"}_price`
+                  ]
+                }}
+                / {{ $t("request") }}
+              </p>
             </div>
             <div class="btn-buy-container">
-              <b-button class="btn-buy" @click="buy">{{ $t('buy_now') }}</b-button>
+              <b-button class="btn-buy" @click="buy">{{
+                $t("buy_now")
+              }}</b-button>
             </div>
           </div>
         </b-col>
       </b-row>
     </div>
 
-    <br><br><br>
+    <br /><br /><br />
 
     <div class="why-exclusive">
       <div class="component pageinfo">
         <div class="pageinfo-head">
-          <h1 class="pageinfo-title">{{ $t('why_exclusive') }}</h1>
+          <h1 class="pageinfo-title">{{ $t("why_exclusive") }}</h1>
         </div>
-        <p class="pageinfo-description">{{ $t('why_exclusive_body') }}</p>
+        <p class="pageinfo-description">{{ $t("why_exclusive_body") }}</p>
       </div>
-      <br><br>
-      <b-container class="checklist">
+      <br />
+      <div class="checklist">
         <div>
-          <table role="table" aria-busy="false" aria-colcount="3" class="table b-table">
+          <table
+            role="table"
+            aria-busy="false"
+            aria-colcount="3"
+            class="table b-table"
+          >
             <thead role="rowgroup">
               <tr role="row">
                 <th role="columnheader" scope="col" aria-colindex="1">
                   <div>&nbsp;</div>
                 </th>
                 <th role="columnheader" scope="col" aria-colindex="2">
-                  <div class="standard text-center columnheader">{{ $t('standard') }}</div>
+                  <div class="standard text-center columnheader">
+                    {{ $t("standard") }}
+                  </div>
                 </th>
                 <th role="columnheader" scope="col" aria-colindex="3">
-                  <div class="extended text-center columnheader">{{ $t('extended') }}</div>
+                  <div class="extended text-center columnheader">
+                    {{ $t("extended") }}
+                  </div>
                 </th>
                 <th role="columnheader" scope="col" aria-colindex="4">
-                  <div class="extended text-center columnheader">{{ $t('exclusive') }}</div>
+                  <div class="extended text-center columnheader">
+                    {{ $t("exclusive") }}
+                  </div>
                 </th>
               </tr>
             </thead>
             <tbody role="rowgroup">
               <tr role="row">
                 <td aria-colindex="1" role="cell">
-                  <span>{{ $t('editorial') }}</span>
+                  <span>{{ $t("editorial") }}</span>
                 </td>
                 <td aria-colindex="2" role="cell" class="text-center">
                   <b-icon-check class="check active"></b-icon-check>
@@ -110,7 +161,7 @@
               </tr>
               <tr role="row">
                 <td aria-colindex="1" role="cell">
-                  <span>{{ $t('advertising') }}</span>
+                  <span>{{ $t("advertising") }}</span>
                 </td>
                 <td aria-colindex="2" role="cell" class="text-center">
                   <b-icon-check class="check active"></b-icon-check>
@@ -124,7 +175,7 @@
               </tr>
               <tr role="row">
                 <td aria-colindex="1" role="cell">
-                  <span>{{ $t('web_design') }}</span>
+                  <span>{{ $t("web_design") }}</span>
                 </td>
                 <td aria-colindex="2" role="cell" class="text-center">
                   <b-icon-check class="check active"></b-icon-check>
@@ -138,7 +189,7 @@
               </tr>
               <tr role="row">
                 <td aria-colindex="1" role="cell">
-                  <span>{{ $t('social_media') }}</span>
+                  <span>{{ $t("social_media") }}</span>
                 </td>
                 <td aria-colindex="2" role="cell" class="text-center">
                   <b-icon-check class="check active"></b-icon-check>
@@ -152,21 +203,7 @@
               </tr>
               <tr role="row">
                 <td aria-colindex="1" role="cell">
-                  <span>{{ $t('edit_and_modify') }}</span>
-                </td>
-                <td aria-colindex="2" role="cell" class="text-center">
-                  <b-icon-check class="check"></b-icon-check>
-                </td>
-                <td aria-colindex="3" role="cell" class="text-center">
-                  <b-icon-check class="check active"></b-icon-check>
-                </td>
-                <td aria-colindex="4" role="cell" class="text-center">
-                  <b-icon-check class="check active"></b-icon-check>
-                </td>
-              </tr>
-              <tr role="row">
-                <td aria-colindex="1" role="cell">
-                  <span>{{ $t('multi_user') }}</span>
+                  <span>{{ $t("edit_and_modify") }}</span>
                 </td>
                 <td aria-colindex="2" role="cell" class="text-center">
                   <b-icon-check class="check"></b-icon-check>
@@ -180,7 +217,7 @@
               </tr>
               <tr role="row">
                 <td aria-colindex="1" role="cell">
-                  <span>{{ $t('resale_items') }}</span>
+                  <span>{{ $t("multi_user") }}</span>
                 </td>
                 <td aria-colindex="2" role="cell" class="text-center">
                   <b-icon-check class="check"></b-icon-check>
@@ -194,7 +231,21 @@
               </tr>
               <tr role="row">
                 <td aria-colindex="1" role="cell">
-                  <span>{{ $t('tailor_made') }}</span>
+                  <span>{{ $t("resale_items") }}</span>
+                </td>
+                <td aria-colindex="2" role="cell" class="text-center">
+                  <b-icon-check class="check"></b-icon-check>
+                </td>
+                <td aria-colindex="3" role="cell" class="text-center">
+                  <b-icon-check class="check active"></b-icon-check>
+                </td>
+                <td aria-colindex="4" role="cell" class="text-center">
+                  <b-icon-check class="check active"></b-icon-check>
+                </td>
+              </tr>
+              <tr role="row">
+                <td aria-colindex="1" role="cell">
+                  <span>{{ $t("tailor_made") }}</span>
                 </td>
                 <td aria-colindex="2" role="cell" class="text-center">
                   <b-icon-check class="check"></b-icon-check>
@@ -208,7 +259,7 @@
               </tr>
               <tr role="row">
                 <td aria-colindex="1" role="cell">
-                  <span>{{ $t('copyright_owned') }}</span>
+                  <span>{{ $t("copyright_owned") }}</span>
                 </td>
                 <td aria-colindex="2" role="cell" class="text-center">
                   <b-icon-check class="check"></b-icon-check>
@@ -223,7 +274,7 @@
             </tbody>
           </table>
         </div>
-      </b-container>
+      </div>
     </div>
   </div>
 </template>

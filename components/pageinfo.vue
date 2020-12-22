@@ -12,16 +12,20 @@
         >{{ button }}</b-button
       >
     </div>
-    <div class="d-flex description">
+    <div
+      class="d-flex align-items-end align-items-md-center justify-content-between flex-column flex-md-column flex-lg-row description"
+    >
       <p
-        class="pageinfo-description"
+        class="pageinfo-description "
         v-if="pageInfo"
+        :class="slug == 'simulator' ? 'w-100' : ''"
+        :style="slug == 'request' ? 'width:80%' : ''"
         v-html="pageInfo.translations[$i18n.locale].info_body"
       ></p>
       <b-button
         v-if="requestButton && routeCheck"
         @click="checkAndRedirect(localePath('/request/create'))"
-        class="primary"
+        class="border-0 d-inline-block font-weight-bold text-white text-nowrap ml-3 mt-3"
         >{{ $t("send_a_request_btn") }}</b-button
       >
     </div>
@@ -124,22 +128,17 @@ export default {
   }
 
   .description button {
-    display: inline-block;
     padding: 10px 25px;
     background-color: #0e8dde;
-    color: #fff;
+
     font-size: 18px;
-    font-weight: 700;
-    text-decoration: none;
+
     border-radius: 30px;
-    /* margin-right: 20px; */
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
-    transition: all 0.2s;
-    border: none;
-    margin: auto;
-    /* width: 50%; */
-    /* height: 55px; */
-    margin-left: 38px;
+    @media screen and (max-width: 426px) {
+      margin-left: auto !important;
+      margin-right: auto;
+    }
   }
 
   .pageinfo-title {
@@ -148,7 +147,8 @@ export default {
   }
 
   .pageinfo-description {
-    max-width: 65%;
+    // max-width: 65%;
+    width: 65%;
     margin: 0;
     padding: 0;
     color: #bbb;
@@ -185,6 +185,9 @@ export default {
     .pageinfo-description {
       font-size: 20px;
       max-width: 100%;
+      @media screen and (max-width: 768px) {
+        width: 100% !important;
+      }
     }
   }
 }
