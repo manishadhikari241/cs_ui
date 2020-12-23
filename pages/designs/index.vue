@@ -9,9 +9,49 @@
     </div>
 
     <div
-      class="search-details d-flex justify-content-center flex-wrap justify-content-md-end "
+      class="search-details d-flex justify-content-center flex-wrap justify-content-md-end mb-2"
       v-if="!isTop"
     >
+      <div class="custom-dropdown">
+        <a
+          href="javascript:void(0)"
+          @click="toggle"
+          class="custom-dropdown-label"
+          >All color</a
+        >
+        <div class="custom-dropdown-container" v-if="activated">
+          <div class="row">
+            <div class="col-md-6 mb-2">
+              <a
+                href=""
+                class="custom-dropdown-wrapper d-flex align-items-center"
+              >
+                <div class="custom-dropdown-color mr-2"></div>
+                <span class="custom-dropdown-name">Red</span>
+              </a>
+            </div>
+            <div class="col-md-6 mb-2">
+              <a
+                href=""
+                class="custom-dropdown-wrapper d-flex align-items-center"
+              >
+                <div class="custom-dropdown-color mr-2"></div>
+                <span class="custom-dropdown-name">Red</span>
+              </a>
+            </div>
+            <div class="col-md-6 mb-2">
+              <a
+                href=""
+                class="custom-dropdown-wrapper d-flex align-items-center"
+              >
+                <div class="custom-dropdown-color mr-2"></div>
+                <span class="custom-dropdown-name">Red</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <b-form-select
         v-model="selected"
         :options="options"
@@ -78,6 +118,7 @@ export default {
   },
   data() {
     return {
+      activated: false,
       randomKey: 0,
       itemsPerPage: 20,
       maxPageForGuest: 5,
@@ -97,6 +138,9 @@ export default {
     };
   },
   methods: {
+    toggle() {
+      this.activated = !this.activated;
+    },
     getColors() {},
     loadMore() {
       let defaultURL = `/design?take=${this.itemsPerPage}&randomKey=${
@@ -191,5 +235,49 @@ export default {
 
 .component.collection {
   margin-bottom: 50px;
+}
+
+.custom-dropdown {
+  position: relative;
+  z-index: 5;
+
+  &-label {
+    color: #212529;
+    text-decoration: none;
+  }
+  &-wrapper {
+    text-decoration: none;
+  }
+  &-container {
+    position: absolute;
+    top: 38px;
+    left: 0;
+    min-width: 270px;
+    width: 100%;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px 0px rgba(0, 0, 0, 0.2);
+
+    &:before {
+      content: "";
+      height: 16px;
+      width: 16px;
+      position: absolute;
+      top: -10px;
+      left: 17px;
+      box-shadow: 0 0 6px 0px rgba(0, 0, 0, 0.2);
+      transform: rotate(45deg);
+      z-index: -1;
+    }
+  }
+  &-color {
+    height: 20px;
+    width: 20px;
+    background: red;
+  }
+  &-name {
+    color: #666;
+  }
 }
 </style>
