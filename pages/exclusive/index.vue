@@ -23,6 +23,7 @@
     <br /><br />
     <div class="buttons">
       <b-button
+        class="mb-2"
         v-if="yourDesignButton"
         @click="checkAndRedirect(localePath('/exclusive/list'))"
         >{{ $t("your_designs") }}</b-button
@@ -33,7 +34,7 @@
             checkAndRedirect(localePath('/exclusive/create'));
           })
         "
-        class="primary"
+        class="primary mb-2"
         >{{ $t("order_a_design") }}
         <span v-if="init.quota">({{ init.quota.exclusive }})</span></b-button
       >
@@ -60,19 +61,27 @@
           <div class="plan">
             <div class="title">{{ $t("our_pricing") }}</div>
             <br /><br />
-            <div class="buttons">
-              <b-button
-                @click="plan.selected = 0"
-                :class="{ active: plan.selected == 0 }"
-              >
-                {{ init.pricing.exclusive_min_count }} {{ $t("single_design") }}
-              </b-button>
-              <b-button
-                @click="plan.selected = 1"
-                :class="{ active: plan.selected == 1 }"
-              >
-                {{ init.pricing.exclusive_max_count }} {{ $t("five_designs") }}
-              </b-button>
+            <div class="buttons ">
+              <div class="">
+                <b-button
+                  class=" mb-2 w-100 mr-0"
+                  @click="plan.selected = 0"
+                  :class="{ active: plan.selected == 0 }"
+                >
+                  {{ init.pricing.exclusive_min_count }}
+                  {{ $t("single_design") }}
+                </b-button>
+              </div>
+              <div class="">
+                <b-button
+                  class=" mb-2 w-100 mr-0"
+                  @click="plan.selected = 1"
+                  :class="{ active: plan.selected == 1 }"
+                >
+                  {{ init.pricing.exclusive_max_count }}
+                  {{ $t("five_designs") }}
+                </b-button>
+              </div>
             </div>
             <div class="price">
               <p class="large">
@@ -409,7 +418,7 @@ export default {
       box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
       transition: all 0.2s;
       border: none;
-
+      white-space: nowrap;
       &.primary {
         background-color: $brand;
       }
@@ -446,14 +455,19 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
-
+        div {
+          width: 50%;
+          margin: 0 10px;
+          text-align: center;
+        }
         button {
-          margin: 0 15px;
+          max-width: 250px;
+
           border: 1px solid $black;
           border-radius: 30px;
           color: $black;
           background-color: #fff;
-          padding: 10px 35px;
+          padding: 10px 10px;
           font-weight: 700;
           font-size: 16px;
           outline: none;
@@ -476,9 +490,9 @@ export default {
         }
 
         .large {
-          font-size: 50px;
-          color: $black;
-          font-weight: 700;
+          font-size: 60px;
+          color: #363636;
+          font-weight: 600;
         }
 
         .small {
@@ -512,7 +526,7 @@ export default {
       border: 1px solid $black;
       padding: 20px;
       border-radius: 5px;
-
+      overflow-y: scroll;
       th,
       td {
         border: none;
@@ -526,6 +540,7 @@ export default {
         span {
           font-size: 18px;
           font-weight: 600;
+          white-space: nowrap;
         }
 
         .check {
