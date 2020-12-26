@@ -4,11 +4,11 @@
       <b-row>
         <b-col md="5">
           <DesignSlider :id="'designSliderBase'" :designCode="design.code" />
-          <br>
+          <br />
         </b-col>
         <b-col md="7">
           <b-container class="details">
-            <div class="details-row">
+            <!-- <div class="details-row ">
               <div class="prop">
                 <p class="large-text" style="text-transform: capitalize">{{ $t('design') }}</p>
               </div>
@@ -18,68 +18,150 @@
                   <nuxt-link :to="localePath('/designs?keyword=Top%20100')" class="top100" v-if="isTop()">{{ $t('top_100') }}</nuxt-link>
                 </div>
               </div>
-            </div>
-            <div class="details-row">
-              <div class="prop">
-                <p class="large-text">{{ $t('license') }}</p>
-                <b-button class="small-text" :id="`design-page-${design.id}-learn-more-btn`" v-if="design.licence_type != 'exclusive'">{{ $t('learn_more') }}</b-button>
-                <LicensePopover :target="`design-page-${design.id}-learn-more-btn`" :selected="choice" v-if="design.licence_type != 'exclusive'" />
+            </div> -->
+            <div class="details-row row">
+              <div class="prop col-md-4">
+                <p class="large-text" style="text-transform: capitalize">
+                  {{ $t("design") }}
+                </p>
               </div>
-              <div class="value" v-if="design.licence_type == 'exclusive'">
+              <div class="value col-md-8">
+                <div class="large-text">
+                  <span>{{ design.design_name }}</span>
+                  <nuxt-link
+                    :to="localePath('/designs?keyword=Top%20100')"
+                    class="top100"
+                    v-if="isTop()"
+                    >{{ $t("top_100") }}</nuxt-link
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="details-row row">
+              <div class="prop col-md-4">
+                <p class="large-text">{{ $t("license") }}</p>
+                <b-button
+                  class="small-text"
+                  :id="`design-page-${design.id}-learn-more-btn`"
+                  v-if="design.licence_type != 'exclusive'"
+                  >{{ $t("learn_more") }}</b-button
+                >
+                <LicensePopover
+                  :target="`design-page-${design.id}-learn-more-btn`"
+                  :selected="choice"
+                  v-if="design.licence_type != 'exclusive'"
+                />
+              </div>
+              <div
+                class="value col-md-8"
+                v-if="design.licence_type == 'exclusive'"
+              >
                 <div :class="`choice flex active`">
                   <div class="choice-details">
-                    <p class="title">{{ $t('exclusive_ownership') }}</p>
+                    <p class="title">{{ $t("exclusive_ownership") }}</p>
                     <p class="detail">{{ getSupportedFiles() }}</p>
-                    <p class="detail">{{ $t('all_copyright_belongs_to_you') }}</p>
+                    <p class="detail">
+                      {{ $t("all_copyright_belongs_to_you") }}
+                    </p>
                   </div>
                 </div>
               </div>
-              <div class="value" v-else>
-                <div :class="`choice flex${choice === 1 ? ' active' : ''}`" @click="changeChoice(1)">
+              <div class="value col-md-8" v-else>
+                <div
+                  :class="`choice flex${choice === 1 ? ' active' : ''}`"
+                  @click="changeChoice(1)"
+                >
                   <div class="choice-icon">
                     <b-icon-circle v-show="choice !== 1"></b-icon-circle>
-                    <b-icon-circle-fill v-show="choice === 1"></b-icon-circle-fill>
+                    <b-icon-circle-fill
+                      v-show="choice === 1"
+                    ></b-icon-circle-fill>
                   </div>
                   <div class="choice-details">
-                    <p class="title">{{ $t('standard') }}{{ init.quota ? ` (${init.quota.standard})` : '' }}</p>
-                    <p class="detail">{{ $t('jpg_only') }}</p>
-                    <p class="detail">{{ $t('for_editorial_avertising_web') }}</p>
+                    <p class="title">
+                      {{ $t("standard")
+                      }}{{ init.quota ? ` (${init.quota.standard})` : "" }}
+                    </p>
+                    <p class="detail">{{ $t("jpg_only") }}</p>
+                    <p class="detail">
+                      {{ $t("for_editorial_avertising_web") }}
+                    </p>
                   </div>
                 </div>
-                <br>
-                <div :class="`choice flex${choice === 2 ? ' active' : ''}`" @click="changeChoice(2)">
+                <br />
+                <div
+                  :class="`choice flex${choice === 2 ? ' active' : ''}`"
+                  @click="changeChoice(2)"
+                >
                   <div class="choice-icon">
                     <b-icon-circle v-show="choice !== 2"></b-icon-circle>
-                    <b-icon-circle-fill v-show="choice === 2"></b-icon-circle-fill>
+                    <b-icon-circle-fill
+                      v-show="choice === 2"
+                    ></b-icon-circle-fill>
                   </div>
                   <div class="choice-details">
-                    <p class="title">{{ $t('extended') }}{{ init.quota ? ` (${init.quota.extended})` : '' }}</p>
+                    <p class="title">
+                      {{ $t("extended")
+                      }}{{ init.quota ? ` (${init.quota.extended})` : "" }}
+                    </p>
                     <p class="detail">{{ getSupportedFiles() }}</p>
-                    <p class="detail">{{ $t('for_resale_items_can_edit_modify') }}</p>
+                    <p class="detail">
+                      {{ $t("for_resale_items_can_edit_modify") }}
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="details-row action-buttons-row">
-              <div class="prop md-hide">
+            <div class="details-row action-buttons-row row">
+              <div class="prop md-hide col-md-4">
                 <p class="large-text">&nbsp;</p>
               </div>
-              <div class="value">
+              <div class="value col-md-8">
                 <div class="action-buttons">
-                  <DownloadBTN :code="design.code" :pkg="'exclusive'" :className="'btn-download'" :text="$t('download')" v-if="design.licence_type == 'exclusive'" />
-                  <DownloadBTN :code="design.code" :pkg="`${choice == 1 ? 'standard' : 'extended'}`" :className="'btn-download'" :text="$t('download')" v-else />
-                  <b-button class="btn-add-to-list" :id="`design-page-${design.id}-list-btn`" @click="checkList"><b-icon-check></b-icon-check>&nbsp;&nbsp;{{ $t('add_to_list') }}</b-button>
-                  <ListsPopover :design="design" :target="`design-page-${design.id}-list-btn`" />
+                  <DownloadBTN
+                    :code="design.code"
+                    :pkg="'exclusive'"
+                    :className="'btn-download'"
+                    class="mb-2"
+                    :text="$t('download')"
+                    v-if="design.licence_type == 'exclusive'"
+                  />
+                  <DownloadBTN
+                    :code="design.code"
+                    :pkg="`${choice == 1 ? 'standard' : 'extended'}`"
+                    :className="'btn-download'"
+                    class="mb-2"
+                    :text="$t('download')"
+                    v-else
+                  />
+                  <b-button
+                    class="btn-add-to-list mb-2"
+                    :id="`design-page-${design.id}-list-btn`"
+                    @click="checkList"
+                    ><b-icon-check></b-icon-check>&nbsp;&nbsp;{{
+                      $t("add_to_list")
+                    }}</b-button
+                  >
+                  <ListsPopover
+                    :design="design"
+                    :target="`design-page-${design.id}-list-btn`"
+                  />
                 </div>
               </div>
             </div>
             <div class="details-row" v-if="design.licence_type != 'exclusive'">
               <div class="prop">
-                <p class="large-text">{{ $t('related') }}</p>
+                <p class="large-text">{{ $t("related") }}</p>
               </div>
               <div class="value">
                 <div class="related-tags">
-                  <a v-for="(tag, $index) in design.tags" :key="tag.id" @click="searchKeyword(translateTag(tag))">{{ translateTag(tag) }}{{ design.tags.length > $index+1 ? ', ' : '' }}</a>
+                  <a
+                    v-for="(tag, $index) in design.tags"
+                    :key="tag.id"
+                    @click="searchKeyword(translateTag(tag))"
+                    >{{ translateTag(tag)
+                    }}{{ design.tags.length > $index + 1 ? ", " : "" }}</a
+                  >
                 </div>
               </div>
             </div>
@@ -91,17 +173,15 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import DesignSlider from '~/components/designslider'
-import ListsPopover from '~/components/popovers/lists'
-import {BIconCircle, BIconCircleFill, BIconCheck} from 'bootstrap-vue'
-import LicensePopover from '~/components/popovers/license'
-import DownloadBTN from '~/components/download'
+import { mapState } from "vuex";
+import DesignSlider from "~/components/designslider";
+import ListsPopover from "~/components/popovers/lists";
+import { BIconCircle, BIconCircleFill, BIconCheck } from "bootstrap-vue";
+import LicensePopover from "~/components/popovers/license";
+import DownloadBTN from "~/components/download";
 
 export default {
-  props: [
-    'design'
-  ],
+  props: ["design"],
   components: {
     DesignSlider,
     BIconCircle,
@@ -112,12 +192,12 @@ export default {
     DownloadBTN
   },
   computed: {
-    ...mapState('app', ['init'])
+    ...mapState("app", ["init"])
   },
   data() {
     return {
       choice: 1
-    }
+    };
   },
   methods: {
     changeChoice(choice) {
@@ -126,16 +206,20 @@ export default {
 
     getSupportedFiles() {
       let files = [];
-      if (this.design.has_jpg) files.push('JPG');
-      if (this.design.has_pdf) files.push('PDF');
-      if (this.design.has_ai) files.push('Ai');
-      if (this.design.has_eps) files.push('EPS');
-      if (this.design.has_psd) files.push('PSD');
-      return files.join(', ');
+      if (this.design.has_jpg) files.push("JPG");
+      if (this.design.has_pdf) files.push("PDF");
+      if (this.design.has_ai) files.push("Ai");
+      if (this.design.has_eps) files.push("EPS");
+      if (this.design.has_psd) files.push("PSD");
+      return files.join(", ");
     },
 
     searchKeyword(keyword) {
-      this.$store.dispatch('search/search', {searchDesigns: true, term: keyword, localePathFunction: this.localePath});
+      this.$store.dispatch("search/search", {
+        searchDesigns: true,
+        term: keyword,
+        localePathFunction: this.localePath
+      });
     },
 
     isTop() {
@@ -144,18 +228,19 @@ export default {
 
     checkList() {
       if (!this.$auth.loggedIn) {
-        this.$bvModal.show('modal-auth');
+        this.$bvModal.show("modal-auth");
       }
     },
 
     translateTag(tag) {
-      if (this.$i18n.locale == 'en')
-        return tag.translations[0].name;
-      
-      return tag.translations[1] ? tag.translations[1].name : tag.translations[0].name;
+      if (this.$i18n.locale == "en") return tag.translations[0].name;
+
+      return tag.translations[1]
+        ? tag.translations[1].name
+        : tag.translations[0].name;
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -211,18 +296,18 @@ export default {
           border-radius: 30px;
           padding: 5px 30px;
           font-weight: 700;
-          transition: all .2s;
+          transition: all 0.2s;
 
           &:active {
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, .5);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
           }
         }
 
         .choice {
           padding-top: 10px;
           cursor: pointer;
-          opacity: .5;
-          transition: all .2s;
+          opacity: 0.5;
+          transition: all 0.2s;
 
           &.active {
             opacity: 1;
@@ -255,10 +340,12 @@ export default {
         }
 
         .action-buttons {
-          white-space: nowrap;
+          // white-space: nowrap;
 
           .btn-download {
             width: 180px;
+
+            margin-right: 15px;
             border: none;
             border-radius: 30px;
             background: $brand;
@@ -267,8 +354,8 @@ export default {
             font-weight: 700;
             padding: 10px 0;
             text-transform: uppercase;
-            box-shadow: 0 7px 10px rgba(0, 0, 0, .5);
-            transition: all .2s;
+            box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s;
 
             &:active {
               box-shadow: none;
@@ -277,7 +364,7 @@ export default {
 
           .btn-add-to-list {
             width: 180px;
-            margin-left: 15px;
+
             border: 1px solid $black;
             border-radius: 30px;
             background: #fff;
@@ -286,10 +373,10 @@ export default {
             font-weight: 700;
             padding: 8px 0;
             text-transform: uppercase;
-            transition: all .2s;
-
+            transition: all 0.2s;
+            box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.2);
             &:active {
-              box-shadow: inset 0 0 10px rgba(0, 0, 0, .5);
+              box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
             }
           }
         }
@@ -297,14 +384,14 @@ export default {
         .related-tags {
           padding-top: 7px;
           max-width: 400px;
-          
+
           a {
             font-size: 16px;
             color: $black;
             text-transform: capitalize;
             text-decoration: none;
-            opacity: .8;
-            transition: opacity .2s;
+            opacity: 0.8;
+            transition: opacity 0.2s;
             cursor: pointer;
 
             &:hover {
@@ -316,7 +403,6 @@ export default {
     }
   }
 }
-
 
 @media screen and (max-width: 767px) {
   .component.design {

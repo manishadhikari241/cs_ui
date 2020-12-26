@@ -6,7 +6,7 @@
     <b-navbar style="justify-content: space-between;">
       <nuxt-link :to="localePath('/')" class="navbar-brand">
         <img id="logo" alt="logo" src="~/assets/logo.svg" />
-        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <!-- <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> -->
       </nuxt-link>
 
       <Search class="md-hide" />

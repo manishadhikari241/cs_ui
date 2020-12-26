@@ -1,71 +1,71 @@
 <template>
   <div class="page home">
+  <!-- <div class="container"> -->
     <client-only>
-      <PageInfo :slug="'home'"/>
-      <br><br>
+      <PageInfo :slug="'home'" />
+      <br /><br />
       <div style="text-align: center" v-if="loading">
         <b-spinner type="grow" label="Loading..."></b-spinner>
       </div>
-      <PageBlocks :blocks="blocks" v-if="!loading"/>
+      <PageBlocks :blocks="blocks" v-if="!loading" />
     </client-only>
   </div>
 </template>
 
 <script>
-import PageInfo from '~/components/pageinfo'
-import PageBlocks from '~/components/pageblocks'
+import PageInfo from "~/components/pageinfo";
+import PageBlocks from "~/components/pageblocks";
 
 export default {
   components: {
     PageInfo,
     PageBlocks
   },
-  asyncData (context) {
-    return context.$axios.get('/pages/home')
-      .then((res) => {
-        return { pageData: res.data }
-      })
+  asyncData(context) {
+    return context.$axios.get("/pages/home").then(res => {
+      return { pageData: res.data };
+    });
   },
-  head () {
+  head() {
     return {
       meta: [
         {
-          hid: 'description',
-          name: 'description',
-          content: this.pageData.translations[this.$i18n.locale].meta_description
+          hid: "description",
+          name: "description",
+          content: this.pageData.translations[this.$i18n.locale]
+            .meta_description
         },
         {
-          hid: 'keywords',
-          name: 'keywords',
+          hid: "keywords",
+          name: "keywords",
           content: this.pageData.translations[this.$i18n.locale].meta_keywords
-        },
+        }
       ]
-    }
+    };
   },
-  data () {
+  data() {
     return {
       loading: false,
       blocks: []
-    }
+    };
   },
   methods: {
-    toggleLoading () {
-      this.loading = !this.loading
+    toggleLoading() {
+      this.loading = !this.loading;
     },
 
     loadPageBlocks() {
       this.toggleLoading();
-      this.$axios.$get('/pages/home/blocks')
-        .then((response) => {
-          this.toggleLoading()
-          this.blocks = response
-        })
+      this.$axios.$get("/pages/home/blocks").then(response => {
+        this.toggleLoading();
+        this.blocks = response;
+      });
     }
   },
-  mounted () {
-    this.loadPageBlocks()
+  mounted() {
+    this.loadPageBlocks();
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -84,7 +84,6 @@ export default {
     align-items: center;
 
     &.text {
-
       h1 {
         margin: 0;
         padding: 0;
@@ -120,7 +119,6 @@ export default {
       max-width: 90%;
       @media screen and (max-width: 426px) {
         max-width: 100%;
-
       }
     }
   }
@@ -128,7 +126,6 @@ export default {
 
 @media screen and (max-width: 767px) {
   .page.home {
-
     .block {
       justify-content: center;
       text-align: center;
