@@ -20,6 +20,12 @@
           </div>
         </div>
         <div class="item-row">
+          <div class="prop">Publish At</div>
+          <div class="value">
+            <b-input type="date" name="publish_at" v-model="request.publish_at"></b-input>
+          </div>
+        </div>
+        <div class="item-row">
           <div class="value">
             <div class="prop">Description (EN)</div><br>
             <wysiwyg style="background: #fff;" v-model="request.descriptionEN" />
@@ -150,6 +156,7 @@ export default {
       request: {
         titleEN: '',
         titleCH: '',
+        publish_at: null,
         descriptionEN: '',
         descriptionCH: '',
         moodboardEN: null,
@@ -222,6 +229,7 @@ export default {
       let formData = new FormData();
       formData.append('titleEN', this.request.titleEN);
       formData.append('titleCH', this.request.titleCH);
+      formData.append('publish_at', this.request.publish_at);
       formData.append('descriptionEN', this.request.descriptionEN);
       formData.append('descriptionCH', this.request.descriptionCH);
       formData.append('moodboardEN', this.request.moodboardEN);

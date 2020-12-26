@@ -27,7 +27,7 @@ export default {
   ** Global CSS
   */
   css: [
-    '~assets/scss/main.scss',
+      '~assets/scss/main.scss',
   ],
   /*
   ** SCSS
@@ -90,8 +90,26 @@ export default {
       defaultLocale: 'en'
     }],
     // social sharing
-    'vue-social-sharing/nuxt'
+    'vue-social-sharing/nuxt',
+    // proxy
+    '@nuxtjs/proxy',
+    // stripe
+    ['nuxt-stripe-module', {
+      publishableKey: 'pk_test_ql3uuVmVSIgxFrWvpjF8mcTc',
+    }],
   ],
+
+  /*
+  ** Proxy module configuration
+  */
+  proxy: {
+    '/cloudfront': {
+      target: 'https://d3b50kx4ys1jup.cloudfront.net',
+      pathRewrite: {
+        '^/cloudfront' : '/'
+      }
+    }
+  },
 
 
   /*

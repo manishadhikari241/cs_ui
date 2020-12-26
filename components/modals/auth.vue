@@ -16,7 +16,7 @@
                                     <li>• {{ $t('prints_patterns_and_graphics') }}</li>
                                     <li>• {{ $t('product_simulator') }}</li>
                                     <li>• {{ $t('design_request') }}</li>
-                                   <li>• {{ $t('exclusive_request') }}</li>
+                                    <li>• {{ $t('exclusive_request') }}</li>
 
                                 </ul>
                             </div>
@@ -36,15 +36,17 @@
                                 <b-input type="password" name="password" v-model="loginInfo.password"
                                          :placeholder="$t('password')" required></b-input>
                                 <div class="buttons">
-                                    <b-button type="submit" class="login_button" :disabled="loading">{{ $t('login') }}</b-button>
-                                    <b-button type="button" class="forgot_password" @click="setAuthModalMode(3)" :disabled="loading">{{
+                                    <b-button type="submit" class="login_button" :disabled="loading">{{ $t('login') }}
+                                    </b-button>
+                                    <b-button type="button" class="forgot_password" @click="setAuthModalMode(3)"
+                                              :disabled="loading">{{
                                         $t('forgot_password') }}
                                     </b-button>
                                 </div>
                             </form>
                             <br><br>
                             <p style="margin-bottom:0rem;" class="notice">{{ $t('new_to_collectionstock') }} <a href="#"
-                                                                                    @click="setAuthModalMode(2)">{{
+                                                                                                                @click="setAuthModalMode(2)">{{
                                 $t('join_now_for_free') }}</a></p>
                         </div>
                         <div class="registration" v-show="mode === 2">
@@ -67,7 +69,7 @@
                                          :placeholder="$t('email')" required></b-input>
                                 <!-- <b-input type="text" name="mobile" v-model="registerInfo.mobile" :placeholder="$t('mobile')"></b-input> -->
                                 <vue-tel-input name="mobile" v-model="registerInfo.mobile" :placeholder="$t('mobile')"
-                                               :dynamicPlaceholder="true" :enabledCountryCode="true"
+                                               :dynamicPlaceholder="true" :enabledCountryCode="true" required
                                                :validCharactersOnly="true"
                                                v-on:country-changed="countryChanged"></vue-tel-input>
                                 <b-input type="text" name="coupon" v-model="registerInfo.coupon"
@@ -81,7 +83,8 @@
                                     <span v-html="$t('accept_terms')"></span>
                                 </b-form-checkbox>
                                 <div class="buttons">
-                                    <b-button type="submit" class="join-now-btn btn-primary" :disabled="loading">{{ $t('join_now')
+                                    <b-button type="submit" class="join-now-btn btn-primary" :disabled="loading">{{
+                                        $t('join_now')
                                         }}
                                     </b-button>
                                     <span class="notice">{{ $t('already_have_an_account') }} <a href="#"
@@ -105,7 +108,9 @@
                                 <b-input type="email" name="email" v-model="forgotInfo.email" :placeholder="$t('email')"
                                          required></b-input>
                                 <div class="buttons">
-                                    <b-button type="submit" :disabled="loading">{{ $t('reset_password') }}</b-button>
+                                    <button class="reset-btn" type="submit" :disabled="loading">{{ $t('reset_password')
+                                        }}
+                                    </button>
                                 </div>
                             </form>
                             <br><br>
@@ -140,614 +145,629 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import { BIconX } from "bootstrap-vue";
-import { VueTelInput } from "vue-tel-input";
+    import {mapState} from "vuex";
+    import {BIconX} from "bootstrap-vue";
+    import {VueTelInput} from "vue-tel-input";
 
-export default {
-  components: {
-    BIconX,
-    VueTelInput
-  },
-  data: function() {
-    return {
-      loading: false,
-      share: null,
-      loginInfo: {
-        email: "",
-        password: ""
-      },
-      registerInfo: {
-        first_name: "",
-        last_name: "",
-        email: "",
-        country: "",
-        mobileCode: "",
-        mobile: "",
-        password: "",
-        coupon: "",
-        lang: this.$i18n.locale,
-        newsletter: false,
-        accept: false
-      },
-      forgotInfo: {
-        email: ""
-      },
-      resetInfo: {
-        email: "",
-        password: "",
-        password_confirmation: "",
-        token: ""
-      },
-      confirmAfterRegisterMode: null
+    export default {
+        components: {
+            BIconX,
+            VueTelInput
+        },
+        data: function () {
+            return {
+                loading: false,
+                share: null,
+                loginInfo: {
+                    email: "",
+                    password: ""
+                },
+                registerInfo: {
+                    first_name: "",
+                    last_name: "",
+                    email: "",
+                    country: "",
+                    mobileCode: "",
+                    mobile: "",
+                    password: "",
+                    coupon: "",
+                    lang: this.$i18n.locale,
+                    newsletter: false,
+                    accept: false
+                },
+                forgotInfo: {
+                    email: ""
+                },
+                resetInfo: {
+                    email: "",
+                    password: "",
+                    password_confirmation: "",
+                    token: ""
+                },
+                confirmAfterRegisterMode: null
+            };
+        },
+        computed: {
+            ...mapState("authmodal", ["mode"])
+        },
+        methods: {
+            toggleLoading: function () {
+                this.loading = !this.loading;
+            },
+
+            setAuthModalMode: function (arg) {
+                if (!this.loading) this.$store.commit("authmodal/setMode", arg);
+            },
+
+            init: function () {
+                this.$axios.$get("/app/init").then(response => {
+                    this.$store.commit("app/setInit", response);
+                });
+            },
+
+            login: async function () {
+                this.toggleLoading();
+                try {
+                    let response = await this.$auth.loginWith("local", {
+                        data: this.loginInfo
+                    });
+                    var path = this.$route.path;
+                    if (this.share != null) {
+                        var path = this.share;
+                    }
+                    this.$router.push(path);
+                    this.loginInfo.email = "";
+                    this.loginInfo.password = "";
+
+                    this.$bvModal.hide("modal-auth");
+                    this.$toast.success(this.$t("you_have_logged_in_successfully"));
+                    $nuxt.$emit("login");
+                    this.init();
+                } catch (error) {
+                    if (error.response.data.error.code == 4009) {
+                        this.confirmAfterRegisterMode = this.loginInfo.email;
+                        this.$store.commit("authmodal/setMode", 2);
+                    } else if (error.response.data.error.code == 4007) {
+                        this.$toast.error(this.$t("email_is_not_registered"));
+                    } else if (error.response.data.error.code == 4001) {
+                        this.$toast.error(this.$t("invalid_credentials"));
+                    } else {
+                        this.$toast.error(error.response.data.error.message);
+                    }
+                }
+                this.toggleLoading();
+            },
+
+            countryChanged(country) {
+                this.registerInfo.country = country.iso2;
+                this.registerInfo.mobileCode = country.dialCode;
+
+                setTimeout(() => {
+                    var placeholder = document.querySelector(".vue-tel-input input")
+                        .attributes.placeholder.value;
+                    var placeholderWithoutCode = placeholder.split(" ");
+                    placeholderWithoutCode.shift();
+                    placeholderWithoutCode = placeholderWithoutCode.join(" ");
+                    document.querySelector(
+                        ".vue-tel-input input"
+                    ).attributes.placeholder.value = placeholderWithoutCode;
+                });
+            },
+
+            register: async function () {
+                this.toggleLoading();
+                try {
+                    let response = await this.$axios.$post(
+                        "/auth/register",
+                        this.registerInfo
+                    );
+
+                    this.confirmAfterRegisterMode = this.registerInfo.email;
+
+                    this.registerInfo.first_name = "";
+                    this.registerInfo.last_name = "";
+                    this.registerInfo.email = "";
+                    this.registerInfo.mobile = "";
+                    this.registerInfo.password = "";
+                    this.registerInfo.coupon = "";
+                    this.registerInfo.newsletter = false;
+                    this.registerInfo.accept = false;
+
+                    // this.$toast.success(this.$t('you_have_registered_successfully')+'. '+this.$t('please_confirm_your_email'));
+                    // this.$bvModal.hide('modal-auth');
+                } catch (error) {
+                    if (error.response.data.error.code == 4002) {
+                        this.$toast.error(this.$t('email_already_exists'));
+                    }
+
+                    else this.$toast.error(error.response.data.error.message);
+                }
+                this.toggleLoading();
+            },
+
+            resendConfirmation: async function () {
+                this.toggleLoading();
+                try {
+                    let response = await this.$axios.$post("/auth/verify/resend", {
+                        email: this.confirmAfterRegisterMode
+                    });
+
+                    this.$toast.success(this.$t("email_confirmation_link_sent"));
+                } catch (error) {
+                    this.$toast.error(error.response.data.error.message);
+                }
+                this.toggleLoading();
+            },
+
+            sendResetPasswordEmail: async function () {
+                this.toggleLoading();
+                try {
+                    let response = await this.$axios.$post("/auth/forgot", this.forgotInfo);
+
+                    this.forgotInfo.email = "";
+
+                    this.$bvModal.hide("modal-auth");
+                    this.$toast.success(this.$t("password_reset_link_sent"));
+                } catch (error) {
+                    if (error.response.status == 429) {
+                        this.$toast.error(this.$t("try_again_in_minutes"));
+                    } else this.$toast.error(error.response.data.error.message);
+                }
+                this.toggleLoading();
+            },
+
+            resetPassword: async function () {
+                if (this.resetInfo.password !== this.resetInfo.password_confirmation) {
+                    this.$toast.error(this.$t("passwords_do_not_match"));
+                    return false;
+                }
+
+                this.toggleLoading();
+                try {
+                    let response = await this.$axios.$post("/auth/reset", this.resetInfo);
+
+                    this.resetInfo.email = "";
+                    this.resetInfo.password = "";
+                    this.resetInfo.password_confirmation = "";
+                    this.resetInfo.token = "";
+
+                    this.$store.commit("authmodal/setMode", 1);
+                    this.$toast.success(this.$t("password_updated_successfully"));
+                } catch (error) {
+                    this.$toast.error(error.response.data.error.message);
+                }
+                this.toggleLoading();
+            }
+        },
+
+        mounted: function () {
+            if (!this.$auth.loggedIn) {
+                if (this.$route.query.EV == 1) {
+                    this.$toast.success(this.$t("email_verified_login_now"));
+                    this.$bvModal.show("modal-auth");
+                } else if (this.$route.query.EVI == 1) {
+                    this.$toast.error(this.$t("email_verification_link_expired"));
+                } else if (
+                    this.$route.query.PR == 1 &&
+                    this.$route.query.token &&
+                    this.$route.query.email
+                ) {
+                    this.setAuthModalMode(4);
+                    // this.$bvModal.show("modal-auth");
+                    this.resetInfo.email = this.$route.query.email;
+                    this.resetInfo.token = this.$route.query.token;
+                } else if (this.$route.query.SH && this.$route.query.SH != 1) {
+                    this.share = this.$route.query.SH;
+                    this.$bvModal.show("modal-auth");
+                }
+            }
+        }
     };
-  },
-  computed: {
-    ...mapState("authmodal", ["mode"])
-  },
-  methods: {
-    toggleLoading: function() {
-      this.loading = !this.loading;
-    },
-
-    setAuthModalMode: function(arg) {
-      if (!this.loading) this.$store.commit("authmodal/setMode", arg);
-    },
-
-    init: function() {
-      this.$axios.$get("/app/init").then(response => {
-        this.$store.commit("app/setInit", response);
-      });
-    },
-
-    login: async function() {
-      this.toggleLoading();
-      try {
-        let response = await this.$auth.loginWith("local", {
-          data: this.loginInfo
-        });
-        var path = this.$route.path;
-        if (this.share != null) {
-          var path = this.share;
-        }
-        this.$router.push(path);
-        this.loginInfo.email = "";
-        this.loginInfo.password = "";
-
-        this.$bvModal.hide("modal-auth");
-        this.$toast.success(this.$t("you_have_logged_in_successfully"));
-        $nuxt.$emit("login");
-        this.init();
-      } catch (error) {
-        if (error.response.data.error.code == 4009) {
-          this.confirmAfterRegisterMode = this.loginInfo.email;
-          this.$store.commit("authmodal/setMode", 2);
-        } else if (error.response.data.error.code == 4007) {
-          this.$toast.error(this.$t("email_is_not_registered"));
-        } else if (error.response.data.error.code == 4001) {
-          this.$toast.error(this.$t("invalid_credentials"));
-        } else {
-          this.$toast.error(error.response.data.error.message);
-        }
-      }
-      this.toggleLoading();
-    },
-
-    countryChanged(country) {
-      this.registerInfo.country = country.iso2;
-      this.registerInfo.mobileCode = country.dialCode;
-
-      setTimeout(() => {
-        var placeholder = document.querySelector(".vue-tel-input input")
-          .attributes.placeholder.value;
-        var placeholderWithoutCode = placeholder.split(" ");
-        placeholderWithoutCode.shift();
-        placeholderWithoutCode = placeholderWithoutCode.join(" ");
-        document.querySelector(
-          ".vue-tel-input input"
-        ).attributes.placeholder.value = placeholderWithoutCode;
-      });
-    },
-
-    register: async function() {
-      this.toggleLoading();
-      try {
-        let response = await this.$axios.$post(
-          "/auth/register",
-          this.registerInfo
-        );
-
-        this.confirmAfterRegisterMode = this.registerInfo.email;
-
-        this.registerInfo.first_name = "";
-        this.registerInfo.last_name = "";
-        this.registerInfo.email = "";
-        this.registerInfo.mobile = "";
-        this.registerInfo.password = "";
-        this.registerInfo.coupon = "";
-        this.registerInfo.newsletter = false;
-        this.registerInfo.accept = false;
-
-        // this.$toast.success(this.$t('you_have_registered_successfully')+'. '+this.$t('please_confirm_your_email'));
-        // this.$bvModal.hide('modal-auth');
-      } catch (error) {
-        if (error.response.data.error.code == 4002) {
-          this.$toast.error(this.$t('email_already_exists'));
-        } 
-        
-        else this.$toast.error(error.response.data.error.message);
-      }
-      this.toggleLoading();
-    },
-
-    resendConfirmation: async function() {
-      this.toggleLoading();
-      try {
-        let response = await this.$axios.$post("/auth/verify/resend", {
-          email: this.confirmAfterRegisterMode
-        });
-
-        this.$toast.success(this.$t("email_confirmation_link_sent"));
-      } catch (error) {
-        this.$toast.error(error.response.data.error.message);
-      }
-      this.toggleLoading();
-    },
-
-    sendResetPasswordEmail: async function() {
-      this.toggleLoading();
-      try {
-        let response = await this.$axios.$post("/auth/forgot", this.forgotInfo);
-
-        this.forgotInfo.email = "";
-
-        this.$bvModal.hide("modal-auth");
-        this.$toast.success(this.$t("password_reset_link_sent"));
-      } catch (error) {
-        if (error.response.status == 429) {
-          this.$toast.error(this.$t("try_again_in_minutes"));
-        } else this.$toast.error(error.response.data.error.message);
-      }
-      this.toggleLoading();
-    },
-
-    resetPassword: async function() {
-      if (this.resetInfo.password !== this.resetInfo.password_confirmation) {
-        this.$toast.error(this.$t("passwords_do_not_match"));
-        return false;
-      }
-
-      this.toggleLoading();
-      try {
-        let response = await this.$axios.$post("/auth/reset", this.resetInfo);
-
-        this.resetInfo.email = "";
-        this.resetInfo.password = "";
-        this.resetInfo.password_confirmation = "";
-        this.resetInfo.token = "";
-
-        this.$store.commit("authmodal/setMode", 1);
-        this.$toast.success(this.$t("password_updated_successfully"));
-      } catch (error) {
-        this.$toast.error(error.response.data.error.message);
-      }
-      this.toggleLoading();
-    }
-  },
-
-  mounted: function() {
-    if (!this.$auth.loggedIn) {
-      if (this.$route.query.EV == 1) {
-        this.$toast.success(this.$t("email_verified_login_now"));
-        this.$bvModal.show("modal-auth");
-      } else if (this.$route.query.EVI == 1) {
-        this.$toast.error(this.$t("email_verification_link_expired"));
-      } else if (
-        this.$route.query.PR == 1 &&
-        this.$route.query.token &&
-        this.$route.query.email
-      ) {
-        this.setAuthModalMode(4);
-        // this.$bvModal.show("modal-auth");
-        this.resetInfo.email = this.$route.query.email;
-        this.resetInfo.token = this.$route.query.token;
-      } else if (this.$route.query.SH && this.$route.query.SH != 1) {
-        this.share = this.$route.query.SH;
-        this.$bvModal.show("modal-auth");
-      }
-    }
-  }
-};
 </script>
 
 <style lang="scss">
-.authentication .login {
-  margin-top: 20px;
-  .buttons {
-    margin: auto;
-    width: 100%;
-    padding: 7px;
-  }
-}
-.join-now-btn {
-  border-radius: 30px;
-  width: 200px;
-  font-weight: 600;
-  margin-right: 10px;
-  margin-bottom: 10px;
-}
-#modal-auth {
-  .vti__dropdown {
-    outline: none;
-  }
-  .btn-modal-auth-close {
-    position: absolute;
-    top: 0;
-    right: 20px;
-    border: none;
-    background: transparent;
-    outline: none;
-    font-size: 35px;
-    color: #aaa;
-    cursor: pointer;
-    z-index: 999;
-  }
-  .vti__dropdown-list {
-    z-index: 2;
-    padding: 0px;
-    margin: 13px 0px;
-    text-align: left;
-    list-style: none;
-    max-height: 215px;
-    overflow-y: scroll;
-    position: absolute;
-    left: -1px;
-    background-color: #fff;
-    border: 0px solid #ccc;
-    width: 390px;
-    border-radius: 3px;
-    box-shadow: 10px 7px 9px 5px rgba(0, 0, 0, 0.15);
-    height: 195px;
-  }
-  .vti__dropdown-list::-webkit-scrollbar {
-    width: 13px;
-    height: 8px;
-    background-color: #fff;
-  }
-  .vti__dropdown-list::-webkit-scrollbar-thumb {
-    background: #ebebeb;
-    border-radius: 8px;
-  }
-  .modal-content {
-    padding: 15px 0;
-    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
-
-    .modal-body {
-      margin-top: 20px;
-      margin-bottom: 20px;
+    .authentication .login {
+        margin-top: 20px;
+        .buttons {
+            margin: auto;
+            width: 100%;
+            padding: 7px;
+        }
     }
 
-    .left {
-      font-size: 18px;
-      border-right: 1px solid #000;
-
-      & > div {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-      }
-
-      .intro {
-        flex-grow: 1;
-
-        ul {
-          padding: 0;
-          list-style-type: none;
-        }
-      }
-
-      .sponsors {
-        img {
-          max-width: 100%;
-        }
-      }
-    }
-
-    .right {
-      padding-left: 50px;
-      padding-right: 100px;
-
-      .title {
-        font-size: 35px;
-        font-weight: 700;
-      }
-
-      .help-text {
-        margin-top: 1rem;
-        margin-bottom: 0;
-        font-size: 18px;
-        color: #aaa;
+    .join-now-btn {
+        border-radius: 30px;
+        width: 200px;
         font-weight: 600;
-      }
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
 
-      .reset {
-        input {
-          transition: background-color 0.2s;
-
-          &.confirmed {
-            background-color: #cff7cc;
-          }
+    #modal-auth {
+        .vti__dropdown {
+            outline: none;
         }
-      }
-
-      form {
-        button.join-now-btn {
-          background-color: #0e8dde;
-          border: none;
-        }
-        .vue-tel-input {
-          margin-bottom: 15px;
-          border-radius: 30px;
-          outline: none;
-          box-shadow: none;
-          font-size: 16px;
-
-          .vti__dropdown {
-            border-top-left-radius: 30px;
-            border-bottom-left-radius: 30px;
-            outline:none .vti__country-code {
-              font-size: 16px;
-            }
-          }
-
-          input {
-            margin-bottom: 0;
-          }
-        }
-
-        input {
-          margin-bottom: 15px;
-          border-radius: 30px;
-          outline: none;
-          box-shadow: none;
-          font-size: 16px;
-        }
-
-        .custom-checkbox {
-          margin-bottom: 15px;
-
-          a {
+        .btn-modal-auth-close {
+            position: absolute;
+            top: 0;
+            right: 20px;
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 35px;
             color: #aaa;
-            text-decoration: none;
-          }
+            cursor: pointer;
+            z-index: 999;
         }
-        .login_button {
-          border-radius: 30px;
-          background-color: #363636;
-          color: #fff;
-          width: 220px;
-          font-weight: 600;
-          margin-right: 10px;
-          margin-bottom: 10px;
+        .vti__dropdown-list {
+            z-index: 2;
+            padding: 0px;
+            margin: 13px 0px;
+            text-align: left;
+            list-style: none;
+            max-height: 215px;
+            overflow-y: scroll;
+            position: absolute;
+            left: -1px;
+            background-color: #fff;
+            border: 0px solid #ccc;
+            width: 390px;
+            border-radius: 3px;
+            box-shadow: 10px 7px 9px 5px rgba(0, 0, 0, 0.15);
+            height: 195px;
         }
-        .forgot_password {
-          border-radius: 30px;
-          background-color: white;
-          color: #363636;
-          width: 220px;
-          font-weight: 600;
-          margin-right: 10px;
-          margin-bottom: 10px;
-          margin-left: 15px;
+        .vti__dropdown-list::-webkit-scrollbar {
+            width: 13px;
+            height: 8px;
+            background-color: #fff;
         }
-      }
+        .vti__dropdown-list::-webkit-scrollbar-thumb {
+            background: #ebebeb;
+            border-radius: 8px;
+        }
+        .modal-content {
+            padding: 15px 0;
+            box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
 
-      .notice {
-        font-size: 18px;
+            .modal-body {
+                margin-top: 20px;
+                margin-bottom: 20px;
+            }
 
-        a {
-          color: $brand;
-          outline: none;
-          text-decoration: none;
-        }
-      }
+            .left {
+                font-size: 18px;
+                border-right: 1px solid #000;
 
-      .confirm-after-register {
-        p {
-          margin: 0;
-          padding: 0;
-          font-size: 18px;
-        }
+                & > div {
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                }
 
-        button {
-          border-radius: 30px;
-          background-color: $brand;
-          border: none;
-          color: #fff;
-          width: 200px;
-          font-weight: 600;
-          margin-right: 10px;
-          margin-bottom: 10px;
+                .intro {
+                    flex-grow: 1;
+
+                    ul {
+                        padding: 0;
+                        list-style-type: none;
+                    }
+                }
+
+                .sponsors {
+                    img {
+                        max-width: 100%;
+                    }
+                }
+            }
+
+            .right {
+                padding-left: 50px;
+                padding-right: 100px;
+
+                .title {
+                    font-size: 35px;
+                    font-weight: 700;
+                }
+
+                .help-text {
+                    margin-top: 1rem;
+                    margin-bottom: 0;
+                    font-size: 18px;
+                    color: #aaa;
+                    font-weight: 600;
+                }
+
+                .reset {
+                    input {
+                        transition: background-color 0.2s;
+
+                        &.confirmed {
+                            background-color: #cff7cc;
+                        }
+                    }
+                }
+
+                form {
+                    button.join-now-btn {
+                        background-color: #0e8dde;
+                        border: none;
+                    }
+                    .vue-tel-input {
+                        margin-bottom: 15px;
+                        border-radius: 30px;
+                        outline: none;
+                        box-shadow: none;
+                        font-size: 16px;
+
+                        .vti__dropdown {
+                            border-top-left-radius: 30px;
+                            border-bottom-left-radius: 30px;
+                            outline:none .vti__country-code {
+                                font-size: 16px;
+                            }
+                        }
+
+                        input {
+                            margin-bottom: 0;
+                        }
+                    }
+
+                    input {
+                        margin-bottom: 15px;
+                        border-radius: 30px;
+                        outline: none;
+                        box-shadow: none;
+                        font-size: 16px;
+                    }
+
+                    .custom-checkbox {
+                        margin-bottom: 15px;
+
+                        a {
+                            color: #aaa;
+                            text-decoration: none;
+                        }
+                    }
+                    .login_button {
+                        border-radius: 30px;
+                        background-color: #363636;
+                        color: #fff;
+                        width: 220px;
+                        font-weight: 600;
+                        margin-right: 10px;
+                        margin-bottom: 10px;
+                    }
+                    .forgot_password {
+                        border-radius: 30px;
+                        background-color: white;
+                        color: #363636;
+                        width: 220px;
+                        font-weight: 600;
+                        margin-right: 10px;
+                        margin-bottom: 10px;
+                        margin-left: 15px;
+                    }
+                    .reset-btn {
+                        border-radius: 30px;
+                        background-color: #363636;
+                        color: #fff;
+                        width: 100%;
+                        font-weight: 600;
+                        margin-right: 10px;
+                        margin-bottom: 10px;
+                        height: 38px;
+                        font-size: 16px;
+                    }
+                }
+
+                .notice {
+                    font-size: 18px;
+
+                    a {
+                        color: $brand;
+                        outline: none;
+                        text-decoration: none;
+                    }
+                }
+
+                .confirm-after-register {
+                    p {
+                        margin: 0;
+                        padding: 0;
+                        font-size: 18px;
+                    }
+
+                    button {
+                        border-radius: 30px;
+                        background-color: $brand;
+                        border: none;
+                        color: #fff;
+                        width: 200px;
+                        font-weight: 600;
+                        margin-right: 10px;
+                        margin-bottom: 10px;
+                    }
+                }
+            }
         }
-      }
     }
-  }
-}
 
-@media screen and (max-width: 1199px) {
-  #modal-auth {
-    .modal-content {
-      .right {
-        .notice {
-          display: block;
+    @media screen and (max-width: 1199px) {
+        #modal-auth {
+            .modal-content {
+                .right {
+                    .notice {
+                        display: block;
+                    }
+                    form {
+                        .login_button {
+                            border-radius: 30px;
+                            background-color: #363636;
+                            color: #fff;
+                            width: 220px;
+                            font-weight: 600;
+                            margin-right: 10px;
+                            margin-bottom: 10px;
+                        }
+                        .forgot_password {
+                            border-radius: 30px;
+                            background-color: white;
+                            color: #000;
+                            width: 220px;
+                            font-weight: 600;
+                            margin-right: 10px;
+                            margin-bottom: 10px;
+                            margin-left: 118px;
+                        }
+                    }
+                }
+            }
         }
-        form {
-          .login_button {
-            border-radius: 30px;
-            background-color: #363636;
-            color: #fff;
-            width: 220px;
-            font-weight: 600;
-            margin-right: 10px;
-            margin-bottom: 10px;
-          }
-          .forgot_password {
-            border-radius: 30px;
-            background-color: white;
-            color: #000;
-            width: 220px;
-            font-weight: 600;
-            margin-right: 10px;
-            margin-bottom: 10px;
-            margin-left: 118px;
-          }
+        .authentication .login {
+            margin-top: 20px;
+            .buttons {
+                margin: auto;
+                width: 100%;
+                padding: 7px;
+            }
         }
-      }
     }
-  }
-  .authentication .login {
-    margin-top: 20px;
-    .buttons {
-      margin: auto;
-      width: 100%;
-      padding: 7px;
+
+    @media screen and (max-width: 1024px) {
+        #modal-auth {
+            .modal-content {
+                .right {
+                    padding-left: 0;
+                    padding-right: 0;
+
+                    form {
+                        .login_button {
+                            border-radius: 30px;
+                            background-color: #000;
+                            color: #fff;
+                            width: 290px;
+                            font-weight: 600;
+                            margin-right: 10px;
+                            margin-bottom: 10px;
+                        }
+                        .forgot_password {
+                            border-radius: 30px;
+                            background-color: white;
+                            color: #000;
+                            width: 290px;
+                            font-weight: 600;
+                            margin-right: 10px;
+                            margin-bottom: 10px;
+                            margin-left: 90px;
+                        }
+                    }
+
+                    .notice {
+                        font-size: 16px;
+                    }
+                }
+            }
+        }
     }
-  }
-}
 
-@media screen and (max-width: 1024px) {
-  #modal-auth {
-    .modal-content {
-      .right {
-        padding-left: 0;
-        padding-right: 0;
+    @media screen and (max-width: 990px) {
+        #modal-auth {
+            .modal-content {
+                .right {
+                    padding-left: 0;
+                    padding-right: 0;
 
-        form {
-          .login_button {
-            border-radius: 30px;
-            background-color: #000;
-            color: #fff;
-            width: 290px;
-            font-weight: 600;
-            margin-right: 10px;
-            margin-bottom: 10px;
-          }
-          .forgot_password {
-            border-radius: 30px;
-            background-color: white;
-            color: #000;
-            width: 290px;
-            font-weight: 600;
-            margin-right: 10px;
-            margin-bottom: 10px;
-            margin-left: 90px;
-          }
+                    form {
+                        .buttons {
+                            text-align: center;
+                        }
+                    }
+                    form {
+                        .login_button {
+                            border-radius: 30px;
+                            background-color: #000;
+                            color: #fff;
+                            width: 190px;
+                            font-weight: 600;
+                            margin-right: 10px;
+                            margin-bottom: 10px;
+                        }
+                        .forgot_password {
+                            border-radius: 30px;
+                            background-color: white;
+                            color: #000;
+                            width: 190px;
+                            font-weight: 600;
+                            margin-right: 10px;
+                            margin-bottom: 10px;
+                            margin-left: 15px;
+                        }
+                    }
+                    .notice {
+                        font-size: 16px;
+                    }
+                }
+            }
         }
-
-        .notice {
-          font-size: 16px;
-        }
-      }
     }
-  }
-}
-@media screen and (max-width: 990px) {
-  #modal-auth {
-    .modal-content {
-      .right {
-        padding-left: 0;
-        padding-right: 0;
 
-        form {
-          .buttons {
-            text-align: center;
-          }
+    @media screen and (max-width: 540px) {
+        .sponsors p {
+            margin-bottom: 0em;
         }
-        form {
-          .login_button {
-            border-radius: 30px;
-            background-color: #000;
-            color: #fff;
-            width: 190px;
-            font-weight: 600;
-            margin-right: 10px;
-            margin-bottom: 10px;
-          }
-          .forgot_password {
-            border-radius: 30px;
-            background-color: white;
-            color: #000;
-            width: 190px;
-            font-weight: 600;
-            margin-right: 10px;
-            margin-bottom: 10px;
-            margin-left: 15px;
-          }
+        .authentication .login {
+            margin-top: 20px;
+            .buttons {
+                margin: auto;
+                width: 100%;
+                padding: 7px;
+
+                .forgot_password {
+                    margin-left: -10px;
+                }
+            }
         }
-        .notice {
-          font-size: 16px;
+        #modal-auth {
+            .modal-content {
+                .right {
+                    padding-left: 0;
+                    padding-right: 0;
+
+                    form {
+                        .buttons {
+                            text-align: center;
+                        }
+                    }
+                    form {
+                        .login_button {
+                            font-size: 8px;
+
+                            border-radius: 30px;
+                            background-color: #000;
+                            color: #fff;
+                            width: 105px;
+                            font-weight: 600;
+                            margin-right: 10px;
+                            margin-bottom: 10px;
+                        }
+                        .forgot_password {
+                            font-size: 8px;
+                            border-radius: 30px;
+                            background-color: white;
+                            color: #000;
+                            width: 105px;
+                            font-weight: 600;
+                            margin-right: 10px;
+                            margin-bottom: 10px;
+                            margin-left: 2px;
+                        }
+                    }
+
+                    .notice {
+                        font-size: 16px;
+                    }
+                }
+            }
         }
-      }
     }
-  }
-}
-@media screen and (max-width: 540px) {
-  .sponsors p {
-    margin-bottom: 0em;
-  }
-  .authentication .login {
-    margin-top: 20px;
-    .buttons {
-      margin: auto;
-      width: 100%;
-      padding: 7px;
-
-      .forgot_password {
-        margin-left: -10px;
-      }
-    }
-  }
-  #modal-auth {
-    .modal-content {
-      .right {
-        padding-left: 0;
-        padding-right: 0;
-
-        form {
-          .buttons {
-            text-align: center;
-          }
-        }
-        form {
-          .login_button {
-            font-size: 8px;
-
-            border-radius: 30px;
-            background-color: #000;
-            color: #fff;
-            width: 105px;
-            font-weight: 600;
-            margin-right: 10px;
-            margin-bottom: 10px;
-          }
-          .forgot_password {
-            font-size: 8px;
-            border-radius: 30px;
-            background-color: white;
-            color: #000;
-            width: 105px;
-            font-weight: 600;
-            margin-right: 10px;
-            margin-bottom: 10px;
-            margin-left: 2px;
-          }
-        }
-
-        .notice {
-          font-size: 16px;
-        }
-      }
-    }
-  }
-}
 </style>

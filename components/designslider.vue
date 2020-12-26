@@ -3,7 +3,7 @@
     <div class="designContainer" :style="{'background-position': (sliderValue >= 100 ? '100% 100%' : '-100% -100%'), 'background-size': (sliderValue)+'%', 'background-image': `url(${getBackgroundURL()})`}">
       <img class="empty" src="~/assets/empty.jpg">
       <div v-if="mask === null" class="pending"></div>
-      <div class="mask-container" v-if="mask" :style="`background-image: url('${cloudfrontURL}/uploads/good/${mask.image}')`"></div>
+      <div class="mask-container" v-if="mask" :style="`background-image: url('/cloudfront/uploads/good/${mask.image}')`"></div>
       <div class="socialBox" v-if="mode != 'simulator' && mode != 'fs'">
         <div>
           <div class="social fb">
@@ -236,7 +236,7 @@ export default {
 
       .preview {
         text-decoration: none;
-        font-size: 14px;
+        font-size: 13px;
         color: $black;
         margin-right: 20px;
         margin-top: 7px;

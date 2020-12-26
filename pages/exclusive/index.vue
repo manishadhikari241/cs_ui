@@ -91,7 +91,7 @@
                     `exclusive_${plan.selected == 0 ? "min" : "max"}_price`
                   ]
                 }}
-                / {{ $t("request") }}
+                / {{ $t("design") }}
               </p>
             </div>
             <div class="btn-buy-container">

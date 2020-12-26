@@ -75,68 +75,67 @@ export default {
 
     &.text {
       h1 {
-        margin: 0;
-        padding: 0;
-        font-size: 40px;
-        font-weight: 700;
-        color: #000;
-        text-transform: uppercase;
-      }
+          margin: 0;
+          padding: 0;
+          font-size: 25px;
+          font-weight: 700;
+          color: #313131;
+  }
 
-      p {
-        margin: 0;
-        margin-top: 20px;
-        padding: 0;
-        font-size: 20px;
-        color: #000;
-      }
+  p {
+    margin: 0;
+    margin-top: 20px;
+    padding: 0;
+    font-size: 18px;
+    color: #000;
+  }
 
-      a {
-        margin-top: 30px;
-        display: inline-block;
-        padding: 10px 40px;
-        border: 1px solid #000;
-        border-radius: 30px;
-        text-transform: uppercase;
-        color: #000;
-        font-size: 18px;
-        font-weight: 700;
-        text-decoration: none;
-      }
-    }
-
-    img {
-      max-width: 90%;
-    }
+  a {
+    margin-top: 30px;
+    display: inline-block;
+    padding: 10px 40px;
+    border: 1px solid #000;
+    border-radius: 30px;
+    text-transform: uppercase;
+    color: #000;
+    font-size: 18px;
+    font-weight: 700;
+    text-decoration: none;
   }
 }
 
+img {
+  max-width: 90%;
+}
+}
+}
+
 @media screen and (max-width: 767px) {
-  .component.pageblocks {
-    .order-1 {
-      order: 2 !important;
+.component.pageblocks {
+.order-1 {
+  order: 2 !important;
+}
+
+.pageblock {
+  justify-content: center;
+  text-align: center;
+
+  &.text {
+    padding-top: 30px;
+
+    h1 {
+      font-size: 30px;
     }
 
-    .pageblock {
-      justify-content: center;
-      text-align: center;
+    p {
+      font-size: 18px;
+    }
 
-      &.text {
-        padding-top: 30px;
-
-        h1 {
-          font-size: 30px;
-        }
-
-        p {
-          font-size: 18px;
-        }
-
-        a {
-          font-size: 14px;
-        }
-      }
+    a {
+      font-size: 14px;
     }
   }
+}
+}
 }
 </style>

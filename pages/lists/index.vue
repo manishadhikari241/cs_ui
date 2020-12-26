@@ -9,7 +9,7 @@
         </div>
       </template>
       <template v-slot:empty="scope">
-        <div class="text-center">{{ scope.emptyText }}</div>
+        <div class="text-center">{{$t('empty_table')}}</div>
       </template>
 
       <template v-slot:cell(name)="data">

@@ -43,7 +43,7 @@ export default {
           var packageName = this.pkg.charAt(0).toUpperCase() + this.pkg.slice(1) == 'Standard' ? this.$t('standard'): this.$t('extended');
           var message = `${this.$t(
             "confirm_to_download"
-          )} ${packageName} ${this.$t("quota_will_be_consumed")}`;
+          )}${packageName}${this.$t("quota_will_be_consumed")}`;
           if (!downloadDetails.consumesQuota) {
             const h = this.$createElement;
             const redownloadMsg = h("div", {

@@ -60,16 +60,24 @@ export default {
           label: 'ID'
         },
         {
-          key: 'designer_id',
+          key: 'user.email',
           label: 'Creator'
         },
         {
-          key: 'user.email',
-          label: 'Email'
+          key: 'translations[0].title',
+          label: 'Name'
+        },
+        {
+          key: 'season.translations[0].name',
+          label: 'Season'
         },
         {
           key: 'moodboard',
           label: 'MoodBoard'
+        },
+        {
+          key: 'publish_at',
+          label: 'Publish Date'
         },
         {
           key: 'is_active',

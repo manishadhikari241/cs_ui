@@ -101,6 +101,7 @@ body {
   }
 }
 
+
 @media screen and (min-width: 1030px) {
   .lg-show {
     display: none;
@@ -122,11 +123,16 @@ body {
   .md-show {
     display: none;
   }
+
 }
 
 @media screen and (max-width: 767px) {
   .md-hide {
     display: none;
+  }
+  .page {
+    width: 98%;
+    padding: 0 20px;
   }
 }
 

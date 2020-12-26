@@ -77,8 +77,9 @@ export default Vue.extend({
         transition: background-color .2s;
 
         a {
-          color: #000 !important;
+          color: #313131 !important;
           transition: color .2s;
+          font-size: 17px;
 
           &.nuxt-link-active {
             border-bottom: 1px solid #000;

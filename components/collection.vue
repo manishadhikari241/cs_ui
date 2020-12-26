@@ -146,12 +146,18 @@ export default {
           font-size: 20px;
           color: #4a4a4a;
           margin: 0;
+          @media screen and (max-width: 1024px) {
+            font-size: 16.5px;
+          }
         }
 
         .published-date {
-          font-size: 18px;
+          font-size: 16.5px;
           color: #969696;
           margin: 0;
+          @media screen and (max-width: 1024px) {
+            font-size: 12.75px;
+          }
         }
       }
     }
@@ -160,14 +166,24 @@ export default {
       margin: 25px 0;
       color: #363636;
       font-size: 1.75em;
+      @media screen and (max-width: 1024px) {
+        font-size: 16.5px;
+      }
       font-weight: 700;
     }
 
     .properties {
+      @media screen and (max-width: 1024px) {
+        font-size: 12.75px;
+      }
       .prop {
         font-size: 18px;
         color: #363636;
         font-weight: 700;
+        @media screen and (max-width: 1024px) {
+          font-size: 12.75px;
+        }
+
       }
 
       a {
@@ -175,6 +191,10 @@ export default {
         color: #898586;
         font-size: 18px;
         cursor: pointer;
+        @media screen and (max-width: 1024px) {
+          font-size: 12.75px;
+        }
+
 
         &:hover {
           color: #231f20;
@@ -186,6 +206,11 @@ export default {
       margin-top: 40px;
       max-height: 150px;
       overflow: hidden;
+
+      @media screen and (max-width: 1024px) {
+        margin-top: 20px;
+        font-size: 12.75px;
+      }
     }
 
     .read-more {
@@ -199,6 +224,9 @@ export default {
         color: #363636;
         font-weight: 700;
         text-decoration: none;
+        @media screen and (max-width: 1024px) {
+          font-size: 14px;
+        }
 
         svg {
           position: relative;

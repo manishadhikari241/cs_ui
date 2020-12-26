@@ -143,7 +143,7 @@ export default {
 
   .pageinfo-title {
     font-weight: 700;
-    font-size: 50px;
+    font-size: 48.2px;
   }
 
   .pageinfo-description {
@@ -170,7 +170,7 @@ export default {
   .component.pageinfo {
     .pageinfo-head {
       display: block;
-      text-align: center;
+      text-align: left;
 
       .action-btn {
         margin: 10px 0 20px;
@@ -183,7 +183,7 @@ export default {
     }
 
     .pageinfo-description {
-      font-size: 20px;
+      font-size: 16px;
       max-width: 100%;
       @media screen and (max-width: 768px) {
         width: 100% !important;

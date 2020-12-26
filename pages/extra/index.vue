@@ -10,11 +10,11 @@
         class="post cover"
         :to="localePath(`/extra/${first.id}`)"
       >
-        <img
-          :src="`${imgBaseURL}/storage/${first.cover}')`"
-          class="w-100 image-container"
-        />
-        <!-- <div class="image-container" :style="`background-image: url('${imgBaseURL}/storage/${first.cover}')`"></div> -->
+        <!--<img-->
+          <!--:src="`${imgBaseURL}/storage/${first.cover}')`"-->
+          <!--class="w-100 image-container"-->
+        <!--/>-->
+         <div class="image-container" :style="`background-image: url('${imgBaseURL}/storage/${first.cover}')`"></div>
         <div class="title">
           {{ first.translations[$i18n.locale == "en" ? 0 : 1].title }}
         </div>

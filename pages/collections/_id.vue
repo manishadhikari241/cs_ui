@@ -3,7 +3,7 @@
     <div v-if="!data" style="text-align: center"><b-spinner type="grow" label="Spinning"></b-spinner></div>
     <client-only>
       <div v-if="data">
-        <b-container class="go-back md-hide">
+        <b-container class="go-back">
           <button @click="goBack"><b-icon-chevron-left></b-icon-chevron-left> {{ $t('back') }}</button>
         </b-container>
 
@@ -153,6 +153,9 @@ export default {
       color: #363636;
       font-weight: 700;
       text-decoration: none;
+      @media screen and (max-width: 1024px) {
+        font-size: 12.75px;
+      }
 
       svg {
         position: relative;
@@ -209,28 +212,48 @@ export default {
           font-size: 20px;
           color: #4a4a4a;
           margin: 0;
+          @media screen and (max-width: 1024px) {
+            font-size: 12.75px;
+          }
         }
 
         .published-date {
           font-size: 18px;
           color: #969696;
           margin: 0;
+          @media screen and (max-width: 1024px) {
+            font-size: 12.75px;
+          }
         }
       }
     }
 
     .title {
       margin: 25px 0;
-      color: #363636;
-      font-size: 1.75em;
+      color: #313131;
+      font-size: 20px;
       font-weight: 700;
+
+      @media screen and (max-width: 1024px) {
+        font-size: 16.5px;
+      }
+
     }
 
     .properties {
+      font-size: 18px;
+      @media screen and (max-width: 1024px) {
+        font-size: 12.75px;
+      }
       .prop {
         font-size: 18px;
         color: #363636;
         font-weight: 700;
+
+        @media screen and (max-width: 1024px) {
+          font-size: 12.75px;
+        }
+
       }
 
       a {
@@ -245,7 +268,15 @@ export default {
     }
 
     .description {
+      font-size: 18px;
       margin-top: 40px;
+      color: #313131;
+
+      @media screen and (max-width: 1024px) {
+        margin-top: 20px;
+        font-size: 12.75px;
+      }
+
     }
   }
 
@@ -255,6 +286,10 @@ export default {
     .title {
       font-size: 28px;
       font-weight: 600;
+
+      @media screen and (max-width: 1024px) {
+        font-size: 16.5px;
+      }
     }
   }
 }

@@ -232,9 +232,9 @@ export default {
   }
 
   .right-navigation a {
-    color: #000;
-    font-weight: 600;
-    font-size: 16px;
+    color: #313131;
+    font-weight: 700;
+    font-size: 17px;
     margin-left: 10px;
     padding: 3px 12px;
     outline: none;

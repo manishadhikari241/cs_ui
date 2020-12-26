@@ -174,7 +174,7 @@ export default {
       .large-text {
         margin: 0;
         padding: 0;
-        font-size: 25px;
+        font-size: 20px;
         font-weight: 600;
       }
 
@@ -184,7 +184,7 @@ export default {
         .small-text {
           color: inherit;
           text-decoration: none;
-          font-size: 14px;
+          font-size: 13px;
           font-weight: 600;
           cursor: pointer;
         }
@@ -244,7 +244,6 @@ export default {
               padding: 0;
               font-size: 20px;
               font-weight: 700;
-              text-transform: uppercase;
             }
 
             .detail {

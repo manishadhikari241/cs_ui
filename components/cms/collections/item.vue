@@ -17,9 +17,9 @@
               <nuxt-link :to="`/cms/users?id=${item.user.id}`">{{ item.user.first_name }} {{ item.user.last_name }}</nuxt-link>
             </div>
           </div>
-          <div class="item-row">
-            <div class="prop">Created At</div>
-            <div class="value">{{ $moment(item.created_at).format('DD/MM/YYYY') }}</div>
+          <div class="item-row" v-if="item.publish_at">
+            <div class="prop">Publish At</div>
+            <div class="value">{{ $moment(item.publish_at).format('DD/MM/YYYY') }}</div>
           </div>
           <div class="item-row">
             <div class="prop">Active</div>

@@ -118,6 +118,10 @@ export default {
 
     img {
       max-width: 90%;
+      @media screen and (max-width: 426px) {
+        max-width: 100%;
+
+      }
     }
   }
 }
