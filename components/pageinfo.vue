@@ -5,6 +5,7 @@
         {{ pageInfo.translations[$i18n.locale].info_title }}
       </h1>
       <b-button
+        :class="slug == 'lists' ? 'lists-btn' : ''"
         class="action-btn"
         v-if="button"
         :id="buttonId"
@@ -27,6 +28,15 @@
         @click="checkAndRedirect(localePath('/request/create'))"
         class="border-0 d-inline-block font-weight-bold text-white text-nowrap ml-3 mt-3"
         >{{ $t("send_a_request_btn") }}</b-button
+      >
+    </div>
+    <div class="pageinfo-head ">
+      <b-button
+        class="action-btn resp-btn  mt-3"
+        v-if="button"
+        :id="buttonId"
+        v-show="pageInfo"
+        >{{ button }}</b-button
       >
     </div>
   </div>
@@ -175,6 +185,12 @@ export default {
       .action-btn {
         margin: 10px 0 20px;
       }
+      .lists-btn {
+        display: none;
+      }
+      .resp-btn {
+        display: block;
+      }
     }
 
     .pageinfo-title {
@@ -190,5 +206,12 @@ export default {
       }
     }
   }
+  
+}
+.pageinfo-head .resp-btn {
+  display: none;
+}
+.lists-btn {
+  display: block;
 }
 </style>

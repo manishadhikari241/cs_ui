@@ -1,22 +1,27 @@
 <template>
   <div class="page request" d-flex>
-    <PageInfo :slug="'request'"/>
-    <br>
+    <PageInfo :slug="'request'" />
+    <br />
     <div class="buttons">
-      <b-button v-if="requestButton" @click="checkAndRedirect(localePath('/request/list'))">{{
-          $t('your_requests')
-        }}
+      <b-button
+        class="mb-2"
+        v-if="requestButton"
+        @click="checkAndRedirect(localePath('/request/list'))"
+        >{{ $t("your_requests") }}
       </b-button>
-      <b-button v-if="requestButton" @click="checkAndRedirect(localePath('/request/create'))" class="primary">
-        {{ $t('send_a_request_btn') }}
+      <b-button
+        v-if="requestButton"
+        @click="checkAndRedirect(localePath('/request/create'))"
+        class="primary mb-2"
+      >
+        {{ $t("send_a_request_btn") }}
       </b-button>
-
     </div>
-    <br><br><br>
+    <br /><br /><br />
     <div style="text-align: center" v-if="loading">
       <b-spinner type="grow" label="Loading..."></b-spinner>
     </div>
-    <PageBlocks :blocks="blocks" :changedirection="true" v-if="!loading"/>
+    <PageBlocks :blocks="blocks" :changedirection="true" v-if="!loading" />
   </div>
 </template>
 
@@ -107,7 +112,7 @@ export default {
           .catch(
             function(error) {
               if (error.response.data.error.code == 4008) {
-             this.$toast.error(this.$t('request_per_time'));
+                this.$toast.error(this.$t("request_per_time"));
               }
             }.bind(this)
           );
@@ -144,7 +149,7 @@ export default {
       text-decoration: none;
       border-radius: 30px;
       margin-right: 20px;
-      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.2);
       transition: all 0.2s;
       border: none;
       text-transform: uppercase;
