@@ -9,7 +9,7 @@
         </div>
 
         <div
-                class="search-details d-flex justify-content-center flex-wrap justify-content-md-end "
+                class="search-details d-flex justify-content-end flex-wrap justify-content-md-end "
                 v-if="!isTop"
         >
             <div class="custom-dropdown">
@@ -52,12 +52,12 @@
                 </div>
             </div>
 
-            <b-form-select
-                    v-model="selected"
-                    :options="options"
-                    size="sm"
-                    class="color_select"
-            ></b-form-select>
+            <!--<b-form-select-->
+                    <!--v-model="selected"-->
+                    <!--:options="options"-->
+                    <!--size="sm"-->
+                    <!--class="color_select"-->
+            <!--&gt;</b-form-select>-->
 
             <span class="keyword" v-if="term">{{ term }}</span>
             <!-- <span v-if="term"></span> -->
@@ -224,6 +224,7 @@
         text-align: right;
         font-size: 17px;
         margin-top: 20px;
+        margin-bottom: 20px;
 
         @media screen and (max-width: 1024px) {
             font-size: 12.75px;

@@ -31,14 +31,14 @@
         <div class="board-actions">
             <b-row>
                 <b-col class="button-col">
-                    <b-button @click="saveBoard" class="btn-save-board" :disabled="!items.length"><i
+                    <button @click="saveBoard" class="btn-save-board" :disabled="!items.length"><i
                             class="far fa-save"></i>{{$t('save_board')}}
-                    </b-button>
+                    </button>
                 </b-col>
                 <b-col class="button-col">
-                    <b-button @click="resetBoard" class="btn-reset-board" :disabled="!items.length"><i
+                    <button @click="resetBoard" class="btn-reset-board" :disabled="!items.length"><i
                             class="far fa-save"></i>{{$t('reset_board')}}
-                    </b-button>
+                    </button>
                 </b-col>
             </b-row>
         </div>
@@ -204,8 +204,12 @@
                 padding: 8px 20px;
                 text-transform: uppercase;
                 transition: all 0.2s;
+                @media screen and (max-width: 768px) {
+                    font-size: 14px;
 
-                &:active {
+                }
+
+                    &:active {
                     box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
                 }
 
@@ -213,12 +217,14 @@
                     background: $brand;
                     color: #fff;
                     border: none;
+                    outline: none;
                 }
 
                 &.btn-reset-board {
                     background: $black;
                     color: #fff;
                     border: none;
+                    outline: none;
                 }
             }
         }

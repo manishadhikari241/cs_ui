@@ -134,6 +134,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .component.pageinfo {
 
   .pageinfo-description-freereq {
@@ -150,7 +151,31 @@ export default {
       display: inline-block;
     }
   }
+  .pageinfo-title {
+    font-weight: 700;
+    font-size: 48.2px;
+  }
 }
+
+@media screen and (max-width: 768px) {
+  .component.pageinfo {
+
+    .pageinfo-title {
+      font-size: 30px;
+      // white-space: break-spaces;
+    }
+
+    .pageinfo-description-freereq {
+      font-size: 16px;
+      max-width: 100%;
+      @media screen and (max-width: 768px) {
+        width: 100% !important;
+      }
+    }
+  }
+
+}
+
 .modal-content{
   height: 200px;
 }

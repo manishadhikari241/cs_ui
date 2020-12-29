@@ -76,14 +76,14 @@ export default {
       }
 
       &.forward {
-        right: 5px;
+        right: 10px;
       }
     }
   }
 
   .designContainer {
     .empty, .mask-container {
-      width: 575px;
+      /*width: 575px;*/
     }
   }
 }

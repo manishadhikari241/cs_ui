@@ -262,20 +262,28 @@ export default {
     color: #fff;
     background-color: $black;
     border-radius: 30px;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
     text-align: center;
     text-decoration: none;
+    @media screen and (max-width: 768px) {
+      font-size: 14px;
+
+    }
   }
 
   .btn-delete {
+    @media screen and (max-width: 768px) {
+      font-size: 14px;
+
+    }
     width: 30px;
     height: 30px;
     line-height: 30px;
     color: #fff;
     background-color: $black;
     border-radius: 50%;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
     text-align: center;
     padding: 0;

@@ -160,7 +160,7 @@ export default {
       padding: 20px 0;
 
       .component.simulator {
-        padding: 0 60px !important;
+        padding: 0 20px !important;
       }
 
       .navigate-qd {

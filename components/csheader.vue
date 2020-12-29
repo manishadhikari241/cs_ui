@@ -287,7 +287,7 @@ export default {
 
     .right-navigation a {
       font-size: 14px;
-      margin-left: 5px;
+      margin-left: -1px;
       padding: 3px 8px;
     }
   }

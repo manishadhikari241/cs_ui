@@ -198,7 +198,12 @@ export default {
       text-decoration: none;
       display: inline-block;
     }
+
   }
+    .pageinfo-title {
+        font-weight: 700;
+        font-size: 48.2px;
+    }
 }
 .page.request-list {
   .list {
@@ -299,5 +304,24 @@ export default {
       }
     }
   }
+}
+
+@media screen and (max-width: 768px) {
+    .component.pageinfo {
+
+        .pageinfo-title {
+            font-size: 30px;
+            // white-space: break-spaces;
+        }
+
+        .pageinfo-description-exclusive {
+            font-size: 16px;
+            max-width: 100%;
+            @media screen and (max-width: 768px) {
+                width: 100% !important;
+            }
+        }
+    }
+
 }
 </style>

@@ -52,10 +52,15 @@
                             <b-col md="2">{{ $t('reference_file') }}</b-col>
                             <b-col md="9">
                                 <b-form-file ref="file" @change="generatePreview"
+                                             class="ref_file"
                                              :browse-text="$t('browse')"
                                              :state="Boolean(request.preview)"
                                              :placeholder="$t('upload_or_drop_design')"
                                              drop-placeholder="Drop file here..." required></b-form-file>
+                                <small class="d-block d-md-none">{{
+                                    $t("upload_or_drop_design")
+                                    }}
+                                </small>
                             </b-col>
                         </b-row>
                         <b-row v-if="file.length>0">
@@ -531,6 +536,11 @@
 
     .page.create-request {
         .designRequestForm {
+            @media screen and (max-width: 500px) {
+                .ref_file label span {
+                    color: transparent;
+                }
+            }
             ::placeholder {
                 font-size: 16px;
 
@@ -606,6 +616,11 @@
                     border: none;
                     border: 1px solid #363636;
                     height: 38px;
+                    @media screen and (max-width: 500px) {
+                        width: 220px;
+                        margin-left: 0px;
+
+                    }
 
                     a {
                         color: inherit;

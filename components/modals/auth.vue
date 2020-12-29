@@ -353,7 +353,7 @@
                     this.$route.query.email
                 ) {
                     this.setAuthModalMode(4);
-                    // this.$bvModal.show("modal-auth");
+                    this.$bvModal.show("modal-auth");
                     this.resetInfo.email = this.$route.query.email;
                     this.resetInfo.token = this.$route.query.token;
                 } else if (this.$route.query.SH && this.$route.query.SH != 1) {

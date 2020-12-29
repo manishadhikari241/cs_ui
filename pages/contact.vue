@@ -4,7 +4,7 @@
     <br><br>
     <b-container  v-if="!loading">
       <b-row>
-        <b-col lg="6" class="icons-col">
+        <b-col lg="12" class="icons-col">
           <b-container>
             <b-row>
               <b-col>
@@ -50,9 +50,9 @@
             </b-row>
           </b-container>
         </b-col>
-        <b-col lg="6" class="support-col">
-            <img :src="`${imgBaseURL}/storage/${item.email.image}`">
-        </b-col>
+        <!--<b-col lg="6" class="support-col">-->
+            <!--<img :src="`${imgBaseURL}/storage/${item.email.image}`">-->
+        <!--</b-col>-->
       </b-row>
     </b-container>
   </div>

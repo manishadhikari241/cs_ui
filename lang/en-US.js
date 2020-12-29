@@ -400,6 +400,8 @@ export default {
     confirm_to_download: 'Do you confirm to download this design? ',
 
     order_exclusive_request: 'Order your Exclusive Design',
+    complete_this_form_exclusive: 'Complete this form to send us details for the design you want us to develop.',
+
     complete_this_form: 'Complete this form to send us details for the design you want us to develop.',
     the_design_we_create: 'The design we create will be an interpretation of your briefing and will be made exclusively for you.',
     you_will_have_full_copyright: 'You will have the full copyright of the created design and you will be provided with an Exclusive Ownership Certificate.',

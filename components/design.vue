@@ -257,6 +257,9 @@ export default {
       margin-bottom: 30px;
 
       .large-text {
+        @media screen and (max-width: 768px) {
+          font-size: 16.5px;
+        }
         margin: 0;
         padding: 0;
         font-size: 20px;
@@ -324,7 +327,13 @@ export default {
           }
 
           .choice-details {
+            @media screen and (max-width: 768px) {
+              font-size: 14px;
+            }
             .title {
+              @media screen and (max-width: 768px) {
+                font-size: 14px;
+              }
               margin: 0;
               padding: 0;
               font-size: 20px;
@@ -332,6 +341,9 @@ export default {
             }
 
             .detail {
+              @media screen and (max-width: 768px) {
+                font-size: 14px;
+              }
               margin: 5px 0 0 0;
               padding: 0;
               font-size: 18px;
@@ -340,7 +352,13 @@ export default {
         }
 
         .action-buttons {
-          // white-space: nowrap;
+
+          @media screen and (min-width: 1024px) {
+            width: 316px;
+            display: flex;
+          }
+
+            // white-space: nowrap;
 
           .btn-download {
             width: 180px;
@@ -350,7 +368,7 @@ export default {
             border-radius: 30px;
             background: $brand;
             color: #fff;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
             padding: 10px 0;
             text-transform: uppercase;
@@ -360,16 +378,22 @@ export default {
             &:active {
               box-shadow: none;
             }
-          }
+            @media screen and (max-width: 768px) {
+              font-size: 14px;
+            }
+            }
 
           .btn-add-to-list {
+            @media screen and (max-width: 768px) {
+              font-size: 14px;
+            }
             width: 180px;
 
             border: 1px solid $black;
             border-radius: 30px;
             background: #fff;
             color: $black;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
             padding: 8px 0;
             text-transform: uppercase;
@@ -382,10 +406,14 @@ export default {
         }
 
         .related-tags {
-          padding-top: 7px;
+          /*padding-top: 7px;*/
           max-width: 400px;
 
           a {
+            @media screen and (max-width: 768px) {
+              font-size: 14px;
+              padding-left: 10px;
+            }
             font-size: 16px;
             color: $black;
             text-transform: capitalize;

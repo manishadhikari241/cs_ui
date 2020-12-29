@@ -130,6 +130,9 @@ export default {
       }
 
       a {
+        @media screen and (max-width: 768px) {
+          font-size: 14px;
+        }
         margin-top: 30px;
         display: inline-block;
         padding: 10px 40px;
@@ -137,7 +140,7 @@ export default {
         border-radius: 30px;
         text-transform: uppercase;
         color: #000;
-        font-size: 18px;
+        font-size: 16px;
         font-weight: 700;
         text-decoration: none;
       }
@@ -145,6 +148,8 @@ export default {
 
     img {
       max-width: 90%;
+      @media screen and (max-width: 768px) {
+max-width: 100%      }
     }
   }
 }
@@ -163,11 +168,11 @@ export default {
         padding-top: 30px;
 
         h1 {
-          font-size: 30px;
+          font-size: 20px;
         }
 
         p {
-          font-size: 18px;
+          font-size: 16.5px;
         }
 
         a {
@@ -182,5 +187,10 @@ export default {
   font-size: 4.8rem;
   font-weight: 700;
   margin-right: 28px;
+
+  @media screen and (max-width: 768px) {
+    font-size: 50px;
+  }
+
 }
 </style>

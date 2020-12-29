@@ -155,7 +155,7 @@
             </thead>
             <tbody role="rowgroup">
               <tr role="row">
-                <td aria-colindex="1" role="cell">
+                <td style="width: 10px;" aria-colindex="1" role="cell">
                   <span>{{ $t("editorial") }}</span>
                 </td>
                 <td aria-colindex="2" role="cell" class="text-center">
@@ -394,12 +394,19 @@ export default {
       .icon {
         font-size: 40px;
         vertical-align: middle;
+        @media screen and (max-width: 768px) {
+          font-size: 27px;
+        }
+
       }
 
       .text {
         margin-left: 20px;
         font-size: 20px;
         color: #666;
+        @media screen and (max-width: 768px) {
+          font-size: 16px;
+        }
       }
     }
   }
@@ -410,7 +417,7 @@ export default {
       padding: 10px 25px;
       background-color: $black;
       color: #fff;
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 700;
       text-decoration: none;
       border-radius: 30px;
@@ -426,14 +433,20 @@ export default {
       &:active {
         box-shadow: none;
       }
+      @media screen and (max-width: 768px) {
+        font-size: 14px;
+      }
     }
   }
 
   .price-info {
     .description {
-      font-size: 20px;
+      font-size: 18px;
       color: $black;
       text-align: justify;
+      @media screen and (max-width: 768px) {
+        font-size: 16px;
+      }
     }
 
     .plan {
@@ -472,6 +485,10 @@ export default {
           font-size: 16px;
           outline: none;
           box-shadow: none;
+          @media screen and (max-width: 768px) {
+            font-size: 14px;
+
+          }
 
           &.active {
             background-color: $black;
@@ -510,13 +527,21 @@ export default {
           background: $brand;
           color: #fff;
           padding: 10px;
-          width: 200px;
+          width: 150px;
           font-weight: 700;
           outline: none;
           box-shadow: none;
           border-radius: 30px;
-          font-size: 18px;
+          font-size: 16px;
+
+          @media screen and (max-width: 768px) {
+            font-size: 14px;
+            width: 135px;
+
+
+          }
         }
+
       }
     }
   }
@@ -534,6 +559,12 @@ export default {
 
       th {
         font-size: 18px;
+        @media screen and (max-width: 768px) {
+          font-size: 16px;
+        }
+        @media screen and (max-width: 500px) {
+          font-size: 12px;
+        }
       }
 
       td {
@@ -541,6 +572,12 @@ export default {
           font-size: 18px;
           font-weight: 600;
           white-space: nowrap;
+          @media screen and (max-width: 768px) {
+            font-size: 16px;
+          }
+          @media screen and (max-width: 500px) {
+            font-size: 12px;
+          }
         }
 
         .check {

@@ -117,7 +117,7 @@ export default {
 
             update(e) {
                 this.loading = true;
-                this.$axios.$patch(`/posts/${this.itemId}`, {
+                this.$axios.$patch(`cms/posts/${this.itemId}`, {
                     titleEN: e.target.elements.titleEN.value,
                     titleCH: e.target.elements.titleCH.value,
                     descriptionEN: this.item.translations[0].description,
