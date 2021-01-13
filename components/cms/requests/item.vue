@@ -73,7 +73,7 @@
         <div class="info-row">
           <div class="prop">File</div>
           <div class="value">
-            <img v-if="item.files.length" style="height: 200px;" :src="`${cloudfrontURL}/uploads/user/lib-request/${item.files[0].name}`">
+            <img v-if="item.files.length" style="height: 200px;" :src="`/cloudfront/uploads/user/lib-request/${item.files[0].name}`">
           </div>
         </div>
         <div class="info-row" v-if="item.status != 2">
@@ -103,7 +103,7 @@
             </div>
             <div v-else>
               <nuxt-link :to="`/cms/collections?id=${item.collections[0].id}`">
-                <img v-if="item.collections.length && item.collections[0].moodboards.length" style="height: 200px;" :src="`${cloudfrontURL}/uploads/lib/feed/moodboard${item.collections[0].moodboards[0].moodboard}`">
+                <img v-if="item.collections.length && item.collections[0].moodboards.length" style="height: 200px;" :src="`/cloudfront/uploads/lib/feed/moodboard${item.collections[0].moodboards[0].moodboard}`">
               </nuxt-link>
             </div>
           </div>
@@ -120,7 +120,6 @@ export default {
     return {
       item: null,
       loading: false,
-      cloudfrontURL: process.env.NUXT_ENV_CLOUDFRONT,
       reject: {
         message: ''
       },

@@ -1,7 +1,7 @@
 <template>
   <div class="page lists">
     <PageInfo :slug="'lists'" :button="$t('create_new_list')" :buttonId="'create-list-btn'" />
-    <br>
+    <br class="list-break">
     <b-table :items="init.lists" :fields="fields" :responsive="'md'" striped hover :busy="init.lists === undefined" @row-clicked="onRowClick" show-empty>
       <template v-slot:table-busy>
         <div class="text-center">
@@ -14,7 +14,7 @@
 
       <template v-slot:cell(name)="data">
         <div :class="`list-preview${data.item.products.length >= 3 ? ' pieces-3' : (data.item.products.length >= 2 ? ' pieces-2' : ' pieces-1')}`">
-          <img v-for="design in getRandomDesigns(data.item)" :key="design.id" :src="`${serverURL}/api/v1/image/thumbnail/design/${design.code}/tiny`">
+          <img v-for="design in getRandomDesigns(data.item)" :key="design.id" :src="`/api/v1/image/thumbnail/design/${design.code}/tiny`">
         </div>
         <span class="md-hide">{{ data.item.name }}</span>
       </template>
@@ -32,7 +32,8 @@
       <template v-slot:cell(actions)="data">
         <nuxt-link :to="localePath(`/lists/${data.item.id}`)" class="btn-view">{{ $t('view') }}</nuxt-link>
         <b-button class="btn-delete" @click="confirmDelete(data.item.id)">
-          <b-icon-x v-show="!deleting"></b-icon-x>
+          <!-- <b-icon-x v-show="!deleting"></b-icon-x> -->
+          <i class="fas fa fa-times"></i>
           <b-spinner small type="grow" v-show="deleting && selectedList == data.item.id"></b-spinner>
         </b-button>
       </template>
@@ -97,7 +98,6 @@ export default {
   },
   data() {
     return {
-      serverURL: process.env.NUXT_ENV_SERVER,
       fields: [
         {
           key: "name",
@@ -145,11 +145,14 @@ export default {
       this.selectList(id);
       this.$bvModal
         .msgBoxConfirm(this.$t("are_you_sure"), {
+          title: "a",
+          hideHeaderClose: false,
           centered: true,
+          headerClass: "confirm-box-header-confirm",
           bodyClass: "confirm-box-body-confirm",
           footerClass: "confirm-box-footer-confirm",
-          okTitle: this.$t('btn_yes'),
-          cancelTitle: this.$t('btn_no')
+          okTitle: this.$t("btn_yes"),
+          cancelTitle: this.$t("btn_no")
         })
         .then(value => {
           if (value) this.deleteList();
@@ -186,10 +189,18 @@ export default {
 </script>
 
 <style lang="scss">
+.list-break {
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
+}
 .page.lists {
   tr {
     cursor: pointer;
     outline: none;
+    @media screen and (max-width: 768px) {
+      font-size: 14px;
+    }
   }
 
   .list-preview {
@@ -268,18 +279,16 @@ export default {
     text-decoration: none;
     @media screen and (max-width: 768px) {
       font-size: 14px;
-
     }
   }
 
   .btn-delete {
     @media screen and (max-width: 768px) {
       font-size: 14px;
-
     }
     width: 30px;
     height: 30px;
-    line-height: 30px;
+    // line-height: 30px;
     color: #fff;
     background-color: $black;
     border-radius: 50%;

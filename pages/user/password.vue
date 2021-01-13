@@ -9,7 +9,7 @@
                     <div class="content">
                         <div class="password-container">
                             <div class="title">{{ $t('password') }}</div>
-                            <br>
+                            <br class="password">
                             <form @submit.prevent="updatePassword">
                                 <div class="info-row">
                                     <div class="prop">{{ $t('old_password') }}</div>
@@ -88,12 +88,19 @@
 </script>
 
 <style lang="scss">
+    .password{
+        @media screen and (max-width: 768px) {
+            display: none;        }
+    }
     .page.user {
         .password-container {
             .title {
                 font-size: 25px;
                 font-weight: 700;
                 color: $black;
+                @media screen and (max-width: 550px) {
+                    margin-top: -20px;
+                }
             }
 
             .info-row {
@@ -108,6 +115,9 @@
                     width: 200px;
                     font-size: 16px;
                     font-weight: 600;
+                    @media screen and (max-width: 768px) {
+                        font-size: 14px;
+                    }
                 }
 
                 .value {
@@ -119,6 +129,7 @@
                             width: 300px;
                         }
                         @media screen and (max-width: 500px) {
+                            font-size: 12px;
                             width: 100%;
                         }
                         &.success {

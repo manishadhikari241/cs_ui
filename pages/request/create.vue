@@ -268,7 +268,7 @@
                                             type="submit"
                                             :disabled="submitting"
                                     >
-                                        {{ $t("send_application") }}
+                                        {{ $t("send_request") }}
                                     </button>
                                     <button class="back" :disabled="submitting">
                                         <nuxt-link :to="localePath('/request')">{{
@@ -506,7 +506,7 @@
             color: #bbb;
             font-size: 20px;
             @media screen and (max-width: 1024px) {
-                font-size: 16px;
+                font-size: 15px;
             }
 
             a {

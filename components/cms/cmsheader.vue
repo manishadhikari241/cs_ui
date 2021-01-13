@@ -31,6 +31,7 @@
               <li class="nav-item"><nuxt-link class="nav-link" to="/cms/maskRequests"><i class="fas fa-tshirt"></i>&nbsp;Mask Requests</nuxt-link></li>
             </b-nav-item-dropdown>
             <li class="nav-item"><nuxt-link class="nav-link" to="/cms/extra"><i class="fas fa-rss"></i>&nbsp;Extra</nuxt-link></li>
+            <li class="nav-item"><nuxt-link class="nav-link" to="/cms/sales"><i class="fas fa-file"></i>&nbsp;Sales</nuxt-link></li>
           </b-navbar-nav>
 
           <b-navbar-nav v-else>
@@ -43,7 +44,7 @@
             <li class="nav-item"><nuxt-link class="nav-link nuxt-link-active" to="/"><i class="fas fa-play-circle"></i>&nbsp;Website</nuxt-link></li>
             <li class="nav-item">
               <a class="nav-link nuxt-link-active" href="#" @click="$bvModal.show('modal-settings');">
-                <img style="height: 20px;" :src="`${cloudfrontURL}/uploads/user/${$auth.user.avatar}`" v-if="$auth.user.avatar">
+                <img style="height: 20px;" :src="`/cloudfront/uploads/user/${$auth.user.avatar}`" v-if="$auth.user.avatar">
                 <i class="fas fa-user" v-else></i>
                 &nbsp;
                 {{ $auth.user.first_name }}
@@ -68,7 +69,7 @@ export default {
   },
   data() {
     return {
-      cloudfrontURL: process.env.NUXT_ENV_CLOUDFRONT,
+      
     }
   }
 }

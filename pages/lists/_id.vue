@@ -38,7 +38,6 @@
                     </b-button> -->
                     <b-button size="sm" @click="print" class="btn-print ignorePrint">
                         {{ $t('print') }} <img src="~/assets/icons/print_black.png" style="height:auto; width:20px"/>
-
                     </b-button>
                 </div>
             </b-container>
@@ -85,8 +84,11 @@
                                 </template>
                                 <b-input type="text" name="name" :placeholder="$t('recipient_name')" required/>
                                 <b-textarea :placeholder="$t('message')" name="message"/>
-                                <button class="btn-send" type="submit" :disabled="sharing">{{ $t('send') }}</button>
-                                <button class="btn-cancel" @click="cancelForm">{{ $t('cancel') }}</button>
+                                <div class="button d-flex">
+                                    <button class="btn-send" type="submit" :disabled="sharing">{{ $t('send') }}</button>
+                                    <button class="btn-cancel" @click="cancelForm">{{ $t('cancel') }}</button>
+                                </div>
+
                             </form>
                         </div>
                     </div>
@@ -95,13 +97,14 @@
 
             <b-container class="designs">
                 <div v-if="mode == 'grid'">
+                    
                     <DesignList ref="designList" :designs="list.products"/>
                 </div>
 
                 <!-- <div v-if="mode == 'table'">
                   <b-table :items="list.products" :fields="fields" :responsive="'md'" striped>
                     <template v-slot:cell(design)="data">
-                      <img class="design-preview" :src="`${serverURL}/api/v1/image/thumbnail/design/${data.item.code}/tiny`">
+                      <img class="design-preview" :src="`/api/v1/image/thumbnail/design/${data.item.code}/tiny`">
                     </template>
                     <template v-slot:cell(download)="data">
                       <b-button class="btn-download">
@@ -187,7 +190,6 @@
         },
         data() {
             return {
-                serverURL: process.env.NUXT_ENV_SERVER,
                 list: null,
                 editTitleMode: false,
                 loading: false,
@@ -396,7 +398,6 @@
             this.$nextTick(function () {
                 if (this.init.lists) this.getList();
             });
-            console.log(this.$route);
         }
     };
 </script>
@@ -451,6 +452,12 @@
         }
 
         .list-header {
+
+            h3{
+                @media screen and (max-width: 768px) {
+                    font-size: 16px;
+                }
+            }
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -512,6 +519,9 @@
                     align-items: center;
                     justify-content: space-between;
                     cursor: pointer;
+                    @media screen and (max-width: 768px) {
+                        font-size: 16px;
+                    }
                 }
 
                 .share-body {
@@ -523,6 +533,9 @@
                         border: 1px solid #ddd;
                         border-radius: 5px;
                         font-size: 14px;
+                        @media screen and (max-width: 768px) {
+                            font-size: 12px;
+                        }
                         p {
                             overflow-wrap: anywhere;
                         }
@@ -554,11 +567,17 @@
                             width: 100%;
                             max-width: 400px;
                             margin-bottom: 10px;
+                            @media screen and (max-width: 768px) {
+                                font-size: 12px;
+                            }
                         }
 
                         textarea {
                             margin-bottom: 10px;
                             height: 100px;
+                            @media screen and (max-width: 768px) {
+                                font-size: 12px;
+                            }
                         }
 
                         .addShareRecipient {
@@ -572,6 +591,9 @@
                             top: -5px;
                             outline: none;
                             box-shadow: none;
+                            @media screen and (max-width: 768px) {
+                                font-size: 12px;
+                            }
                         }
                     }
                 }

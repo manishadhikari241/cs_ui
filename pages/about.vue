@@ -13,8 +13,8 @@
             <p class="light-description">{{ $t('our_in_house_creative_team') }}</p>
             <br>
             <div class="team-members">
-                <div v-for="team in pageInfo.team" class="team-member">
-                    <img class="avatar" :src="`${cloudfrontURL}/uploads/user/${team.avatar}`"/>
+                <div v-for="(team, index) in pageInfo.team" :key="`team_${index}`" class="team-member">
+                    <img class="avatar" :src="`/cloudfront/uploads/user/${team.avatar}`"/>
                     <div class="name">{{team.username.substring(0,10)+""}}</div>
                 </div>
 
@@ -30,9 +30,7 @@
             <p class="light-description">{{ $t('we_serve_more_then') }}</p>
             <br>
             <div class="clients">
-                <img v-for="client in pageInfo.clients.original" :src="client.image">
-
-
+                <img v-for="(client, index) in pageInfo.clients.original" :key="`client_${index}`" :src="client.image">
             </div>
 
             <br><br>
@@ -67,13 +65,11 @@
         data() {
             return {
                 pageInfo: null,
-                cloudfrontURL: process.env.NUXT_ENV_CLOUDFRONT
             };
         },
         methods: {
             load() {
                 this.$axios.$get(`/pages/about`).then(res => {
-                    console.log(res);
                     this.pageInfo = res;
                 });
             }
@@ -97,7 +93,14 @@
 
         .light-description {
             font-size: 20px;
-            color: #999;
+            color: #313131;
+
+            span{
+                @media screen and (max-width: 768px) {
+                    font-size: 16px;
+                }
+            }
+
         }
 
         .description {
@@ -153,8 +156,7 @@
 
             .light-description {
                 font-size: 16px;
-                color: #999;
-
+               color: #313131;
             }
 
             .description {

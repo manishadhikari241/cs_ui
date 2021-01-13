@@ -6,31 +6,37 @@
     <div v-if="list">
       <b-container class="list-header">
         <h3>{{ list.name }} ({{ length }})</h3>
-        <!-- <div class="actions">
-          <b-button :class="{'active': mode === 'grid'}" @click="changeMode('grid')">
-            <b-icon-grid-fill></b-icon-grid-fill>
+        <div class="actions">
+          <b-button size="sm" @click="saveList.visible = true" class="btn-save ignorePrint" v-if="!saveList.visible">
+            {{ $t('save_to_my_list') }} <i class="far fa-copy"></i>
           </b-button>
-          <b-button :class="{'active': mode === 'table'}" @click="changeMode('table')">
-            <b-icon-list-task></b-icon-list-task>
+          <div v-else>
+            <form @submit.prevent="copyList">
+              <div class="saveListForm">
+                <!-- <label>{{ $t('name_a_new_list') }}</label> -->
+                <b-input-group class="mt-3">
+                  <b-form-input required :placeholder="$t('name_a_new_list')" v-model="saveList.name"></b-form-input>
+                  <b-input-group-append>
+                    <b-button class="btn-submit" type="submit" :disabled="saveList.loading">{{$t('submit')}}</b-button>
+                    <!-- <b-button class="btn-cancel" type="button" @click="saveList.visible = false" :disabled="saveList.loading">Cancel</b-button> -->
+                  </b-input-group-append>
+                </b-input-group>
+              </div>
+            </form>
+          </div>
+
+          <b-button size="sm" @click="print" class="btn-print ignorePrint"  v-if="!saveList.visible">
+            {{ $t('print') }} <img src="~/assets/icons/print_black.png" style="height:auto; width:20px"/>
           </b-button>
-        </div> -->
+        </div>
       </b-container>
 
       <hr>
 
       <b-container class="designs">
-        <div v-if="mode == 'grid'">
+        <div>
           <DesignList :designs="list.products"/>
         </div>
-
-        <!-- <div v-if="mode == 'table'">
-          <b-table :items="list.products" :fields="fields" :responsive="'md'" striped>
-            <template v-slot:cell(design)="data">
-              <img class="design-preview"
-                   :src="`https://dev.collectionstock.com/api/v1/image/thumbnail/design/${data.item.code}/tiny`">
-            </template>
-          </b-table>
-        </div> -->
       </b-container>
     </div>
   </div>
@@ -88,8 +94,7 @@ export default {
   data () {
     return {
       list: null,
-      length:'',
-      mode: 'grid',
+      length: '',
       fields: [
         {
           key: 'design',
@@ -103,22 +108,46 @@ export default {
           key: 'designer_id',
           label: 'CREATOR'
         }
-      ]
+      ],
+      saveList: {
+        visible: false,
+        name: '',
+        loading: false
+      }
     }
   },
   methods: {
     load () {
       this.$axios.$get(`/list/view/${this.$route.params.id}?scope[]=products.designer.profile&scope[]=user`)
         .then((response) => {
-          console.log(response)
-      
           this.list = response;
-          this.length= response.products.length;
+          this.length = response.products.length;
+          // this.saveList.name = this.list.name;
         })
     },
 
-    changeMode (mode) {
-      this.mode = mode
+    print() {
+      if (process.client) {
+          window.print();
+      }
+    },
+
+    copyList() {
+      this.saveList.loading = true;
+      this.$axios.$post(`/list/${this.list.id}/copy`, { name: this.saveList.name })
+        .then((response) => {
+          this.saveList.loading = false;
+          this.$toast.success(this.$t('new_list_saved'));
+          this.$store.commit('app/addList', response);
+          this.$router.push(this.localePath(`/lists/${response.id}`));
+        }).catch(error => {
+          this.saveList.loading = false;
+          if (error.response.data.error.code==4003) {
+this.$toast.error('required');
+          }
+          else this.$toast.error(this.$t('list_name_already'));
+
+        });
     }
   },
   mounted () {
@@ -141,19 +170,61 @@ export default {
     justify-content: space-between;
 
     .actions {
-      button {
-        outline: none;
-        box-shadow: none;
-        border: none;
-        background: none;
-        color: $black;
-        padding: 0;
-        font-size: 20px;
-        margin-left: 5px;
-        opacity: 0.5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-        &.active {
+      button {
+        &.btn-print, &.btn-save {
+          outline: none;
+          box-shadow: none;
+          border: none;
+          background: none;
+          color: $black;
+          padding: 0;
+          font-size: 20px;
+          margin-left: 5px;
+          opacity: 0.5;
+          font-size: 16px;
           opacity: 1;
+          border: 1px solid $black;
+          border-radius: 30px;
+          padding: 2px 15px;
+          font-weight: 700;
+          @media screen and (max-width: 768px) {
+              font-size: 14px;
+
+          }
+        }
+      }
+
+      .saveListForm {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        label {
+          font-size: 14px;
+          color: $black;
+          margin-right: 10px;
+          white-space: nowrap;
+          position: relative;
+          bottom: -10px;
+        }
+
+        input {
+          width: 200px;
+          font-size: 16px;
+        }
+
+        .btn-submit {
+          background: $black;
+          color: #fff;
+        }
+
+        .btn-cancel {
+          background: #fff;
+          color: $black;
         }
       }
     }

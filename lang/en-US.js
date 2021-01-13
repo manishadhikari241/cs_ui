@@ -7,10 +7,11 @@ export default {
     search_collections: 'Search Collections',
     search_designs: 'Search Designs',
 
-    log_in: 'Log In',
+    log_in: 'Login',
     join_now: 'Join Now',
     list: 'List',
     downloads: 'Downloads',
+    download: 'download',
     about_us: 'About Us',
     contact: 'Contact',
     legal: 'Legal',
@@ -30,6 +31,7 @@ export default {
     simulator: 'Simulator',
     single_design: 'design',
     exclusive: 'Exclusive',
+    exclusive_nav: 'Tailor-Made',
     request_nav: 'Request',
     extra: 'Extra',
 
@@ -67,6 +69,7 @@ export default {
     return_to_login_page: 'Return to login page',
 
     confirm_password: 'Confirm Password',
+    confirm_new_password: 'Confirm New Password',
     confirm: 'Confirm',
 
     you_have_logged_in_successfully: 'You have logged in successfully',
@@ -146,7 +149,8 @@ export default {
     for_resale_items_can_edit_modify: 'For resale items, can edit & modify',
     ownership_certificate: 'Ownership Certificate',
     tailor_made_on_request: 'Tailor made for you',
-    add_your_own_product_into: 'Add your own product',
+    add_your_own_product_into: 'Add your own product into the simulator',
+    add_your_own_product:'Add your own product',
     simulator_by_request: ' into the simulator',
     about_our_licenses: 'About our Licenses',
     the_type_of_license_deteremines: 'The type of license determines how you can use this design',
@@ -159,7 +163,8 @@ export default {
     multi_user: 'Multi-user',
     resale_items: 'Resale Items',
     tailor_made: 'Tailor Made',
-    copyright_owned: 'Copyright Owned',
+    exclusively: 'Exclusively',
+    copyright_owned: 'Copyright',
     buy: 'BUY',
     design: 'design',
 
@@ -215,7 +220,10 @@ export default {
     to_be_used_within: 'To be used within one year',
     contract_start_date: 'Contract Start Date',
     one_year: '1 year',
+    one_month: '1 month',
+
     payments_are_made_in_usd: '*Payments are made in US Dollars only.',
+    payments_made_in: 'Payments are made in USD',
     no_vat_applies: 'No VAT applies - For EU customers Reverse Charge applies (VAT 0%)',
     on_all_downloads_license_will_apply: 'The Extended License terms will apply to all designs you download and use on Collectionstock.',
 
@@ -232,7 +240,7 @@ export default {
     address_2: 'Address 2',
     city: 'City',
     post_code: 'Post Code',
-    if_your_region: 'If your region doesn’t have any postal code, please enter 000000',
+    if_your_region: 'If you do not have a post code, enter 000000',
     country_region: 'Country/Region',
     vat_number: 'VAT Number',
     default_address: 'Default Address',
@@ -304,15 +312,18 @@ export default {
 
     top_100: 'TOP 100',
     top_100_desc: 'Discover our most popular designs here. This Top 100 is updated daily and ranks the designs that have been downloaded the most.',
+    new: 'New',
 
     design_detail: 'Design Detail',
     learn_more: 'LEARN MORE',
-    license: 'License',
+    license: ' License',
     related: 'Related',
-    download: 'Download',
+    // download: 'Download',
     add_to_list: 'Add to list',
     try_design_on_product: 'Try the design on a product',
-    name_a_new_list: 'Name a new list',
+    name_a_new_list: 'Rename the list',
+    name_a_list: 'Name a new list',
+
     license_determines_usage: 'The type of license determines<br>how you can use this design',
 
     preview: 'PREVIEW',
@@ -349,7 +360,7 @@ export default {
     upload_a_square_image: 'Upload a square image in JPG/PNG format, maximum 5MB.',
 
     we_sent_a_confirmation_link: 'We have sent a confirmation link to your email.',
-    resend_confirmation: 'Resend Confirmation',
+    resend_confirmation: 'Resend Verification',
     email_confirmation_link_sent: 'Email confirmation link sent successfully',
 
     coupon: 'Coupon',
@@ -422,13 +433,57 @@ export default {
 
     request_delete_successfully: 'Request deleted successfully',
     empty_table: 'There are no records to show',
-    save_result:'SAVE RESULT',
-    drag_to_board:'DRAG TO BOARD',
-    reset_board:'RESET BOARD',
-    save_board:'SAVE BOARD',
-    my_board:'My Board'
+    save_result: 'SAVE RESULT',
+    drag_to_board: 'DRAG TO BOARD',
+    reset_board: 'RESET BOARD',
+    save_board: 'SAVE BOARD',
+    my_board: 'My Board',
+
+    product: 'product',
+    products: 'products',
+
+    std: 'Std',
+    exc: 'Exc',
+    ext: 'Ext',
+
+    //invoice
+    exclusive_design_invoice:'Exclusive Design',
+    design_single:'design',
+    for:' for',
+    monthly_membership:'Monthly Membership',
+    month:'month',
+    with_extended_license:'with Extended License',
+    starter_plan_yearly:'Starter Plan Yearly',
+    pro_plan_yearly:'Pro Plan Yearly',
+    'design_invoice':'designs',
+    
+
+    extended_license_terms_will_apply: 'The Extended License terms will apply to all designs you download and use on Collectionstock.',
+    your_monthly_membership:'Your Monthly Membership will be charged automatically every month. To cancel your membership, contact us directly at help@collectionstock.com',
+    your_starter_yearly_membership:'Your Yearly Plan will be renewed automatically for another year at the expiry date. To cancel this renewal, contact us directly at help@collectionstock.com minimum 10 days before the expiry date. Once your Membership is auto renewed, refund will not be accepted.',
 
 
+    save_to_my_list: 'Save to my list',
+    new_list_saved: 'New List successfully saved!',
+    list_name_already:'List name already exists',
 
+    // cert
+    cert_title: 'Exclusive Design Ownership Certificate',
+    cert_design: 'Design',
+    delivery_date: 'Delivery Date',
+    cert_owner: 'The sole and exclusive owner of this design',
 
+    // payment
+    request: 'request',
+    requests: 'requests',
+    design_quantifier: 'design',  // has quantifier in cn
+    designs_quantifier: 'designs', // has quantifier in cn
+
+    all_color:'All Color',
+
+    all_payments_are_to_be:'All payments are to be made in US Dollars only.',
+    all_quota_is_to_be:'All quota is to be used within one year.',
+
+    send_request:'SEND REQUEST',
+    order_design:'ORDER DESIGN',
 }

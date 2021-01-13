@@ -361,7 +361,6 @@
                 this.$axios
                     .$get("/cms/clients")
                     .then(response => {
-                        console.log(response);
                         this.allClients = response;
                     })
                     .catch(error => {

@@ -3,7 +3,7 @@
     <b-button class="closeQDFS" @click="$emit('fullscreen', null)"><b-icon-x-circle-fill></b-icon-x-circle-fill></b-button>
 
     <div class="mainframe">
-      <DesignSlider :id="'designSliderBase'" :designCode="design.code" :mode="'fs'" v-if="mode == 1" />
+      <DesignSlider :designCode="design.code" :mode="'fs'" v-if="mode == 1" />
       <Simulator :design="design" :mode="'fs'" v-if="mode == 2" />
       <b-button class="navigate-qdfs back" @click="$emit('navigate', false)"><b-icon-chevron-left></b-icon-chevron-left></b-button>
       <b-button class="navigate-qdfs forward" @click="$emit('navigate', true)"><b-icon-chevron-right></b-icon-chevron-right></b-button>
@@ -36,7 +36,7 @@ export default {
   width: 100vw;
   height: 100vh;
   background: #fff;
-  z-index: 99999;
+  z-index: 999;
 
   .closeQDFS {
     position: absolute;

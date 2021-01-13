@@ -177,7 +177,6 @@
             }
         },
         mounted() {
-            console.log(this.$route.query);
             this.$nextTick(function () {
                 if (this.$refs.infload) this.resetList();
             });

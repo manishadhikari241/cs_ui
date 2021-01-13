@@ -39,7 +39,7 @@
               </span>
               <div>
                 <h1>{{ block.translations[$i18n.locale].title }}</h1>
-                <!-- <p>{{ block.translations[$i18n.locale].description }}</p> -->
+                 <p v-if="!routeCheck">{{ block.translations[$i18n.locale].description }}</p>
                 <nuxt-link
                   :to="localePath(block.button_url)"
                   v-if="
@@ -102,9 +102,14 @@ export default {
     padding: 0;
 
     .row {
-      margin-bottom: 100px;
+
       align-items: center;
       justify-content: center;
+          margin-bottom: 100px;
+
+      @media screen and (max-width: 768px) {
+        margin-bottom: 80px;
+      }
     }
   }
 
@@ -116,17 +121,21 @@ export default {
       h1 {
         margin: 0;
         padding: 0;
-        font-size: 25px;
+        font-size: 35px;
         font-weight: 700;
         color: #313131;
+        @media screen and (max-width: 768px) {
+font-size: 22px;        }
       }
 
       p {
         margin: 0;
         margin-top: 20px;
         padding: 0;
-        font-size: 18px;
+        font-size: 16px;
         color: #000;
+        @media screen and (max-width: 768px) {
+font-size: 14px        }
       }
 
       a {
@@ -172,7 +181,7 @@ max-width: 100%      }
         }
 
         p {
-          font-size: 16.5px;
+          font-size: 14px;
         }
 
         a {

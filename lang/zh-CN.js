@@ -11,6 +11,8 @@ export default {
     join_now: '现在加入',
     list: '清单',
     downloads: '下载',
+    download: '下载',
+
     about_us: '关于我们',
     contact: '联系',
     legal: '法律',
@@ -28,8 +30,9 @@ export default {
     collections: '系列',
     designs: '设计',
     simulator: '模拟器',
-    single_design: '个设计',
+    single_design: '设计',
     exclusive: '独家性',
+    exclusive_nav: '客制化的',
     request_nav: '请求',
     extra: '其他',
 
@@ -61,7 +64,7 @@ export default {
     coupon_code: '优惠码',
     create_a_password: '建立密码',
     accept_newsletter: '是的，我想订阅Collectionstock资讯和最新报价。',
-    accept_terms: '是的，我接受Collectionstock<a href="/legal/terms-of-use" target="_blank"> 的使用条款</a><a href="/legal/privacy-policy" target="_blank">, 隐私政策 </a> <a href="/legal/users-terms-and-conditions" target="_blank">, 用户条款及细则</a>, 并确认自己是一家应税公司',
+    accept_terms: '是的，我接受Collectionstock<a href="/legal/terms-of-use" target="_blank"> 的使用条款</a><a href="/legal/privacy-policy" target="_blank">, 隐私政策 </a> <a href="/legal/users-terms-and-conditions" target="_blank">, 用户条款及细则</a>, 并确认自己是一家应税公司。',
     already_have_an_account: '已经有帐号了？',
 
     we_can_help_with_reset: '我们可以帮助您重设密码。 输入您的电子邮件地址，然后按照进一步的说明进行操作。',
@@ -69,6 +72,7 @@ export default {
     return_to_login_page: '返回登录页面',
 
     confirm_password: '确认密码',
+    confirm_new_password: '确认新密码',
     confirm: '确认',
 
     you_have_logged_in_successfully: '您已成功登录',
@@ -127,7 +131,7 @@ export default {
     colors: '种颜色',
     infant: '婴儿',
     children: '小朋友',
-    teenagers: '小朋友',
+    teenagers: '青少年',
     adults: '成人',
     seniors: '老年人',
     male: '男',
@@ -149,6 +153,7 @@ export default {
     ownership_certificate: '所有权证',
     tailor_made_on_request: '为您定制设计',
     add_your_own_product_into: '把您自己的产品添加到模拟器中',
+    add_your_own_product: '把您自己的产品',
     simulator_by_request: '添加到模拟器中',
     about_our_licenses: '关于我们的许可证',
     the_type_of_license_deteremines: '许可证的类型决定了如何使用该设计。',
@@ -161,6 +166,7 @@ export default {
     multi_user: '多用户',
     resale_items: '转售项目',
     tailor_made: '客制化',
+    exclusively: '客制化',
     copyright_owned: '拥有版权',
     buy: '购买',
     design: '设计',
@@ -217,7 +223,9 @@ export default {
     contract_start_date: '合同开始日期',
     one_year: '1年',
     payments_are_made_in_usd: '*只能以美元付款。',
-    no_vat_applies: '* 不适用增值税-对于欧盟客户，应收取反向费用（增值税0％）',
+    payments_made_in: '只能以美元付款。',
+
+    no_vat_applies: '不适用增值税-对于欧盟客户，应收取反向费用（增值税0％）',
     on_all_downloads_license_will_apply: '对于您在Collectionstock上下载和使用的所有设计，将适用扩展许可条款。',
 
 
@@ -233,7 +241,7 @@ export default {
     address_2: '地址2',
     city: '城市',
     post_code: '邮编',
-    if_your_region: '如果您所在的地区没有邮政编码，请输入000000',
+    if_your_region: '如果您没有邮政编码，请输入000000',
     country_region: '国家/地区',
     vat_number: '增值税号',
     default_address: '默认地址',
@@ -304,15 +312,18 @@ export default {
 
     top_100: '热门下载',
     top_100_desc: '在这里发现我们最受欢迎的设计。 该热门下载排列每天更新一次，并对下载次数最多的设计进行排名。',
+    new: '新发布',
 
     design_detail: '设计详情',
     learn_more: '更多详情',
     license: '许可证',
     related: '关键字',
-    download: '下载',
+    // download: '下载',
     add_to_list: '添加到清单',
     try_design_on_product: '在产品上模拟设计',
-    name_a_new_list: '命名新清单',
+    name_a_new_list: '清单重新命名',
+    name_a_list: '命名新清单',
+
     license_determines_usage: '许可证的类型决定了如何使用该设计',
 
     preview: '预览',
@@ -429,6 +440,52 @@ export default {
     drag_to_board:'拖动到设计模拟板',
     reset_board:'重设设计模拟板',
     save_board:'下载设计模拟板',
-    my_board:'我的设计模拟板'
+    my_board:'我的设计模拟板',
+
+    product:'产品',
+    products:'个产品',
+
+    std:'标准性',
+    exc:'独家性',
+    ext:'扩展性',
+
+    //invoice
+    exclusive_design_invoice:'独家设计',
+    design_single:'设计',
+    for:'有',
+    monthly_membership: '月度会员计划-每月',
+    month: '美元可享',
+    with_extended_license: '扩展许可证',
+    starter_plan_yearly: 'Starter Plan Yearly',
+    pro_plan_yearly: 'Pro Plan Yearly',
+    'design_invoice': '下载设计',
+
+    extended_license_terms_will_apply: '扩展许可条款将适用于您在 Collectionstock 上下载和使用的所有设计。',
+
+    save_to_my_list: '保存到我的清单',
+    new_list_saved: '新清单已成功保存！',
+    list_name_already: '清单名称已存在',
+
+
+    // cert
+    cert_title: '独家设计所有权证书',
+    cert_design: '设计',
+    delivery_date: '交付日期',
+    cert_owner: '此设计的唯一所有者',
+
+    // payment
+    request: '个请求',
+    requests: '个请求',
+    design_quantifier: '个设计',  // has quantifier in cn
+    designs_quantifier: '个设计', // has quantifier in cn
+
+    all_color:'全部颜色',
+
+    all_payments_are_to_be:'所有款项只能以美元支付。',
+    all_quota_is_to_be:'所有配额将在一年内使用。',
+
+    send_request: '发送请求',
+    order_design: '订购设计',
+
 
 }

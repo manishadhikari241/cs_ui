@@ -21,7 +21,6 @@ export default {
   data() {
     return {
       processing: false,
-      serverURL: process.env.NUXT_ENV_SERVER
     };
   },
   methods: {
@@ -32,54 +31,51 @@ export default {
         var downloadDetails = await this.$axios.$get(
           `/downloads/${this.code}/${this.pkg}`
         );
-        if (!downloadDetails.canDownload) {
-          this.$toast.error("You do not have enough quota");
+        if (downloadDetails.consumesQuota && !downloadDetails.canDownload) {
+          // this.$toast.error("You do not have enough quota");
           this.$bvModal.show("modal-payments");
           this.$store.commit("payments/setPackage", {
             key: this.pkg,
-            index: 0
+            index: 1
           });
         } else {
           var packageName = this.pkg.charAt(0).toUpperCase() + this.pkg.slice(1) == 'Standard' ? this.$t('standard'): this.$t('extended');
-          var message = `${this.$t(
-            "confirm_to_download"
-          )}${packageName}${this.$t("quota_will_be_consumed")}`;
-          if (!downloadDetails.consumesQuota) {
             const h = this.$createElement;
-            const redownloadMsg = h("div", {
-              domProps: {
-                innerHTML: `${this.$t("confirm_re_download")}<br>${this.$t(
-                  "you_can_re_download"
-                )}`
-              }
+            var message = h("div", {
+                domProps: {
+                    innerHTML:  `${this.$t(
+                        "confirm_to_download"
+                    )}<br> ${packageName}${this.$t("quota_will_be_consumed")}`
+                }
             });
-            if (redownloadMsg) {
-              message = redownloadMsg;
-            } else {
-              message = `${this.$t("confirm_re_download")} ${this.$t(
-                "you_can_re_download"
-              )}`;
-            }
+          if (!downloadDetails.consumesQuota) {
+            message = h("div", {
+                  domProps: {
+                      innerHTML:  `${this.$t("confirm_re_download")}<br>${this.$t("you_can_re_download")}`
+                  }
+              });
           }
 
           this.$bvModal
             .msgBoxConfirm(message, {
-              centered: true,
-              bodyClass: "confirm-box-body-confirm",
+                title: 'a',
+                hideHeaderClose: false,
+                centered: true,
+                headerClass:"confirm-box-header-confirm",
+                bodyClass: "confirm-box-body-confirm",
               footerClass: "confirm-box-footer-confirm",
               okTitle: this.$t("btn_yes"),
               cancelTitle: this.$t("btn_no")
             })
             .then(value => {
               if (value) {
-                if (downloadDetails.consumesQuota)
-                  this.$store.commit("app/updateQuota", {
-                    key: this.pkg,
-                    delta: -1
-                  });
-                window.location.href = `${this.serverURL}/api/download/${
-                  this.code
-                }?package=${this.pkg}&token=${downloadDetails.token}`;
+                if (downloadDetails.consumesQuota) {
+                  if (this.$auth.user.is_existing_user && this.pkg == 'extended')
+                    this.$store.commit("app/updatePlanQuota", {delta: -1});
+                  else
+                    this.$store.commit("app/updateQuota", {key: this.pkg, delta: -1});
+                }
+                window.location.href = `/api/download/${this.code}?package=${this.pkg}&token=${downloadDetails.token}`;
               }
             });
         }

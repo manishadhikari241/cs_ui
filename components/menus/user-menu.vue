@@ -40,6 +40,10 @@ export default {
     color: #fff;
     font-size: 16px;
     font-weight: 700;
+    @media screen and (max-width: 768px) {
+      font-size: 14px;
+
+    }
   }
 
   a {
@@ -48,6 +52,10 @@ export default {
     color: #fff;
     font-size: 16px;
     text-decoration: none;
+    @media screen and (max-width: 768px) {
+      font-size: 14px;
+
+    }
 
     &.nuxt-link-active {
       color: $black;

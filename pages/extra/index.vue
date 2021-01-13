@@ -10,10 +10,8 @@
                     class="post cover"
                     :to="localePath(`/extra/${first.id}`)"
             >
-                <img
-                        :src="`${imgBaseURL}/storage/${first.cover}`"
-                        class="w-100 image-container"
-                />
+                <img :src="`${imgBaseURL}/storage/${first.main_cover}`" class="w-100 d-none d-sm-block image-container"/>
+                <img :src="`${imgBaseURL}/storage/${first.cover}`" class="w-100 d-block d-sm-none image-container"/>
                 <!--<div class="image-container" :style="`background-image: url('${imgBaseURL}/storage/${first.cover}')`"></div>-->
                 <div class="title">
                     {{ first.translations[$i18n.locale == "en" ? 0 : 1].title }}
@@ -146,9 +144,12 @@
 
             .title {
                 margin-top: 15px;
-                font-size: 25px;
+                font-size: 20px;
                 color: $black;
                 text-decoration: none;
+                @media screen and (max-width: 768px) {
+                    font-size: 16px;
+                }
             }
 
             &.cover {
@@ -156,13 +157,18 @@
 
                 .image-container {
                     // height: 400px;
-                    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.5);
+                    @media screen and (mi-width: 768px) {
+                        box-shadow: 0 10px 10px rgba(0, 0, 0, 0.5);
+                    }
                 }
 
                 .title {
                     margin-top: 25px;
                     font-size: 30px;
                     font-weight: 600;
+                    @media screen and (max-width: 768px) {
+                        font-size: 16px;
+                    }
                 }
             }
         }

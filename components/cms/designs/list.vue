@@ -40,7 +40,7 @@
         <nuxt-link :to="`/cms/users?id=${data.item.designer_id}`">{{ data.item.designer_id }}</nuxt-link>
       </template>
       <template v-slot:cell(codeImage)="data">
-        <img style="height: 30px;" :src="`${serverURL}/api/v1/image/thumbnail/design/${data.item.code}/tiny`">
+        <img style="height: 30px;" :src="`/api/v1/image/thumbnail/design/${data.item.code}/tiny`">
       </template>
       <template v-slot:cell(licence_type)="data">
         <b-badge variant="success" v-if="data.item.licence_type == 'exclusive' || data.item.buyer_id || data.item.owner_id">Exclusive</b-badge>
@@ -57,7 +57,6 @@
 export default {
   data() {
     return {
-      serverURL: process.env.NUXT_ENV_SERVER,
       items: [],
       perPage: 20,
       currentPage: 1,

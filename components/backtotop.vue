@@ -46,8 +46,8 @@ export default {
   position: fixed;
   bottom: 70px;
   right: 30px;
-  width: 50px;
-  height: 50px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   border: none;
   background-color: #000;
@@ -60,5 +60,8 @@ export default {
   z-index: 9999;
   transition: all 1s;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  padding-top: 5px;
 }
 </style>

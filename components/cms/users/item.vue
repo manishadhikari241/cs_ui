@@ -49,9 +49,9 @@
                   <div class="info-row" style="border-bottom: none;">
                     <div class="prop">Role</div>
                     <div class="value">
-                      <b-badge variant="primary" v-if="item.role_id == 1">Admin</b-badge>
-                      <b-badge variant="info" v-if="item.role_id == 2">Creator</b-badge>
-                      <b-badge variant="warning" v-else>Regular</b-badge>
+                      <b-badge variant="info" v-if="item.role_id == 1">Admin</b-badge>
+                      <b-badge variant="warning" v-else-if="item.role_id == 2">Creator</b-badge>
+                      <b-badge v-else>Regular</b-badge>
 
                       <b-button size="sm" variant="success" v-if="item.role_id == 0" @click="toggleCreatorPrivileges" :disabled="creatorPrivileges.loading">Give creator privileges</b-button>
                       <b-button size="sm" variant="danger" v-if="item.role_id == 2" @click="toggleCreatorPrivileges" :disabled="creatorPrivileges.loading">Remove creator privileges</b-button>
@@ -85,6 +85,7 @@
                             <b-button variant="primary" :disabled="quota.loading || quota.tmpValues.standard <= 0" @click="updateQuota('standard')">Add</b-button>
                           </b-input-group-append>
                         </b-input-group>
+                        <span v-if="quota.item.standard" style="margin-left: 20px;">{{ $moment(quota.item.standard_expiry).format('DD/MM/YYYY') }}</span>
                       </div>
                     </div>
                   </div>
@@ -99,6 +100,7 @@
                             <b-button variant="primary" :disabled="quota.loading || quota.tmpValues.extended <= 0" @click="updateQuota('extended')">Add</b-button>
                           </b-input-group-append>
                         </b-input-group>
+                        <span v-if="quota.item.extended" style="margin-left: 20px;">{{ $moment(quota.item.extended_expiry).format('DD/MM/YYYY') }}</span>
                       </div>
                     </div>
                   </div>
@@ -113,6 +115,7 @@
                             <b-button variant="primary" :disabled="quota.loading || quota.tmpValues.simulator <= 0" @click="updateQuota('simulator')">Add</b-button>
                           </b-input-group-append>
                         </b-input-group>
+                        <span v-if="quota.item.simulator" style="margin-left: 20px;">{{ $moment(quota.item.simulator_expiry).format('DD/MM/YYYY') }}</span>
                       </div>
                     </div>
                   </div>
@@ -127,6 +130,7 @@
                             <b-button variant="primary" :disabled="quota.loading || quota.tmpValues.exclusive <= 0" @click="updateQuota('exclusive')">Add</b-button>
                           </b-input-group-append>
                         </b-input-group>
+                        <span v-if="quota.item.exclusive" style="margin-left: 20px;">{{ $moment(quota.item.exclusive_expiry).format('DD/MM/YYYY') }}</span>
                       </div>
                     </div>
                   </div>
@@ -138,14 +142,21 @@
                 <div class="payments-container" v-show="!payments.invoice">
                   <b-table :items="payments.payments" :fields="payments.fields" striped>
                     <template v-slot:cell(package)="data">
-                      <span class="capitalize">{{ data.item.package }}</span>
+                      <span class="capitalize" v-if="data.item.lib_plan_user">{{ data.item.lib_plan_user.lib_plan.key.replaceAll('_', ' ') }}</span>
+                      <span class="capitalize" v-else>{{ $t(data.item.package) }}</span>
                     </template>
                     <template v-slot:cell(amount)="data">
                       <span v-if="data.item.channel != 'coupon'">{{ data.item.amount }} USD</span>
                       <b-badge variant="primary" v-if="data.item.channel == 'coupon'">Coupon</b-badge>
                     </template>
                     <template v-slot:cell(quantity)="data">
-                      {{ data.item.quantity }} {{ data.item.package == 'standard' || data.item.package == 'extended' ? 'designs' : 'requests' }}
+                      <template v-if="!data.item.lib_plan_user">
+                        {{ data.item.quantity }}
+                        <span>{{ data.item.package == 'standard' || data.item.package == 'extended' ? 'designs' : 'requests' }}</span>
+                      </template>
+                      <template v-else>
+                        {{ data.item.lib_plan_user.lib_plan.quota }} designs
+                      </template>
                     </template>
                     <template v-slot:cell(actions)="data">
                       <b-button @click="showInvoice(data.item)">View</b-button>
@@ -154,64 +165,55 @@
                 </div>
 
                 <div class="invoice-container" v-if="payments.invoice">
-                  <div class="title">
-                    <span>Invoice # {{ payments.invoice.id }}</span>
-                         <b-button class="back ignorePrint" @click="showInvoice(null)"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</b-button>
-                    <b-button size="sm" @click="print" class="btn-print ignorePrint">Print Invoice &nbsp;&nbsp;<i class="fas fa-print"></i></b-button>
+                  <template v-if="!payments.invoice.lib_plan_user">
+                    <CmsInvoice :payment="payments.invoice"/>
+                  </template>
+                  <template v-else>
+                    <div>---INVOICE FOR EXISTING USERS</div>
+                  </template>
+                </div>
+
+
+              </b-card-text>
+            </b-tab>
+            <b-tab title="Member" v-if="item.is_existing_user">
+              <b-card-text>
+                <div class="general">
+                  <div class="info-row">
+                    <div class="prop">Plan</div>
+                    <div class="value" style="text-transform: capitalize;">{{ item.plan.lib_plan.key.replaceAll('_', ' ') }}</div>
                   </div>
-                  <div class="invoice-header">
-                    <div class="logo"><img alt="logo" src="~/assets/logo.svg"></div>
-                    <div class="text">Unit 611, Kinetic Industrial Center, No.7 Wang Kwong Road, Kowloon Bay, Hong Kong</div>
-                    <div class="text">www.collectionstock.com</div>
-                  </div>
-                  <br><hr>
-                  <div class="invoice-details">
-                    <div class="prop">Invoice Date</div>
-                    <div class="value">{{ $moment(payments.invoice.created_at).format('DD/MM/YYYY') }}</div>
+                  <div class="info-row">
+                    {{item.plan}}
                     <div class="prop">Payment Method</div>
-                    <div class="value">
-                      <span v-if="payments.invoice.channel != 'coupon'">Credit Card</span>
-                      <span v-if="payments.invoice.channel == 'coupon'">Coupon</span>
-                    </div>
-                    <div class="prop">{{ $t('billing_details') }}</div>
-                    <div class="value" v-if="payments.invoice.billing_details">{{ payments.invoice.billing_details }}</div>
-                    <div class="prop" v-if="payments.invoice.channel != 'coupon'">Transaction ID</div>
-                    <div class="value" v-if="payments.invoice.channel != 'coupon'">{{ payments.invoice.transaction_id }}</div>
-                    <div class="prop">Package</div>
-                    <div class="value">
-                    <div v-if="payments.invoice.package == 'standard' || payments.invoice.package == 'extended'">
-                      <p><span class="capitalize">{{ $t(payments.invoice.package) }}</span> {{ payments.invoice.package == 'standard' || payments.invoice.package == 'extended' ? 'License' : 'Requests' }} - ${{ payments.invoice.amount }} for {{ payments.invoice.quantity }} {{ payments.invoice.package == 'standard' || payments.invoice.package == 'extended' ? 'designs' : 'requests' }}</p>
-                      <p v-if="payments.invoice.package == 'standard'">{{ $t('jpg_only') }}</p>
-                      <p v-if="payments.invoice.package == 'extended'">{{ $t('jpg_pdf_ai_eps') }}</p>
-                      <p v-if="payments.invoice.package == 'standard'">{{ $t('for_print_advertising_design') }}</p>
-                      <p v-if="payments.invoice.package == 'extended'">{{ $t('for_resale_items_or_reproduction') }}</p>
-                    </div>
-                    <div v-else-if="payments.invoice.package == 'simulator'">
-                      <p>PRODUCT SIMULATOR - ${{ payments.invoice.amount }} for {{ payments.invoice.quantity }} products</p>
-                      <p>Add your own products into the simulator</p>
-                    </div>
-                    <div v-else>
-                      <p>Exclusive Designs - ${{ payments.invoice.amount }} for {{ payments.invoice.quantity }} designs</p>
-                      <p>JPG, PDF, AI, EPS</p>
-                      <p>Ownership Certificate</p>
-                      <p>Tailor-made on request</p>
-                    </div>
-                    <p>{{ $t('to_be_used_within') }}</p>
+                    <div class="value">{{ item.plan.subscription_id ? ' (Auto)' : 'Manual' }}</div>
                   </div>
-                    <div class="prop">Period</div>
-                    <div class="value">1 year : {{ $moment(payments.invoice.created_at).format('DD/MM/YYYY') }} - {{ $moment(payments.invoice.created_at).add('years', 1).format('DD/MM/YYYY') }}</div>
-                    <div class="prop">Contract Start Date</div>
-                    <div class="value">{{ $moment(payments.invoice.created_at).format('DD/MM/YYYY') }}</div>
-                    <div class="prop">Total</div>
-                    <div class="value">US$ {{ payments.invoice.amount }}</div>
-                    <div class="prop">IMPORTANT</div>
+                  <div class="info-row">
+                    <div class="prop">Amount</div>
+                    <div class="value">${{ item.plan.lib_plan.price }}</div>
+                  </div>
+                  <div class="info-row" v-if="item.plan.lib_plan.month_cycle == 12">
+                    <div class="prop">Expiry Date</div>
+                    <div class="value">{{ $moment(item.plan.next_billing_at).format('DD/MM/YYYY') }}</div>
+                  </div>
+                  <div class="info-row" v-if="item.plan.lib_plan.month_cycle == 12 && !item.plan.subscription_id">
+                    <div class="prop">Extend Membership</div>
                     <div class="value">
-                      <p>* Payment are made in USD</p>
-                      <p>* No VAT applies - For EU customers Reverse Charge applies (VAT 0%).</p>
-                      <p>* On all designs you download and use on Collectionstock the Extended License Terms will apply.</p>
+                      <form @submit.prevent="extendMembership">
+                        <b-input-group>
+                          <b-form-input placeholder="Reference number" v-model="members.reference"></b-form-input>
+                          <b-input-group-append>
+                            <b-button variant="outline-success" :disabled="!members.reference.length" type="submit">Renew</b-button>
+                          </b-input-group-append>
+                        </b-input-group>
+                      </form>
                     </div>
-                    <br>
-               
+                  </div>
+                  <div class="info-row">
+                    <div class="prop">Reset Account</div>
+                    <div class="value">
+                      <b-button variant="danger" @click="resetExistingAccount">Reset</b-button>
+                    </div>
                   </div>
                 </div>
               </b-card-text>
@@ -224,8 +226,12 @@
 </template>
 
 <script>
+import CmsInvoice from '~/components/cms/cmsinvoice'
 export default {
   props: ["itemId"],
+  components: {
+    CmsInvoice,
+  },
   data() {
     return {
       item: null,
@@ -271,22 +277,37 @@ export default {
           }
         ],
         invoice: null
+      },
+
+      members: {
+        reference: ''
       }
     };
   },
   methods: {
-    load() {
-      this.$axios.$get(`/cms/users/${this.itemId}`).then(response => {
-        this.item = response;
-      });
-
+    async load() {
       this.$axios.$get(`/cms/users/${this.itemId}/quota`).then(response => {
         this.quota.item = response;
       });
 
+      this.item = await this.$axios.$get(`/cms/users/${this.itemId}`);
+
       this.$axios.$get(`/cms/users/${this.itemId}/payments`).then(response => {
-        this.payments.payments = response;
+        if (this.item.is_existing_user) {
+          this.payments.payments = response.payments.concat(response.planPayments);
+          this.payments.payments.sort(function (a, b) {
+              if (a.created_at < b.created_at)
+                  return 1;
+              else if (a.created_at > b.created_at)
+                  return -1;
+              return 0;
+          });
+        } else {
+          this.payments.payments = response.payments;
+        }
       });
+
+      this.payments.invoice = null;
     },
 
     cancel() {
@@ -348,10 +369,31 @@ export default {
       this.payments.invoice = item;
     },
 
-    print() {
-      if (process.client) {
-        window.print();
-      }
+    async transferToExisting() {
+      let response = await this.$axios.$post(`/cms/users/existing/${this.itemId}/transferToExisting`);
+      window.location.reload();
+    },
+
+    extendMembership() {
+      this.$axios.$post(`/cms/users/existing/${this.itemId}/extend`, { reference: this.members.reference })
+        .then(response => {
+          this.$toast.success("Membership extended successfully");
+          window.location.reload();
+        })
+        .catch(error => {
+          this.$toast.error(error.response.data.error.message);
+        });
+    },
+
+    resetExistingAccount() {
+      this.$axios.$post(`/cms/users/existing/${this.itemId}/reset`)
+        .then(response => {
+          this.$toast.success("Membership reset successfully");
+          window.location.reload();
+        })
+        .catch(error => {
+          this.$toast.error(error.response.data.error.message);
+        });
     }
   },
   watch: {
@@ -419,70 +461,6 @@ export default {
       padding: 5px 20px;
       background-color: #fff;
       font-weight: 700;
-    }
-  }
-
-  .invoice-container {
-    .title {
-      font-size: 25px;
-      font-weight: 700;
-      color: $black;
-    }
-
-    .back {
-      font-size: 14px;
-      color: $black;
-      border: 1px solid $black;
-      border-radius: 30px;
-      padding: 5px 20px;
-      background-color: #fff;
-      font-weight: 700;
-      right: 175px;
-      position: absolute;
-    }
-
-    .btn-print {
-      background: $black;
-    }
-
-    .invoice-header {
-      padding-top: 15px;
-      text-align: center;
-
-      .logo {
-        margin-bottom: 10px;
-
-        img {
-          height: 70px;
-        }
-      }
-
-      .text {
-        color: #4a4a4a;
-        font-size: 14px;
-      }
-    }
-
-    .invoice-details {
-      font-size: 14px;
-
-      .prop {
-        font-weight: 700;
-        padding: 10px;
-      }
-
-      .value {
-        padding: 10px;
-
-        p {
-          margin: 0;
-          padding: 0;
-        }
-
-        .capitalize {
-          text-transform: capitalize;
-        }
-      }
     }
   }
 }

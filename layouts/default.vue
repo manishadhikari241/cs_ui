@@ -4,6 +4,7 @@
       <CSHeader class="ignorePrint" />
       <CSNavigation class="ignorePrint" />
       <BTT class="ignorePrint" />
+      <ListBoard v-if="$auth.loggedIn" v-show="displayListBoard" />
       <nuxt />
     </div>
     <CSFooter />
@@ -19,6 +20,7 @@
 import CSHeader from "~/components/csheader";
 import CSNavigation from "~/components/csnavigation";
 import BTT from "~/components/backtotop";
+import ListBoard from "~/components/listboard";
 import CSFooter from "~/components/csfooter";
 import AuthModal from "~/components/modals/auth";
 import PaymentsModal from "~/components/modals/payments";
@@ -31,22 +33,45 @@ export default {
     CSHeader,
     CSNavigation,
     BTT,
+    ListBoard,
     CSFooter,
     AuthModal,
     PaymentsModal,
     QuotaModal
+  },
+  data() {
+    return {
+      displayListBoard: false
+    };
   },
   methods: {
     init() {
       this.$axios.$get("/app/init").then(response => {
         this.$store.commit("app/setInit", response);
       });
+    },
+
+    checkListBoardDisplay() {
+      var listRoutes = [
+        "lists___en",
+        "lists___ch",
+        "lists-id___en",
+        "lists-id___ch"
+      ];
+      this.displayListBoard = listRoutes.indexOf(this.$route.name) !== -1;
+    }
+  },
+
+  watch: {
+    $route() {
+      this.checkListBoardDisplay();
     }
   },
 
   mounted() {
     this.$nextTick(() => {
       this.init();
+      this.checkListBoardDisplay();
       if (
         this.$auth.loggedIn &&
         (typeof this.$auth.user != "object" ||
@@ -54,6 +79,18 @@ export default {
       ) {
         this.$auth.logout();
       }
+    });
+
+    if (this.$route.query.ERROR) {
+      this.$toast.error(this.$route.query.ERROR);
+    } else if (this.$route.query.AP == 1) {
+      this.$bvModal.show("modal-quota");
+    }
+  },
+
+  created() {
+    this.$nuxt.$on("login", () => {
+      this.init();
     });
   }
 };
@@ -92,6 +129,7 @@ body {
 .page {
   width: 1200px;
   margin: 50px auto 0;
+
 }
 
 @media screen and (max-width: 1220px) {
@@ -100,7 +138,6 @@ body {
     padding: 0 20px;
   }
 }
-
 
 @media screen and (min-width: 1030px) {
   .lg-show {
@@ -123,7 +160,6 @@ body {
   .md-show {
     display: none;
   }
-
 }
 
 @media screen and (max-width: 767px) {
@@ -141,4 +177,5 @@ body {
     display: none !important;
   }
 }
+
 </style>

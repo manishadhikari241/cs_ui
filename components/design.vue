@@ -1,9 +1,9 @@
 <template>
   <div class="component design">
-    <b-container v-if="design">
+    <b-container class="pr-0 pl-0" v-if="design" >
       <b-row>
         <b-col md="5">
-          <DesignSlider :id="'designSliderBase'" :designCode="design.code" />
+          <DesignSlider :designCode="design.code" />
           <br />
         </b-col>
         <b-col md="7">
@@ -29,10 +29,22 @@
                 <div class="large-text">
                   <span>{{ design.design_name }}</span>
                   <nuxt-link
+                    :to="localePath('/designs?keyword=new')"
+                    class="top100"
+                    v-if="isNew()"
+                  >{{ $t("new") }}</nuxt-link
+                  >
+                  <nuxt-link
+                    :to="localePath('/designs?keyword=new')"
+                    class="top100"
+                    v-if="isNew()"
+                  >{{ $t("top_100") }}</nuxt-link
+                  >
+                  <nuxt-link
                     :to="localePath('/designs?keyword=Top%20100')"
                     class="top100"
                     v-if="isTop()"
-                    >{{ $t("top_100") }}</nuxt-link
+                  >{{ $t("top_100") }}</nuxt-link
                   >
                 </div>
               </div>
@@ -63,6 +75,7 @@
                     <p class="detail">
                       {{ $t("all_copyright_belongs_to_you") }}
                     </p>
+                    <p @click="showCert(design)" class="h5 cert"><b-icon-file-earmark-arrow-down></b-icon-file-earmark-arrow-down><u class="ml-2">Ownership Certificate</u></p>
                   </div>
                 </div>
               </div>
@@ -100,9 +113,11 @@
                     ></b-icon-circle-fill>
                   </div>
                   <div class="choice-details">
-                    <p class="title">
-                      {{ $t("extended")
-                      }}{{ init.quota ? ` (${init.quota.extended})` : "" }}
+                    <p class="title" v-if="$auth.loggedIn && $auth.user.is_existing_user">
+                      {{ $t("extended")}}{{ init.quota ? ` (${init.plan_quota})` : "" }}
+                    </p>
+                    <p class="title" v-else>
+                      {{ $t("extended")}}{{ init.quota ? ` (${init.quota.extended})` : "" }}
                     </p>
                     <p class="detail">{{ getSupportedFiles() }}</p>
                     <p class="detail">
@@ -122,20 +137,18 @@
                     :code="design.code"
                     :pkg="'exclusive'"
                     :className="'btn-download'"
-                    class="mb-2"
-                    :text="$t('download')"
+                    :text="this.$i18n.locale == 'en' ? $t('download') : $t('download').slice(-2)"
                     v-if="design.licence_type == 'exclusive'"
                   />
                   <DownloadBTN
                     :code="design.code"
                     :pkg="`${choice == 1 ? 'standard' : 'extended'}`"
                     :className="'btn-download'"
-                    class="mb-2"
-                    :text="$t('download')"
+                    :text="this.$i18n.locale == 'en' ? $t('download') : $t('download').slice(-2)"
                     v-else
                   />
                   <b-button
-                    class="btn-add-to-list mb-2"
+                    class="btn-add-to-list"
                     :id="`design-page-${design.id}-list-btn`"
                     @click="checkList"
                     ><b-icon-check></b-icon-check>&nbsp;&nbsp;{{
@@ -169,6 +182,7 @@
         </b-col>
       </b-row>
     </b-container>
+    <CertificateModal :cert="certInfo"/>
   </div>
 </template>
 
@@ -176,9 +190,10 @@
 import { mapState } from "vuex";
 import DesignSlider from "~/components/designslider";
 import ListsPopover from "~/components/popovers/lists";
-import { BIconCircle, BIconCircleFill, BIconCheck } from "bootstrap-vue";
+import { BIconCircle, BIconCircleFill, BIconCheck, BIconFileEarmarkArrowDown } from "bootstrap-vue";
 import LicensePopover from "~/components/popovers/license";
 import DownloadBTN from "~/components/download";
+import CertificateModal from "~/components/modals/certificate";
 
 export default {
   props: ["design"],
@@ -187,16 +202,19 @@ export default {
     BIconCircle,
     BIconCircleFill,
     BIconCheck,
+    BIconFileEarmarkArrowDown,
     ListsPopover,
     LicensePopover,
-    DownloadBTN
+    DownloadBTN,
+    CertificateModal
   },
   computed: {
     ...mapState("app", ["init"])
   },
   data() {
     return {
-      choice: 1
+      choice: 1,
+      certInfo: {}
     };
   },
   methods: {
@@ -222,6 +240,10 @@ export default {
       });
     },
 
+    isNew() {
+      return this.$moment().subtract(1, 'month') < this.$moment(this.design.published_at)
+    },
+
     isTop() {
       return this.design.pseudo_downloads >= this.init.top100;
     },
@@ -238,6 +260,33 @@ export default {
       return tag.translations[1]
         ? tag.translations[1].name
         : tag.translations[0].name;
+    },
+
+    showCert(design) {
+      const certInfo = {}
+      certInfo.img = `/api/v1/image/thumbnail/design/${design.code}/tiny`
+      certInfo.design = design.design_name
+      certInfo.delivery_date = design.approved_at
+      certInfo.first_name = this.$auth.user.first_name
+      certInfo.last_name = this.$auth.user.last_name
+      certInfo.company = this.$auth.user.company
+      certInfo.email = this.$auth.user.email
+
+      this.$axios.$get('/addresses').then(response => {
+        if (response.length) {
+          response.forEach(address => {
+            if (address.is_default) {
+              certInfo.address1 = address.address1
+              certInfo.address2 = address.address2
+              certInfo.post_code = address.post_code
+              certInfo.city = address.city
+              certInfo.country = address.country
+              this.certInfo = certInfo
+            }
+          })
+        }
+      })
+      this.$bvModal.show("modal-certificate");
     }
   }
 };
@@ -257,8 +306,9 @@ export default {
       margin-bottom: 30px;
 
       .large-text {
-        @media screen and (max-width: 768px) {
+        @media screen and (min-width: 768px) and (max-width: 1439px) {
           font-size: 16.5px;
+          display: flex;
         }
         margin: 0;
         padding: 0;
@@ -275,6 +325,11 @@ export default {
           font-size: 13px;
           font-weight: 600;
           cursor: pointer;
+          @media screen and (max-width: 1023px) {
+            text-align: left;
+            font-size: 9px;
+          }
+
         }
 
         button.small-text {
@@ -290,24 +345,30 @@ export default {
 
       .value {
         .top100 {
-          margin-left: 20px;
+          margin-left: 10px;
           display: inline-block;
           border: 1px solid $black;
           color: $black;
           text-decoration: none;
           font-size: 16px;
           border-radius: 30px;
-          padding: 5px 30px;
+          padding: 5px 20px;
           font-weight: 700;
           transition: all 0.2s;
 
           &:active {
             box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
           }
+
+          @media screen and (max-width: 1023px) {
+            font-size: 10px;
+            padding: 5px 10px;
+            white-space: nowrap;
+          }
         }
 
         .choice {
-          padding-top: 10px;
+          //padding-top: 10px;
           cursor: pointer;
           opacity: 0.5;
           transition: all 0.2s;
@@ -327,11 +388,11 @@ export default {
           }
 
           .choice-details {
-            @media screen and (max-width: 768px) {
+            @media screen and (max-width: 1023px) {
               font-size: 14px;
             }
             .title {
-              @media screen and (max-width: 768px) {
+              @media screen and (max-width: 1023px) {
                 font-size: 14px;
               }
               margin: 0;
@@ -341,7 +402,7 @@ export default {
             }
 
             .detail {
-              @media screen and (max-width: 768px) {
+              @media screen and (max-width: 1023px) {
                 font-size: 14px;
               }
               margin: 5px 0 0 0;
@@ -354,7 +415,7 @@ export default {
         .action-buttons {
 
           @media screen and (min-width: 1024px) {
-            width: 316px;
+            width: 360px;
             display: flex;
           }
 
@@ -378,13 +439,14 @@ export default {
             &:active {
               box-shadow: none;
             }
-            @media screen and (max-width: 768px) {
+            @media screen and (max-width: 1023px) {
               font-size: 14px;
+              margin-bottom: 14px;
             }
             }
 
           .btn-add-to-list {
-            @media screen and (max-width: 768px) {
+            @media screen and (max-width: 1023px) {
               font-size: 14px;
             }
             width: 180px;
@@ -410,7 +472,7 @@ export default {
           max-width: 400px;
 
           a {
-            @media screen and (max-width: 768px) {
+            @media screen and (max-width: 1023px) {
               font-size: 14px;
               padding-left: 10px;
             }
@@ -425,6 +487,16 @@ export default {
             &:hover {
               opacity: 1;
             }
+          }
+        }
+
+        .cert {
+          margin-top: 40px;
+          margin-bottom: 30px;
+          @media screen and (max-width: 1023px) {
+            font-size: 14px;
+            margin-top: 20px;
+            margin-bottom: 15px;
           }
         }
       }
@@ -452,7 +524,7 @@ export default {
 
           .small-text {
             font-weight: 600;
-            font-size: 12px;
+            font-size: 10px;
           }
         }
 

@@ -36,10 +36,10 @@
         <nuxt-link :to="`/cms/users?id=${data.item.user_id}`">{{ data.item.user_id }}</nuxt-link>
       </template>
       <template v-slot:cell(image)="data">
-        <img style="height: 30px;" :src="`${cloudfrontURL}/uploads/good-request/${data.item.image}`">
+        <img style="height: 30px;" :src="`/cloudfront/uploads/good-request/${data.item.image}`">
       </template>
       <template v-slot:cell(approved_image)="data">
-        <img v-if="data.item.good" style="height: 30px;" :src="`${cloudfrontURL}/uploads/good/${data.item.good.image}`">
+        <img v-if="data.item.good" style="height: 30px;" :src="`/cloudfront/uploads/good/${data.item.good.image}`">
       </template>
     </b-table>
   </div>
@@ -49,7 +49,6 @@
 export default {
   data() {
     return {
-      cloudfrontURL: process.env.NUXT_ENV_CLOUDFRONT,
       items: [],
       perPage: 20,
       currentPage: 1,

@@ -14,8 +14,9 @@ export const mutations = {
 }
 
 export const actions = {
-  search({ commit }, { searchDesigns, term, seasonTerm, localePathFunction }) {
+  search({ commit }, { searchDesigns, term, seasonTerm, localePathFunction,color }) {
+    console.log(localePathFunction);
     let section = searchDesigns ? '/designs' : '/collections';
-    this.$router.push({path: localePathFunction(section), query: {keyword: term, season: seasonTerm}});
+    this.$router.push({path: localePathFunction(section), query: {keyword: term, season: seasonTerm, color:color}});
   }
 }

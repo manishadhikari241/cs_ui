@@ -4,7 +4,7 @@
       <button class="btn-modal-quota-close" @click="$bvModal.hide('modal-quota')"><b-icon-x></b-icon-x></button>
       <b-container v-if="init.quota">
         <b-row>
-          <b-col md="5" class="left lg-hide">
+          <b-col sm="12" md="12" lg="12" xl="6" class="left">
             <div class="thanks-message">
               <div class="thanks">
                 <img src="~@/assets/thankyou.png">
@@ -12,19 +12,27 @@
               <div class="message">
                 <p v-html="$t('your_quota_updated_automatically')"></p>
               </div>
-                 <b-button type="button" class="download_button">
-                                <img style="height:34px; width:46px;" src="~/assets/icons/download_white.png" />
+                 <!--<b-button type="button" class="download_button">-->
+                                <!--<img style="height:34px; width:46px;" src="~/assets/icons/download_white.png" />-->
 
-                  {{$t('download_invoice')}}</b-button>
+                  <!--{{$t('download_invoice')}}</b-button>-->
             </div>
           </b-col>
-          <b-col class="right">
+          <b-col class="right lg-hide">
             <div class="updated-quota">
               <div class="title">{{ $t('updated_quota_status') }}</div>
               <div class="packages">
                 <b-row>
                   <b-col sm="6" v-for="(plan, $index) in plans" :key="`updated_quota_package_${$index}`">
-                    <div class="package">
+                    <div class="package" v-if="plan.package == 'extended' && $auth.user.is_existing_user">
+                      <div class="package-title">{{ $t(plan.title) }}</div>
+                      <div class="package-price">{{ init.plan_quota }}</div>
+                      <div class="existing-plan-description">
+                          <p>OUT OF {{ init.plan.lib_plan.quota }}</p>
+                          <p>PER MONTH</p>
+                      </div>
+                    </div>
+                    <div class="package" v-else>
                       <div class="package-title">{{ $t(plan.title) }}</div>
                       <div class="package-price">{{ init.quota[plan.package] }}</div>
                       <div class="package-expiry" v-if="init.quota[plan.package] > 0"><strong>{{ $t('expires') }}</strong>: {{ $moment(init.quota[`${plan.package}_expiry`]).format('DD/MM/YY') }}</div>
@@ -126,6 +134,9 @@ export default {
     .left {
       font-size: 18px;
       border-right: 1px solid #000;
+        @media screen and (max-width: 1024px) {
+border: none;
+  }
 
       .thanks-message {
         height: 100%;
@@ -196,6 +207,17 @@ export default {
             border: none;
             box-shadow: none;
             text-transform: uppercase;
+          }
+
+          .existing-plan-description {
+            font-size: 16px;
+            color: #999;
+            margin-top: 10px;
+
+            p {
+                margin: 0;
+                font-weight: 600;
+            }
           }
         }
       }

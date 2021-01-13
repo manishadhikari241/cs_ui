@@ -9,7 +9,7 @@
                     <div class="content">
                         <div class="profile-container">
                             <div class="title">{{ $t('user_information') }}</div>
-                            <br>
+                            <br class="profile">
                             <form @submit.prevent="updateUser">
                                 <div class="info-row">
                                     <div class="prop">{{ $t('user_id') }}</div>
@@ -86,7 +86,7 @@
                     last_name: this.$auth.user.last_name,
                     country: this.$auth.user.country,
                     mobileCode: '',
-                    mobile: this.$auth.user.mobile.split(' ')[1],
+                    mobile: this.$auth.user.mobile ? this.$auth.user.mobile.split(' ')[1] : '',
                     company: this.$auth.user.company,
                     industry: this.$auth.user.industry,
                     lang_pref: this.$auth.user.lang_pref,
@@ -128,12 +128,20 @@
 </script>
 
 <style lang="scss">
+
+    .profile{
+        @media screen and (max-width: 768px) {
+display: none;        }
+    }
     .page.user {
         .profile-container {
             .title {
                 font-size: 25px;
                 font-weight: 700;
                 color: $black;
+                @media screen and (max-width: 550px) {
+                    margin-top: -20px;
+                }
             }
 
             .info-row {
@@ -148,6 +156,9 @@
                     width: 200px;
                     font-size: 16px;
                     font-weight: 600;
+                    @media screen and (max-width: 768px) {
+                        font-size: 14px;
+                    }
                 }
 
                 .value {
@@ -157,6 +168,7 @@
                         }
                         @media screen and (max-width: 768px) {
                             width: 300px;
+                            font-size: 12px;
                         }
                         @media screen and (max-width: 500px) {
                             width: 100%;
@@ -200,6 +212,9 @@
                 font-weight: 600;
                 text-decoration: none;
                 outline: none;
+                @media screen and (max-width: 768px) {
+                    font-size: 14px;
+                }
             }
         }
     }

@@ -25,9 +25,9 @@
         <div class="info-row">
           <div class="prop">Image</div>
           <div class="value">
-            <img style="height: 200px;" :src="`${cloudfrontURL}/uploads/good-request/${item.image}`">
+            <img style="height: 200px;" :src="`/cloudfront/uploads/good-request/${item.image}`">
             <div>
-              <a :href="`${cloudfrontURL}/uploads/good-request/${item.image}`" target="_blank">
+              <a :href="`/cloudfront/uploads/good-request/${item.image}`" target="_blank">
                 <b-button size="sm" variant="primary">
                   <b-icon-download></b-icon-download>&nbsp;&nbsp;
                   Download
@@ -47,7 +47,7 @@
         <div class="info-row" v-if="getStatus() == 2">
           <div class="prop">Mask</div>
           <div class="value">
-            <img style="height: 200px;" :src="`${cloudfrontURL}/uploads/good/${item.good.image}`">
+            <img style="height: 200px;" :src="`/cloudfront/uploads/good/${item.good.image}`">
           </div>
         </div>
         <div class="info-row" v-if="getStatus() == 8">
@@ -92,7 +92,6 @@ export default {
     return {
       item: null,
       loading: false,
-      cloudfrontURL: process.env.NUXT_ENV_CLOUDFRONT,
       reject: {
         message: ''
       },

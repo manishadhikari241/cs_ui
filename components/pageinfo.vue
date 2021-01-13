@@ -14,7 +14,7 @@
             </b-button>
         </div>
         <div
-                class="d-flex align-items-end align-items-md-center justify-content-between flex-column flex-md-column flex-lg-row description"
+                class="d-flex align-items-start align-items-lg-center justify-content-between flex-column flex-md-column flex-lg-row description"
         >
             <p
                     class="pageinfo-description "
@@ -26,7 +26,7 @@
             <b-button
                     v-if="requestButton && routeCheck"
                     @click="checkAndRedirect(localePath('/request/create'))"
-                    class="border-0 d-inline-block font-weight-bold text-white text-nowrap ml-3 mt-3"
+                    class="border-0 d-inline-block font-weight-bold text-white text-nowrap mt-3"
             >{{ $t("send_a_request_btn") }}
             </b-button
             >
@@ -81,7 +81,6 @@
                             `/requests/collection?user_id=&is_hidden=0&scope[]=files&scope[]=designs&scope[]=group`
                         )
                         .then(response => {
-                            console.log(response);
                             if (
                                 response.data.length == 0 ||
                                 Object.keys(response.data).length == 0
@@ -109,7 +108,6 @@
         },
 
         mounted() {
-            console.log(this.$router.history.current.path);
             this.$nextTick(() => {
                 this.load();
             });
@@ -146,13 +144,17 @@
             padding: 10px 25px;
             background-color: #0e8dde;
 
-            font-size: 18px;
+            font-size: 16px;
 
             border-radius: 30px;
             box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
-            @media screen and (max-width: 426px) {
-                margin-left: auto !important;
-                margin-right: auto;
+            /*@media screen and (max-width: 426px) {*/
+                /*margin-left: auto !important;*/
+                /*margin-right: auto;*/
+            /*}*/
+            @media screen and (max-width: 768px) {
+                font-size: 14px;
+
             }
         }
 
@@ -166,7 +168,7 @@
             width: 65%;
             margin: 0;
             padding: 0;
-            color: #bbb;
+            // color: #bbb;
             font-size: 20px;
             br {
                 display: none;
@@ -208,7 +210,7 @@
             }
 
             .pageinfo-description {
-                font-size: 16px;
+                font-size: 15px;
                 max-width: 100%;
                 @media screen and (max-width: 768px) {
                     width: 100% !important;

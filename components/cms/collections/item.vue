@@ -17,10 +17,6 @@
               <nuxt-link :to="`/cms/users?id=${item.user.id}`">{{ item.user.first_name }} {{ item.user.last_name }}</nuxt-link>
             </div>
           </div>
-          <div class="item-row" v-if="item.publish_at">
-            <div class="prop">Publish At</div>
-            <div class="value">{{ $moment(item.publish_at).format('DD/MM/YYYY') }}</div>
-          </div>
           <div class="item-row">
             <div class="prop">Active</div>
             <div class="value">
@@ -28,6 +24,16 @@
               <b-badge variant="danger" v-if="!item.is_active">Not Active</b-badge>
               <b-button size="sm" variant="danger" v-if="item.is_active" @click="toggleActive">Disable</b-button>
               <b-button size="sm" variant="success" v-if="!item.is_active" @click="toggleActive">Enable</b-button>
+            </div>
+          </div>
+          <div class="item-row" v-if="item.is_active">
+            <div class="prop">Published At</div>
+            <div class="value">{{ $moment(item.published_at).format('MMMM Do, YYYY') }}</div>
+          </div>
+          <div class="item-row" v-else>
+            <div class="prop">Publish At</div>
+            <div class="value">
+              <b-input type="date" name="publish_at" :value="$moment(item.publish_at).format('YYYY-MM-DD')"></b-input>
             </div>
           </div>
           <div class="item-row">
@@ -58,7 +64,7 @@
             <div class="prop">Moodboard (EN)</div>
             <div class="value">
               <div class="moodboard" v-if="item.moodboards[0]">
-                <img :src="`${cloudfrontURL}/uploads/lib/feed/moodboard${item.moodboards[0].moodboard}`">
+                <img :src="`/cloudfront/uploads/lib/feed/moodboard${item.moodboards[0].moodboard}`">
                 <b-button size="sm" variant="danger" @click="deleteMoodboard(item.moodboards[0].id)">delete</b-button>
               </div>
               <br>
@@ -70,7 +76,7 @@
             <div class="prop">Moodboard (CH)</div>
             <div class="value">
               <div class="moodboard" v-if="item.moodboards[1]">
-                <img :src="`${cloudfrontURL}/uploads/lib/feed/moodboard${item.moodboards[1].moodboard}`">
+                <img :src="`/cloudfront/uploads/lib/feed/moodboard${item.moodboards[1].moodboard}`">
                 <b-button size="sm" variant="danger" @click="deleteMoodboard(item.moodboards[1].id)">delete</b-button>
               </div>
               <br>
@@ -83,7 +89,7 @@
             <div class="value">
               <div class="designs-list">
                 <div class="design" v-for="design in item.designs" :key="design.id">
-                  <img :src="`${serverURL}/api/v1/image/thumbnail/design/${design.code}/tiny`">
+                  <img :src="`/api/v1/image/thumbnail/design/${design.code}/tiny`">
                   <b-button size="sm" variant="danger" @click="removeDesign(design.id)">unlink</b-button>
                 </div>
               </div>
@@ -162,8 +168,6 @@ export default {
   },
   data() {
     return {
-      cloudfrontURL: process.env.NUXT_ENV_CLOUDFRONT,
-      serverURL: process.env.NUXT_ENV_SERVER,
       categories: [],
       goods: [],
       seasons: [],
@@ -249,7 +253,8 @@ export default {
         descriptionCH: this.item.translations[1].description,
         categories: selectedCategories,
         goods: selectedGoods,
-        season: selectedSeason
+        season: selectedSeason,
+        publish_at: e.target.elements.publish_at.value
       }).then((response) => {
         this.loading = false;
         this.$toast.success('Collection updated successfully');
@@ -308,7 +313,7 @@ export default {
         }).catch((error) => {
           this.$toast.error(error.response.data.error.message);
         });
-    }
+    },
   },
   watch: {
     itemId() {

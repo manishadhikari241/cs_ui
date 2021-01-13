@@ -1,12 +1,16 @@
 <template>
   <div class="component csfooter">
-    <span>2020 © Collectionstock</span>
+    <span>{{ $moment(init.date).format('YYYY') }} © Collectionstock</span>
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
-  
+  computed: {
+    ...mapState("app", ["init"])
+  }
 }
 </script>
 

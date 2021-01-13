@@ -8,10 +8,10 @@ export default {
   ** Headers of the page
   */
   head: {
-    title: 'CollectionStock | Your Online Design Studio' || process.env.npm_package_name,
+    title: 'Collectionstock | Your Online Design Studio' || process.env.npm_package_name,
     meta: [
       { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1' },
       { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
     ],
     link: [
@@ -44,7 +44,7 @@ export default {
     '~/plugins/vue-braintree',
     '~/plugins/vue-html2canvas.client',
     '~/plugins/vue-wysiwyg',
-
+    '~/plugins/vue-export-csv',
   ],
   /*
   ** Nuxt.js dev-modules
@@ -95,7 +95,7 @@ export default {
     '@nuxtjs/proxy',
     // stripe
     ['nuxt-stripe-module', {
-      publishableKey: 'pk_test_ql3uuVmVSIgxFrWvpjF8mcTc',
+      publishableKey: 'pk_test_51I7SCXB57doRnvtAc60yems9UKaWkw5yDOx3yQqZHAkP376GABJT19OuFzieLrMmhQWVm8wS8KKhdYP7muoBPU3o0018kiy6Vz',
     }],
   ],
 
@@ -107,6 +107,12 @@ export default {
       target: 'https://d3b50kx4ys1jup.cloudfront.net',
       pathRewrite: {
         '^/cloudfront' : '/'
+      }
+    },
+    '/api': {
+      target: 'http://localhost:8000',
+      pathRewrite: {
+        '^/api' : '/api/'
       }
     }
   },
@@ -123,6 +129,7 @@ export default {
   ** Build configuration
   */
   build: {
+    standalone: true,
     /*
     ** You can extend webpack config here
     */

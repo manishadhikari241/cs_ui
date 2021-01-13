@@ -1,30 +1,13 @@
 <template>
     <div class="page simulator">
         <PageInfo :slug="'simulator'"/>
-        <span class="mb-2 d-block"></span>
-        <Simulator ref="simulator" :designURL="url" @loaded="simulatorLoaded"/>
+        <div class="spacing"></div>
+        <Simulator ref="simulator" :mode="'simulator'" @loaded="simulatorLoaded" @dragtoboard="dragToBoard" />
         <div v-show="isSimulatorLoaded">
-            <div class="simulator-footer">
-                <br><br>
-                <b-row>
-                    <b-col md="7" class="upload-download-col">
-                        <input id="simulatorFileUploader" type="file" @change="onUploadChange">
-                        <button @click="revokeFileUploader" class="btn-upload-design">
-                            <b-icon-upload></b-icon-upload>&nbsp;&nbsp;{{ $t('upload_design') }}
-                        </button>
-                        <button @click="saveResult" class="btn-save-result" :disabled="!uploadedFile"><i
-                                class="far fa-save"></i>{{$t('save_result')}}
-                        </button>
-                    </b-col>
-                    <b-col md="5" class="drag-to-board-col">
-                        <button @click="dragToBoard" class="btn-drag-to-board" :disabled="!uploadedFile">
-                            {{$t('drag_to_board')}}
-                        </button>
-                    </b-col>
-                </b-row>
-            </div>
-            <br><br><br>
-            <Board ref="board"/>
+            <br class="simulator-break">
+            <br class="simulator-break">
+            <br>
+            <Board ref="board" />
         </div>
     </div>
 </template>
@@ -33,139 +16,41 @@
     import PageInfo from "~/components/pageinfo";
     import Simulator from "~/components/simulator";
     import Board from "~/components/board";
-    import {BIconUpload} from "bootstrap-vue";
 
     export default {
         components: {
             PageInfo,
             Simulator,
-            Board,
-            BIconUpload
+            Board
         },
         data() {
             return {
-                isSimulatorLoaded: false,
-                uploadedFile: null,
-                url: require("~/assets/empty.jpg"),
-                canvas: null
-            };
+                isSimulatorLoaded: false
+            }
         },
         methods: {
             simulatorLoaded() {
                 this.isSimulatorLoaded = true;
             },
 
-            revokeFileUploader() {
-                document.getElementById("simulatorFileUploader").click();
-            },
-
-            onUploadChange(e) {
-                const file = e.target.files[0];
-                if (!file) return false;
-
-                // validate mimetype
-                if (file.type != "image/jpeg" && file.type != "image/png") {
-                    this.$toast.error(this.$t("file_format_incorrect"));
-                    e.preventDefault();
-                    return false;
-                }
-                // validate filesize
-                var fileSize = (file.size / (1024 * 1024)).toFixed(2);
-                if (fileSize > 5) {
-                    this.$toast.error(this.$t("file_format_incorrect"));
-                    e.preventDefault();
-                    return false;
-                }
-                // validate constraints
-                var self = this;
-                var reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = function (e) {
-                    var image = new Image();
-                    image.src = e.target.result;
-                    image.onload = function () {
-                        var height = this.height;
-                        var width = this.width;
-                        if (width != height) {
-                            self.$toast.error(self.$t("file_format_incorrect"));
-                        } else {
-                            self.uploadedFile = file;
-                            self.url = URL.createObjectURL(file);
-                        }
-                    };
-                };
-            },
-
-            async saveResult() {
-                const el = document.querySelector('.component.designSlider .designContainer');
-                const options = {type: 'dataURL'};
-                let data = await this.$html2canvas(el, options);
-
-                var a = document.createElement("a");
-                a.href = data;
-                a.download = "CollectionStock_simulator.png";
-                a.click();
-            },
-
             dragToBoard() {
-                this.$refs.board.addItem();
+                this.$refs.board.addItem(this.$refs.simulator.$refs.designSlider.$refs.designContainer);
             }
         }
     };
 </script>
 
 <style lang="scss" scoped>
-    #simulatorFileUploader {
-        display: none;
-    }
+.spacing{
+    margin-bottom:40px;
+    @media screen and (max-width: 768px) {
+    margin-bottom:30px;
 
-    .page.simulator {
-        .upload-download-col, .drag-to-board-col {
-            @media screen and (max-width: 768px) {
-                display: block
-            }
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        button {
-            margin-left: 15px;
-            border: 1px solid $black;
-            border-radius: 30px;
-            font-size: 16px;
-            font-weight: 700;
-            padding: 8px 20px;
-            text-transform: uppercase;
-            transition: all 0.2s;
-            @media screen and (max-width: 768px) {
-                margin-bottom: 10px;
-                font-size: 14px;
-            }
-
-            &:active {
-                box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
-            }
-
-            &.btn-upload-design {
-                background: #fff;
-                color: $black;
-                outline: none;
-            }
-
-            &.btn-save-result {
-                background: $brand;
-                color: #fff;
-                border: none;
-                outline: none;
-            }
-
-            &.btn-drag-to-board {
-                background: $black;
-                color: #fff;
-                border: none;
-                outline: none;
-            }
-        }
-    }
+}
+}
+@media screen and (max-width: 768px) {
+  .simulator-break {
+    display: none;
+  }
+}
 </style>

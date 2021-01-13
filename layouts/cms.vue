@@ -121,6 +121,7 @@ html, body {
 .cmspage .cmscomponent .additional-actions {
   display: flex;
   padding: 10px 0;
+  align-items: center;
   justify-content: space-between;
   font-size: 14px;
 }

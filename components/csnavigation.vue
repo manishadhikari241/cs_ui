@@ -27,7 +27,7 @@
               <nuxt-link :to="localePath('/request')" class="nav-link">{{ $t('request_nav') }}</nuxt-link>
             </li>
             <li class="nav-item">
-              <nuxt-link :to="localePath('/exclusive')" class="nav-link">{{ $t('exclusive') }}</nuxt-link>
+              <nuxt-link :to="localePath('/exclusive')" class="nav-link">{{ $t('tailor_made') }}</nuxt-link>
             </li>
             <li class="nav-item">
               <nuxt-link :to="localePath('/extra')" class="nav-link">{{ $t('extra') }}</nuxt-link>
@@ -80,6 +80,9 @@ export default Vue.extend({
           color: #313131 !important;
           transition: color .2s;
           font-size: 17px;
+          @media screen and (max-width: 768px) {
+            font-size: 15px;
+          }
 
           &.nuxt-link-active {
             border-bottom: 1px solid #000;
@@ -96,6 +99,9 @@ export default Vue.extend({
         border: none;
         border-radius: 0;
         font-weight: 600;
+        @media screen and (max-width: 768px) {
+          font-size: 15px;
+        }
       }
     }
   }
@@ -113,10 +119,10 @@ export default Vue.extend({
 
         li {
           padding: 5px 0;
-          margin: 0;
+          margin: -1px;
           text-align: center;
           background-color: #1d1d1b;
-          
+
           a {
             color: #fff !important;
           }

@@ -99,15 +99,15 @@
                 <td aria-colindex="1" role="cell">
                   <span>{{ $t('resale_items') }}</span>
                 </td>
-                <td aria-colindex="2" role="cell" :class="`text-center${selected == 1 ? ' active' : ''}`">
+                <td aria-colindex="2" role="cell" :class="`text-center${selected == 1 ? ' active' : ''} last-col`">
                   <b-icon-check class="check"></b-icon-check>
                 </td>
-                <td aria-colindex="3" role="cell" :class="`text-center${selected == 2 ? ' active' : ''}`">
+                <td aria-colindex="3" role="cell" :class="`text-center${selected == 2 ? ' active' : ''} last-col`">
                   <b-icon-check class="check active"></b-icon-check>
                 </td>
               </tr>
-          
-            
+
+
             </tbody>
           </table>
               <div class="more-details">
@@ -155,8 +155,8 @@ export default {
       justify-content: center;
       display: flex;
       text-transform: uppercase;
-      color: #0e8dde;
       p {
+        color: $brand;
         font-weight: 700;
       }
     }
@@ -218,6 +218,7 @@ export default {
         }
       }
     }
+
   }
 }
 </style>

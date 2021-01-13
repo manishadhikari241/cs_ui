@@ -1,7 +1,19 @@
 <template>
   <div>
-    <b-modal id="modal-payments" size="xl" @hidden="handleModalClose" centered hide-header hide-footer>
-      <button class="btn-modal-payments-close" @click="$bvModal.hide('modal-payments')"><b-icon-x></b-icon-x></button>
+    <b-modal
+      id="modal-payments"
+      size="xl"
+      @hidden="handleModalClose"
+      centered
+      hide-header
+      hide-footer
+    >
+      <button
+        class="btn-modal-payments-close"
+        @click="$bvModal.hide('modal-payments')"
+      >
+        <b-icon-x></b-icon-x>
+      </button>
       <b-container v-if="init.pricing">
         <b-row>
           <b-col md="5" class="left lg-hide">
@@ -10,149 +22,293 @@
                 <div class="license-name">{{ $t(licenseTitles[pkg.key]) }}</div>
                 <div class="license-description">
                   <div v-if="pkg.key == 'standard'">
-                    <p>{{ $t('jpg_only') }}</p>
-                    <p>{{ $t('for_editorial_avertising_web') }}</p>
-                    <p>{{ $t('to_be_used_within') }}</p>
+                    <p>{{ $t("jpg_only") }}</p>
+                    <p>{{ $t("for_editorial_avertising_web") }}</p>
+                    <p>{{ $t("to_be_used_within") }}</p>
                   </div>
                   <div v-if="pkg.key == 'extended'">
-                    <p>{{ $t('jpg_pdf_ai_eps') }}</p>
-                    <p>{{ $t('for_resale_items_can_edit_modify') }}</p>
-                    <p>{{ $t('to_be_used_within') }}</p>
+                    <p>{{ $t("jpg_pdf_ai_eps") }}</p>
+                    <p>{{ $t("for_resale_items_can_edit_modify") }}</p>
+                    <p>{{ $t("to_be_used_within") }}</p>
                   </div>
                   <div v-if="pkg.key == 'exclusive'">
-                    <p>{{ $t('jpg_pdf_ai_eps') }}</p>
-                    <p>{{ $t('ownership_certificate') }}</p>
-                    <p>{{ $t('tailor_made_on_request') }}</p>
-                    <p>{{ $t('to_be_used_within') }}</p>
+                    <p>{{ $t("jpg_pdf_ai_eps") }}</p>
+                    <p>{{ $t("ownership_certificate") }}</p>
+                    <p>{{ $t("tailor_made_on_request") }}</p>
+                    <p>{{ $t("to_be_used_within") }}</p>
                   </div>
                   <div v-if="pkg.key == 'simulator'">
-                    <p>{{ $t('add_your_own_product_into') }}</p>
-                    <p>{{ $t('simulator_by_request') }}</p>
-                    <p>{{ $t('to_be_used_within') }}</p>
+                    <p>{{ $t("add_your_own_product") }}</p>
+                    <p>{{ $t("simulator_by_request") }}</p>
+                    <p>{{ $t("to_be_used_within") }}</p>
                   </div>
                 </div>
-                <br><br>
+                <br /><br />
               </div>
               <div class="package-prices">
-                <b-button :class="{'active': pkg.index == 0}" @click="selectPackage(pkg.key, 0)">
-                  <div class="quantity">{{ init.pricing[`${pkg.key}_min_count`] }} {{ pkg.key == 'standard' || pkg.key == 'extended' ? $t('design') : $t('request') }}</div>
-                  <div class="price">${{ init.pricing[`${pkg.key}_min_count`] * init.pricing[`${pkg.key}_min_price`] }}</div>
-                  <div class="per">${{ init.pricing[`${pkg.key}_min_price`] }} / {{ pkg.key == 'standard' || pkg.key == 'extended' ? $t('design') : $t('request') }}</div>
+                <b-button
+                  :class="{ active: pkg.index == 0 }"
+                  @click="selectPackage(pkg.key, 0)"
+                >
+                  <div class="quantity">
+                    {{ init.pricing[`${pkg.key}_min_count`] }}
+                    {{ pkg.key =='standard' || pkg.key =='extended' ? $t('download') :
+                    pkg.key=='exclusive'?$t('single_design')
+                      :$t('product')}}{{init.pricing[`${pkg.key}_min_count`] > 1 ? $i18n.locale == "en" ?
+                    "s" : "" : "" }}
+                  </div>
+                  <div class="price">
+                    ${{
+                      init.pricing[`${pkg.key}_min_count`] *
+                      init.pricing[`${pkg.key}_min_price`]
+                    }}
+                  </div>
+                  <div class="per">
+                    ${{ init.pricing[`${pkg.key}_min_price`] }} /
+                    {{ pkg.key =='standard' || pkg.key =='extended' ? $t('download') :
+                    pkg.key=='exclusive'?$t('single_design')
+                      :$t('product')}}
+                  </div>
                 </b-button>
-                <b-button :class="{'active': pkg.index == 1}" @click="selectPackage(pkg.key, 1)">
-                  <div class="quantity">{{ init.pricing[`${pkg.key}_max_count`] }} {{ pkg.key == 'standard' || pkg.key == 'extended' ? $t('design') : $t('request') }}</div>
-                  <div class="price">${{ init.pricing[`${pkg.key}_max_count`] * init.pricing[`${pkg.key}_max_price`] }}</div>
-                  <div class="per">${{ init.pricing[`${pkg.key}_max_price`] }} / {{ pkg.key == 'standard' || pkg.key == 'extended' ? $t('design') : $t('request') }}</div>
+                <b-button
+                  :class="{ active: pkg.index == 1 }"
+                  @click="selectPackage(pkg.key, 1)"
+                >
+                  <div class="quantity">
+                    {{ init.pricing[`${pkg.key}_max_count`] }}
+                    {{ pkg.key =='standard' || pkg.key =='extended' ? $t('download') :
+                    pkg.key=='exclusive'?$t('single_design')
+                      :$t('product')}}{{init.pricing[`${pkg.key}_max_count`] > 1 ? $i18n.locale == "en" ?
+                    "s" : "" : "" }}
+                  </div>
+                  <div class="price">
+                    ${{
+                      init.pricing[`${pkg.key}_max_count`] *
+                      init.pricing[`${pkg.key}_max_price`]
+                    }}
+                  </div>
+                  <div class="per">
+                    ${{ init.pricing[`${pkg.key}_max_price`] }} /
+                    {{ pkg.key =='standard' || pkg.key =='extended' ? $t('download') :
+                    pkg.key=='exclusive'?$t('single_design')
+                      :$t('product')}}
+                  </div>
                 </b-button>
               </div>
               <div class="payments-made">
-              <p>{{$t('payments_are_made_in_usd')}}</p>
+                <p>{{ $t("payments_are_made_in_usd") }}</p>
               </div>
             </div>
           </b-col>
           <b-col class="right">
             <div v-show="mode == 'default'">
-              <div class="total">TOTAL ${{ init.pricing[`${pkg.key}_${pkg.index == 0 ? 'min' : 'max'}_count`] * init.pricing[`${pkg.key}_${pkg.index == 0 ? 'min' : 'max'}_price`] }}</div>
-              <div class="total-details">{{ $t(licenseTitles[pkg.key]) }} - {{ init.pricing[`${pkg.key}_${pkg.index == 0 ? 'min' : 'max'}_count`] }} {{ pkg.key == 'standard' || pkg.key == 'extended' ? $t('design') : $t('request') }}</div>
+              <div class="total">
+                TOTAL ${{
+                  init.pricing[
+                    `${pkg.key}_${pkg.index == 0 ? "min" : "max"}_count`
+                  ] *
+                  init.pricing[
+                    `${pkg.key}_${pkg.index == 0 ? "min" : "max"}_price`
+                  ]
+                }}
+              </div>
+              <div class="total-details">
+                {{ $t(licenseTitles[pkg.key]) }} -
+                {{
+                  init.pricing[
+                    `${pkg.key}_${pkg.index == 0 ? "min" : "max"}_count`
+                  ]
+                }}
+                {{ pkg.key =='standard' || pkg.key =='extended' ? $t('download') :
+                pkg.key=='exclusive'?$t('single_design')
+                  :$t('product')}}{{init.pricing[`${pkg.key}_${pkg.index == 0 ? "min" : "max"}_count`] > 1 ? $i18n.locale == "en" ?
+                "s" : "" : "" }}
+              </div>
               <div class="methods">
-                <div class="active">
-                  <b-icon-circle-fill></b-icon-circle-fill>
-                  <span>&nbsp;{{ $t('credit_card') }}</span>
+                <div :class="{'active': paymentMethod == 'braintree'}" @click="updatePaymentMethod('braintree')">
+                  <b-icon-circle-fill v-if="paymentMethod == 'braintree'"></b-icon-circle-fill>
+                  <b-icon-circle v-else></b-icon-circle>
+                  <span>&nbsp;{{ $t("credit_card") }}</span>
                 </div>
-                <div>
-                  <b-icon-circle></b-icon-circle>
-                  <span>&nbsp;{{ $t('wechat') }}</span>
+                <div :class="{'active': paymentMethod == 'wechat'}" @click="updatePaymentMethod('wechat')">
+                  <b-icon-circle-fill v-if="paymentMethod == 'wechat'"></b-icon-circle-fill>
+                  <b-icon-circle v-else></b-icon-circle>
+                  <span>&nbsp;{{ $t("wechat") }}</span>
                 </div>
-                <div>
-                  <b-icon-circle></b-icon-circle>
-                  <span>&nbsp;{{ $t('alipay') }}</span>
+                <div :class="{'active': paymentMethod == 'alipay'}" @click="updatePaymentMethod('alipay')">
+                  <b-icon-circle-fill v-if="paymentMethod == 'alipay'"></b-icon-circle-fill>
+                  <b-icon-circle v-else></b-icon-circle>
+                  <span>&nbsp;{{ $t("alipay") }}</span>
                 </div>
               </div>
 
-              <br>
+              <br />
 
-              <b-form-checkbox v-model="addBillingCheck">{{$t('add_billing_address_to')}}</b-form-checkbox>
-              <div v-if="billingAddress" class="billingAddress" @click="mode = 'billing'">
+              <b-form-checkbox v-model="addBillingCheck"
+                >{{ $t("add_billing_address_to") }}
+              </b-form-checkbox>
+              <div
+                v-if="billingAddress"
+                class="billingAddress"
+                @click="mode = 'billing'"
+              >
                 <p>{{ billingAddress.first_name }}</p>
                 <p>{{ billingAddress.last_name }}</p>
                 <p>{{ billingAddress.company }}</p>
                 <p>{{ billingAddress.address1 }}</p>
                 <p>{{ billingAddress.address2 }}</p>
-                 <p>{{ billingAddress.city }}</p>
+                <p>{{ billingAddress.city }}</p>
                 <p>{{ billingAddress.post_code }}</p>
-              <p>{{ billingAddress.country }}</p>
- <p>{{ billingAddress.vat_number }}</p>
-                <b-badge class="badge" variant="primary">{{$t('change')}}</b-badge>
+                <p>{{ billingAddress.country }}</p>
+                <p>{{ billingAddress.vat_number }}</p>
+                <b-badge class="badge" variant="primary">{{
+                  $t("change")
+                }}</b-badge>
               </div>
-              
-              <Braintree ref="braintree" @onSuccess="buy" v-show="!paying" />
-              <div style="text-align: center" v-if="paying"><b-spinner type="grow" label="Loading..."></b-spinner></div>
+
+              <Braintree ref="braintree" @onSuccess="buyBraintree" v-if="paymentMethod == 'braintree'" v-show="!paying" />
+              <Alipay ref="alipay" @status="updatePayingStatus" :info="getPurchaseInfo()" v-else-if="paymentMethod == 'alipay'" v-show="!paying" />
+              <Wechat ref="wechat" @status="updatePayingStatus" :info="getPurchaseInfo()" v-else v-show="!paying" />
+              <div style="text-align: center" v-if="paying">
+                <b-spinner type="grow" label="Loading..."></b-spinner>
+              </div>
             </div>
-            
-            <div class="billing" v-show="mode == 'billing' || mode == 'newbilling'">
+
+            <div
+              class="billing"
+              v-show="mode == 'billing' || mode == 'newbilling'"
+            >
               <div class="actions">
-                <b-button variant="light" @click="addBillingCheck = (billingAddress ? true : false); mode = 'default'"><i class="fas fa-chevron-left"></i></b-button>
+                <b-button
+                  variant="light"
+                  @click="
+                    addBillingCheck = billingAddress ? true : false;
+                    mode = 'default';
+                  "
+                >
+                  <i class="fas fa-chevron-left"></i
+                ></b-button>
               </div>
               <div class="addresses">
                 <div class="list" v-show="mode == 'billing'">
-                  <div class="title">{{$t('pick_address')}}</div>
+                  <div class="title">{{ $t("pick_address") }}</div>
                   <div class="address-list">
-                    <div class="address" v-for="address in init.addresses" :key="address.id" @click="selectBillingAddress(address)">
+                    <div
+                      class="address"
+                      v-for="address in init.addresses"
+                      :key="address.id"
+                      @click="selectBillingAddress(address)"
+                    >
                       <p>{{ address.first_name }}</p>
                       <p>{{ address.last_name }}</p>
                       <p>{{ address.company }}</p>
                       <p>{{ address.address1 }}</p>
                       <p>{{ address.address2 }}</p>
                       <p>{{ address.city }}</p>
-                       <p>{{ address.post_code }}</p>
-                        <p>{{ address.country }}</p>
+                      <p>{{ address.post_code }}</p>
+                      <p>{{ address.country }}</p>
                       <p>{{ address.vat_number }}</p>
-                      <b-badge class="badge" variant="success" v-if="address.is_default">{{$t('default')}}</b-badge>
+                      <b-badge
+                        class="badge"
+                        variant="success"
+                        v-if="address.is_default"
+                      >
+                        {{ $t("default") }}
+                      </b-badge>
                     </div>
                     <div class="address" @click="mode = 'newbilling'">
-                      <p>&nbsp;</p><p>&nbsp;</p><p style="text-align: center; font-size: 16px; font-weight: 600;"><i class="fas fa-plus"></i>&nbsp;&nbsp;{{$t('add_new_address')}}</p><p>&nbsp;</p><p>&nbsp;</p>
+                      <p>&nbsp;</p>
+                      <p>&nbsp;</p>
+                      <p
+                        style="
+                          text-align: center;
+                          font-size: 16px;
+                          font-weight: 600;
+                        "
+                      >
+                        <i class="fas fa-plus"></i>&nbsp;&nbsp;{{
+                          $t("add_new_address")
+                        }}
+                      </p>
+                      <p>&nbsp;</p>
+                      <p>&nbsp;</p>
                     </div>
                   </div>
                 </div>
 
                 <div class="newAddress" v-show="mode == 'newbilling'">
-                  <div class="title">{{$t('billing_details')}}</div>
+                  <div class="title">{{ $t("billing_details") }}</div>
                   <form @submit.prevent="addNewAddress">
-                      <b-input v-model="newAddress.first_name" :placeholder="$t('first_name')" required></b-input>
-                    <b-input v-model="newAddress.last_name" :placeholder="$t('first_name')" required></b-input>
-  <b-input v-model="newAddress.company" :placeholder="$t('company')" required></b-input>
-                    <b-input v-model="newAddress.address1" :placeholder="$t('address_1')" required></b-input>
-                    <b-input v-model="newAddress.address2" :placeholder="$t('address_2')"></b-input> 
-                                     <b-input v-model="newAddress.city" :placeholder="$t('city')" required></b-input>
-                    <b-input v-model="newAddress.post_code" :placeholder="$t('post_code')" class="postCode" required></b-input>
-                      <div class="info-row">
-                    <div class="value" style="font-size: 12px;">{{$t('if_your_region')}}</div>
-                  </div>
-                   <multiselect
-                        :class="'country_select'"
-                                    :select-label="$t('enter_to_select')"
-                            :deselect-label="$t('enter_to_remove')"
-                            :selected-label="$t('selected')"
-                        v-model="newAddress.country"
-                        :placeholder="$t('select_country')"
-                        :options="countries"
-                        track-by="id"
-                        :searchable="true"
-                        :custom-label="countryLabel"
-                        :multiple="false">
-                      </multiselect>    
-                                            <br>
+                    <b-input
+                      v-model="newAddress.first_name"
+                      :placeholder="$t('first_name')"
+                      required
+                    ></b-input>
+                    <b-input
+                      v-model="newAddress.last_name"
+                      :placeholder="$t('first_name')"
+                      required
+                    ></b-input>
+                    <b-input
+                      v-model="newAddress.company"
+                      :placeholder="$t('company')"
+                      required
+                    ></b-input>
+                    <b-input
+                      v-model="newAddress.address1"
+                      :placeholder="$t('address_1')"
+                      required
+                    ></b-input>
+                    <b-input
+                      v-model="newAddress.address2"
+                      :placeholder="$t('address_2')"
+                    ></b-input>
+                    <b-input
+                      v-model="newAddress.city"
+                      :placeholder="$t('city')"
+                      required
+                    ></b-input>
 
-                    <b-input v-model="newAddress.vat_number" :placeholder="$t('vat_number')" class="postCode">
+                    <div class="info-row">
+                      <b-input
+                        v-model="newAddress.post_code"
+                        :placeholder="$t('post_code')"
+                        class="postCode mb-0"
+                        required
+                      ></b-input>
+                      <p style="font-size: 12px">{{ $t("if_your_region") }}</p>
+                    </div>
+                    <multiselect
+                      :class="'country_select'"
+                      :select-label="$t('enter_to_select')"
+                      :deselect-label="$t('enter_to_remove')"
+                      :selected-label="$t('selected')"
+                      v-model="newAddress.country"
+                      :placeholder="$t('select_country')"
+                      :options="countries"
+                      track-by="id"
+                      :searchable="true"
+                      :custom-label="countryLabel"
+                      :multiple="false"
+                    >
+                    </multiselect>
+                    <br />
+
+                    <b-input
+                      v-model="newAddress.vat_number"
+                      :placeholder="$t('vat_number')"
+                      class="postCode"
+                    >
                     </b-input>
 
-                      <br>
-                    <b-button type="submit" :disabled="newAddress.loading">{{$t('confirm')}}</b-button>
+                    <br />
+                    <b-button type="submit" :disabled="newAddress.loading"
+                      >{{ $t("confirm") }}
+                    </b-button>
                   </form>
                 </div>
               </div>
             </div>
-
           </b-col>
         </b-row>
       </b-container>
@@ -164,15 +320,20 @@
 import { mapState } from "vuex";
 import { BIconX, BIconCircleFill, BIconCircle } from "bootstrap-vue";
 import Braintree from "~/components/braintree";
+import Alipay from "~/components/alipay";
+import Wechat from "~/components/wechat";
 import Multiselect from "vue-multiselect";
 import "vue-multiselect/dist/vue-multiselect.min.css";
+
 export default {
   components: {
     BIconX,
     BIconCircleFill,
     BIconCircle,
     Braintree,
-    Multiselect
+    Alipay,
+    Wechat,
+    Multiselect,
   },
   computed: {
     ...mapState("app", ["init"]),
@@ -180,11 +341,12 @@ export default {
   },
   data() {
     return {
+      paymentMethod: 'braintree',
       licenseTitles: {
         standard: "standard_license",
         extended: "extended_license",
         exclusive: "exclusive_design",
-        simulator: "product_simulator"
+        simulator: "product_simulator",
       },
       paying: false,
       addBillingCheck: false,
@@ -204,26 +366,37 @@ export default {
         city: "",
         post_code: "",
         vat_number: "",
-        loading: false
-      }
+        loading: false,
+      },
     };
+  },
+  created(){
+
   },
   mounted() {
     this.$nextTick(() => {
+
       this.loadCountries();
     });
   },
   methods: {
+ 
     selectPackage(key, index) {
       this.$store.commit("payments/setPackage", { key, index });
     },
+
     loadCountries() {
-      this.$axios.$get("/countries?all=1").then(response => {
+      this.$axios.$get("/countries?all=1").then((response) => {
         this.countries = response;
       });
     },
+
     countryLabel({ translations }) {
       return translations[0].name;
+    },
+
+    updatePaymentMethod(method) {
+      this.paymentMethod = method;
     },
 
     selectBillingAddress(address) {
@@ -237,10 +410,9 @@ export default {
       request.country = this.newAddress.country
         ? this.newAddress.country.translations[0].name
         : null;
-      console.log(request);
       this.$axios
         .$post("/addresses", request)
-        .then(response => {
+        .then((response) => {
           this.newAddress.loading = false;
           this.$store.commit("app/addAddress", response);
           this.billingAddress = response[response.length - 1];
@@ -255,47 +427,51 @@ export default {
             city: "",
             post_code: "",
             vat_number: "",
-            loading: false
+            loading: false,
           };
         })
-        .catch(error => {
+        .catch((error) => {
           this.newAddress.loading = false;
           this.$toast.error(error.response.data.error.message);
         });
     },
 
-    buy(nonce) {
-      let price =
-        this.init.pricing[
-          `${this.pkg.key}_${this.pkg.index == 0 ? "min" : "max"}_count`
-        ] *
-        this.init.pricing[
-          `${this.pkg.key}_${this.pkg.index == 0 ? "min" : "max"}_price`
-        ];
-      let package_type = this.pkg.index == 0 ? "min" : "max";
+    getPurchaseInfo() {
+      let info = {};
+      info.pkg = this.pkg.key;
+      info.price = this.init.pricing[`${this.pkg.key}_${this.pkg.index == 0 ? "min" : "max"}_count`] * this.init.pricing[`${this.pkg.key}_${this.pkg.index == 0 ? "min" : "max"}_price`];
+      info.package_type = this.pkg.index == 0 ? "min" : "max";
+      info.billingDetails = this.billingAddress ? [
+        this.billingAddress.first_name + " " + this.billingAddress.last_name,
+        this.billingAddress.company,
+        this.billingAddress.address1,
+        this.billingAddress.address2,
+        this.billingAddress.post_code,
+        this.billingAddress.city,
+        this.billingAddress.country,
+      ] : "";
+      info.billingDetails = this.billingAddress ? info.billingDetails.join(", ") : null;
+      info.vatNumber = this.billingAddress ? this.billingAddress.vat_number : null;
+      return info;
+    },
 
-      let billingDetails = this.billingAddress
-        ? [
-            this.billingAddress.first_name +
-              " " +
-              this.billingAddress.last_name,
-            this.billingAddress.company,
-            this.billingAddress.address1,
-            this.billingAddress.address2
-          ]
-        : "";
-      billingDetails = this.billingAddress ? billingDetails.join(", ") : null;
+    updatePayingStatus(status) {
+      this.paying = status;
+    },
 
+    buyBraintree(nonce) {
+      let purchaseInfo = this.getPurchaseInfo();
       this.paying = true;
-      this.$axios
-        .$post("/quota/buy", {
+
+      this.$axios.$post("/payments/braintree/buy", {
           nonce,
-          amount: price,
-          package: this.pkg.key,
-          package_type,
-          billing_details: billingDetails
+          amount: purchaseInfo.price,
+          package: purchaseInfo.pkg,
+          package_type: purchaseInfo.package_type,
+          billing_details: purchaseInfo.billingDetails,
+          vat_number: purchaseInfo.vatNumber
         })
-        .then(response => {
+        .then((response) => {
           this.paying = false;
           this.$bvModal.hide("modal-payments");
 
@@ -307,7 +483,7 @@ export default {
 
           this.$nuxt.$emit("payment-success", { package: this.pkg.key });
         })
-        .catch(error => {
+        .catch((error) => {
           this.$refs.braintree.getToken();
           this.paying = false;
           this.$toast.error(error.response.data.error.message);
@@ -318,18 +494,22 @@ export default {
       this.addBillingCheck = false;
       this.mode = "default";
       this.billingAddress = null;
-    }
+    },
   },
   watch: {
     addBillingCheck(newValue, oldValue) {
       if (newValue) this.mode = "billing";
       else this.billingAddress = null;
-    }
+    },
   }
 };
 </script>
 
 <style lang="scss">
+.info-row p {
+  margin-left: 14px;
+  margin-bottom: 8px;
+}
 .multiselect__tags {
   min-height: 40px;
   display: block;
@@ -339,9 +519,11 @@ export default {
   background: #fff;
   font-size: 14px;
 }
+
 .multiselect__span {
   color: #757d85;
 }
+
 #modal-payments {
   .btn-modal-payments-close {
     position: absolute;
@@ -391,12 +573,12 @@ export default {
           }
         }
       }
-      .payments-made{
-            display: flex;
-    align-items: center;
-    padding: 0px 46px;
-    margin-top: 27px;
-    justify-content: center
+      .payments-made {
+        display: flex;
+        align-items: center;
+        padding: 0px 46px;
+        margin-top: 27px;
+        justify-content: center;
       }
 
       .package-prices {
@@ -440,6 +622,10 @@ export default {
     .right {
       padding-left: 50px;
       padding-right: 100px;
+      @media screen and (max-width: 768px) {
+        padding-left: 0px;
+        padding-right: 0px;
+      }
 
       .total {
         font-size: 25px;

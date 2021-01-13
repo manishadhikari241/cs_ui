@@ -9,11 +9,11 @@
 
         <b-container>
           <b-row>
-            <b-col sm="6" class="description-col">
+            <b-col sm="6" class="description-col order-1">
               <div class="basic">
                 <div class="designer">
                   <div class="designer-avatar">
-                    <img v-if="data.user.avatar" :src="`${cloudfrontURL}/uploads/user/${parseDesignerAvatarURL()}`">
+                    <img v-if="data.user.avatar" :src="`/cloudfront/uploads/user/${parseDesignerAvatarURL()}`">
                   </div>
                   <div class="name-published">
                     <p class="designer-name">{{ data.user.first_name }}</p>
@@ -36,7 +36,7 @@
             </b-col>
             <b-col sm="6" class="moodboard-col">
               <div v-if="hasMoodBoard()">
-                <img :src="`${cloudfrontURL}/uploads/lib/feed/moodboard${getMoodBoardURL()}`">
+                <img :src="`/cloudfront/uploads/lib/feed/moodboard${getMoodBoardURL()}`">
                 <p class="disclaimer">{{ $t('collections_disclaimer') }}</p>
               </div>
             </b-col>
@@ -79,8 +79,6 @@ export default {
   data() {
     return {
       data: null,
-      cloudfrontURL: process.env.NUXT_ENV_CLOUDFRONT,
-      imgBaseURL: process.env.NUXT_ENV_SERVER
     }
   },
   methods: {
@@ -142,7 +140,7 @@ export default {
   }
 
   .go-back {
-    margin-bottom: 50px;
+    margin-bottom: 35px;
 
     button {
       outline: none;
@@ -180,6 +178,9 @@ export default {
       padding: 0;
       font-size: 12px;
       color: #969696;
+        @media screen and (max-width: 768px) {
+        font-size: 9px;
+      }
     }
   }
 

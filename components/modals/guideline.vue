@@ -32,17 +32,17 @@
     #guide {
 
         .modal-content {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            width: 86%;
+            // position: relative;
+            // display: flex;
+            // flex-direction: column;
+            // width: 86%;
             pointer-events: auto;
             background-color: #fff;
             background-clip: padding-box;
             border: 0px solid rgba(0, 0, 0, 0.2);
             border-radius: 0rem;
             outline: 0;
-            margin-left: 40px;
+            // margin-left: 40px;
         }
 
         .modal-body {
@@ -51,8 +51,8 @@
             padding: 0rem;
         }
         img {
-            height: 500px;
-            width:695px
+            height: auto;
+            width:auto
         }
     }
 

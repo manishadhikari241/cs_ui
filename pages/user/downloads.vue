@@ -1,14 +1,12 @@
 <template>
   <div class="page downloads">
-    <b-container>
       <div class="component pageinfo">
         <div class="pageinfo-head">
           <h1 class="pageinfo-title">{{ $t('downloads') }}</h1>
         </div>
         <p class="pageinfo-description">{{ $t('all_designs_you_downloaded') }}</p>
       </div>
-    </b-container>
-    <b-container class="downloads-header">
+    <div class="downloads-header">
       <!-- <div class="actions">
         <b-button :class="{'active': mode === 'grid'}" @click="changeMode('grid')">
           <b-icon-grid-fill></b-icon-grid-fill>
@@ -28,13 +26,13 @@
           <b-button :class="{'active': type === 'exclusive'}" @click="changeType('exclusive')">{{ $t('exclusive') }}</b-button>
         </div>
       </div>
-    </b-container>
+    </div>
     <b-container class="designs">
       <client-only>
         <DesignList :designs="designs" v-if="mode == 'grid'" />
         <b-table :items="designs" :fields="fields" :responsive="'md'" striped v-if="mode == 'table'">
           <template v-slot:cell(design)="data">
-            <img class="design-preview" :src="`https://dev.collectionstock.com/api/v1/image/thumbnail/design/${data.item.code}/tiny`">
+            <img class="design-preview" :src="`/api/v1/image/thumbnail/design/${data.item.code}/tiny`">
           </template>
         </b-table>
         <infinite-loading @infinite="loadMore" ref="infload"></infinite-loading>
@@ -98,7 +96,7 @@ export default {
   },
   methods: {
     loadMore() {
-      this.$axios.$get(`/downloads?scope[]=designer.profile&scope[]=studio&recent=1&is_active=1&take=${this.itemsPerPage}&page=${this.page+1}&package=${this.type}`)
+      this.$axios.$get(`/downloads?scope[]=designer.profile&scope[]=studio&recent=1&take=${this.itemsPerPage}&page=${this.page+1}&package=${this.type}`)
         .then((response) => {
           this.page = response.current_page;
           this.maxPage = response.last_page;
@@ -145,6 +143,28 @@ export default {
     .actions {
       text-align: right;
 
+      .types {
+        .separator{
+            @media screen and (min-width: 1024px) {
+          padding-top: 2px;
+  }
+       @media screen and (max-width: 768px) {
+          font-size: 10.75px;
+
+        }
+        }
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .types button{
+        @media screen and (max-width: 768px) {
+          font-size: 12.75px;
+        margin-left: 5px;
+
+        }
+      }
+
       button {
         outline: none;
         box-shadow: none;
@@ -154,6 +174,11 @@ export default {
         padding: 0;
         font-size: 20px;
         margin-left: 5px;
+                margin-right: 5px;
+
+        @media screen and (max-width: 768px) {
+margin-left: 0px;
+        }
         border-radius: 0;
 
         &:focus {
@@ -171,6 +196,11 @@ export default {
   }
 
   .designs {
+        @media screen and (max-width: 550px) {
+padding-left: 0px;
+padding-right: 0px;
+
+        }
     .table th, .table td {
       vertical-align: middle;
     }

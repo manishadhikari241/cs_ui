@@ -1,22 +1,22 @@
 <template>
-  <div class="component search">
-    <b-navbar-nav>
-      <b-nav-item-dropdown
-        ref="categoryDropdown"
-        id="category-dropdown"
-        no-caret
-        v-show="hideCategories != true"
-      >
-        <template slot="button-content"
-          >{{ $t("category") }}&nbsp;&nbsp;<b-icon-chevron-down
-          ></b-icon-chevron-down>&nbsp;
-        </template>
-        <template v-if="isCollectionRoute()">
-          <li class="group-title">{{ $t("by_category") }}</li>
-          <li>
-            <SearchCategories
-              :className="'inline'"
-              :tags="[
+    <div class="component search">
+        <b-navbar-nav>
+            <b-nav-item-dropdown
+                    ref="categoryDropdown"
+                    id="category-dropdown"
+                    no-caret
+                    v-show="hideCategories != true"
+            >
+                <template slot="button-content"
+                >{{ $t("category") }}&nbsp;&nbsp;<b-icon-chevron-down
+                ></b-icon-chevron-down>&nbsp;
+                </template>
+                <template v-if="isCollectionRoute()">
+                    <li class="group-title">{{ $t("by_category") }}</li>
+                    <li>
+                        <SearchCategories
+                                :className="'inline'"
+                                :tags="[
                 {
                   label: { en: 'Fashion', ch: '时尚' },
                   value: { en: 'fashion', ch: '时尚' }
@@ -34,15 +34,15 @@
                   value: { en: 'festive', ch: '喜庆的' }
                 }
               ]"
-              @tmpsearch="setSearchTmpTerm"
-              @search="search"
-            />
-          </li>
-          <li class="group-title">{{ $t("by_season") }}</li>
-          <li>
-            <SearchCategories
-              :className="''"
-              :tags="[
+                                @tmpsearch="setSearchTmpTerm"
+                                @search="search"
+                        />
+                    </li>
+                    <li class="group-title">{{ $t("by_season") }}</li>
+                    <li>
+                        <SearchCategories
+                                :className="''"
+                                :tags="[
                 {
                   label: { en: 'Autumn Winter 2020', ch: '秋冬2020' },
                   value: { en: '5', ch: '5' }
@@ -60,31 +60,35 @@
                   value: { en: '9', ch: '9' }
                 }
               ]"
-              @tmpsearch="setSearchSeasonTmpTerm"
-              @search="search"
-            />
-          </li>
-        </template>
-        <template v-if="!isCollectionRoute()">
-          <li class="group-title">{{ $t("by_popularity") }}</li>
-          <li>
-            <SearchCategories
-              :className="''"
-              :tags="[
+                                @tmpsearch="setSearchSeasonTmpTerm"
+                                @search="search"
+                        />
+                    </li>
+                </template>
+                <template v-if="!isCollectionRoute()">
+                    <li class="group-title">{{ $t("by_popularity") }}</li>
+                    <li>
+                        <SearchCategories
+                                :className="'flex'"
+                                :tags="[
+               // {
+               //   label: { en: 'New', ch: '新发布' },
+               //   value: { en: 'new', ch: '新发布' }
+               // },
                 {
                   label: { en: 'Top 100', ch: '热门下载' },
                   value: { en: 'top 100', ch: '热门下载' }
-                }
+                },
               ]"
-              @tmpsearch="setSearchTmpTerm"
-              @search="search"
-            />
-          </li>
-          <li class="group-title">{{ $t("by_product") }}</li>
-          <li>
-            <SearchCategories
-              :className="'flex'"
-              :tags="[
+                                @tmpsearch="setSearchTmpTerm"
+                                @search="search"
+                        />
+                    </li>
+                    <li class="group-title">{{ $t("by_product") }}</li>
+                    <li>
+                        <SearchCategories
+                                :className="'flex'"
+                                :tags="[
                 {
                   label: { en: 'Menswear', ch: '男装' },
                   value: { en: 'menswear', ch: '男装' }
@@ -122,15 +126,15 @@
                   value: { en: 'gifts', ch: '礼物' }
                 }
               ]"
-              @tmpsearch="setSearchTmpTerm"
-              @search="search"
-            />
-          </li>
-          <li class="group-title">{{ $t("by_theme") }}</li>
-          <li>
-            <SearchCategories
-              :className="'flex'"
-              :tags="[
+                                @tmpsearch="setSearchTmpTerm"
+                                @search="search"
+                        />
+                    </li>
+                    <li class="group-title">{{ $t("by_theme") }}</li>
+                    <li>
+                        <SearchCategories
+                                :className="'flex'"
+                                :tags="[
                 {
                   label: { en: 'Traditional', ch: '传统' },
                   value: { en: 'traditional', ch: '传统' }
@@ -208,279 +212,285 @@
                   value: { en: 'winter', ch: '冬天' }
                 }
               ]"
-              @tmpsearch="setSearchTmpTerm"
-              @search="search"
-            />
-          </li>
-        </template>
-      </b-nav-item-dropdown>
-      <li v-show="hideSearchbox != true">
-        <div class="searchbox">
-          <form @submit.prevent="search">
-            <autocomplete
-              ref="autocomplete"
-              :search="suggestions"
-              :get-result-value="getSuggestionValue"
-              @submit="suggestionSubmit"
-              :placeholder="
+                                @tmpsearch="setSearchTmpTerm"
+                                @search="search"
+                        />
+                    </li>
+                </template>
+            </b-nav-item-dropdown>
+            <li v-show="hideSearchbox != true">
+                <div class="searchbox">
+                    <form @submit.prevent="search">
+                        <autocomplete
+                                ref="autocomplete"
+                                :search="suggestions"
+                                :get-result-value="getSuggestionValue"
+                                @submit="suggestionSubmit"
+                                :placeholder="
                 `${
                   isCollectionRoute()
                     ? $t('search_collections')
                     : $t('search_designs')
                 }`
               "
-            >
-            </autocomplete>
-            <div class="action-buttons">
-              <b-icon-x
-                v-show="tmpTerm"
-                @click="
+                        >
+                        </autocomplete>
+                        <div class="action-buttons">
+                            <b-icon-x
+                                    v-show="tmpTerm"
+                                    @click="
                   setSearchTmpTerm('');
                   search();
                 "
-                class="btn-action btn-clear"
-              ></b-icon-x>
-              <b-icon-search
-                class="btn-action btn-search"
-                @click="search"
-              ></b-icon-search>
-            </div>
-          </form>
-        </div>
-      </li>
-    </b-navbar-nav>
-  </div>
+                                    class="btn-action btn-clear"
+                            ></b-icon-x>
+                            <b-icon-search
+                                    class="btn-action btn-search"
+                                    @click="search"
+                            ></b-icon-search>
+                        </div>
+                    </form>
+                </div>
+            </li>
+        </b-navbar-nav>
+    </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
-import { BIconChevronDown, BIconX, BIconSearch } from "bootstrap-vue";
-import SearchCategories from "~/components/searchcategories";
-import Autocomplete from "@trevoreyre/autocomplete-vue";
-import "@trevoreyre/autocomplete-vue/dist/style.css";
+    import {mapState} from "vuex";
+    import {BIconChevronDown, BIconX, BIconSearch} from "bootstrap-vue";
+    import SearchCategories from "~/components/searchcategories";
+    import Autocomplete from "@trevoreyre/autocomplete-vue";
+    import "@trevoreyre/autocomplete-vue/dist/style.css";
 
-export default {
-  props: ["hideCategories", "hideSearchbox"],
-  components: {
-    BIconChevronDown,
-    BIconX,
-    BIconSearch,
-    Autocomplete,
-    SearchCategories
-  },
-  computed: {
-    ...mapState("search", ["term"])
-  },
-  data: function() {
-    return {
-      tmpTerm: null,
-      tmpSeasonTerm: null
-    };
-  },
-  methods: {
-    isCollectionRoute() {
-      return this.$route.name && this.$route.name.startsWith("collections");
-    },
+    export default {
+        props: ["hideCategories", "hideSearchbox"],
+        components: {
+            BIconChevronDown,
+            BIconX,
+            BIconSearch,
+            Autocomplete,
+            SearchCategories
+        },
+        computed: {
+            ...mapState("search", ["term"])
+        },
+        data: function () {
+            return {
+                tmpTerm: null,
+                tmpSeasonTerm: null
+            };
+        },
+        methods: {
+            isCollectionRoute() {
+                return this.$route.name && this.$route.name.startsWith("collections");
+            },
 
-    setSearchTmpTerm(term) {
-      this.tmpTerm = term;
-      this.$refs.categoryDropdown.hide(true);
-    },
+            setSearchTmpTerm(term) {
+                this.tmpTerm = term;
+                this.$refs.categoryDropdown.hide(true);
+            },
 
-    setSearchSeasonTmpTerm(term) {
-      this.tmpSeasonTerm = term;
-      this.$refs.categoryDropdown.hide(true);
-    },
+            setSearchSeasonTmpTerm(term) {
+                this.tmpSeasonTerm = term;
+                this.$refs.categoryDropdown.hide(true);
+            },
 
-    suggestions(input) {
-      this.setSearchTmpTerm(input);
-      return new Promise(resolve => {
-        if (input.length < 2) {
-          return resolve([]);
+            suggestions(input) {
+                this.setSearchTmpTerm(input);
+                return new Promise(resolve => {
+                    if (input.length < 2) {
+                        return resolve([]);
+                    }
+
+                    let suggestionType = this.isCollectionRoute() ? "feed" : "tag";
+                    this.$axios
+                        .$get(`/search/suggestions/${suggestionType}?term=${input}`)
+                        .then(data => {
+                            resolve(data);
+                        });
+                });
+            },
+
+            getSuggestionValue(result) {
+                return result.name;
+            },
+
+            suggestionSubmit(result) {
+                if (result) {
+                    this.setSearchTmpTerm(result.name);
+                    this.search();
+                }
+            },
+
+            search() {
+                let searchDesigns = !this.isCollectionRoute();
+                this.$store.dispatch("search/search", {
+                    searchDesigns,
+                    term: this.tmpTerm,
+                    seasonTerm: this.tmpSeasonTerm,
+                    localePathFunction: this.localePath
+                });
+                let autocompleteInput = document.querySelector(
+                    ".searchbox .autocomplete-input"
+                );
+                autocompleteInput.blur();
+            },
+
+            onSearchKeywordUpdate() {
+                let keyword = this.$route.query.keyword || "";
+                let season = this.$route.query.season || "";
+                this.setSearchTmpTerm(this.$route.query.keyword);
+                this.setSearchSeasonTmpTerm(this.$route.query.season);
+                this.$store.commit("search/setTerm", keyword);
+                this.$store.commit("search/setSeasonTerm", season);
+                this.$refs.autocomplete.setValue({name: keyword});
+            }
+        },
+        watch: {
+            $route() {
+                this.onSearchKeywordUpdate();
+            }
+        },
+        mounted() {
+            this.$nextTick(() => {
+                this.onSearchKeywordUpdate();
+            });
         }
-
-        let suggestionType = this.isCollectionRoute() ? "feed" : "tag";
-        this.$axios
-          .$get(`/search/suggestions/${suggestionType}?term=${input}`)
-          .then(data => {
-            resolve(data);
-          });
-      });
-    },
-
-    getSuggestionValue(result) {
-      return result.name;
-    },
-
-    suggestionSubmit(result) {
-      if (result) {
-        this.setSearchTmpTerm(result.name);
-        this.search();
-      }
-    },
-
-    search() {
-      let searchDesigns = !this.isCollectionRoute();
-      this.$store.dispatch("search/search", {
-        searchDesigns,
-        term: this.tmpTerm,
-        seasonTerm: this.tmpSeasonTerm,
-        localePathFunction: this.localePath
-      });
-      let autocompleteInput = document.querySelector(
-        ".searchbox .autocomplete-input"
-      );
-      autocompleteInput.blur();
-    },
-
-    onSearchKeywordUpdate() {
-      let keyword = this.$route.query.keyword || "";
-      let season = this.$route.query.season || "";
-      this.setSearchTmpTerm(this.$route.query.keyword);
-      this.setSearchSeasonTmpTerm(this.$route.query.season);
-      this.$store.commit("search/setTerm", keyword);
-      this.$store.commit("search/setSeasonTerm", season);
-      this.$refs.autocomplete.setValue({ name: keyword });
-    }
-  },
-  watch: {
-    $route() {
-      this.onSearchKeywordUpdate();
-    }
-  },
-  mounted() {
-    this.$nextTick(() => {
-      this.onSearchKeywordUpdate();
-    });
-  }
-};
+    };
 </script>
 
 <style lang="scss">
-#category-dropdown {
-  position: relative;
+    #category-dropdown {
+        position: relative;
 
-  > a {
-    color: #313131;
-    outline: none;
-    font-size: 17px;
-  }
+        > a {
+            color: #313131;
+            outline: none;
+            font-size: 17px;
+            @media screen and (max-width: 768px) {
+                font-size: 15px;
+            }
+        }
 
-  .dropdown-menu {
-    width: 620px;
-    background-color: #fff;
-    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
-    border: none;
-    border-radius: 5px;
-    padding: 10px 8px;
-    padding-left: 15px;
+        .dropdown-menu {
+            width: 620px;
+            background-color: #fff;
+            box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
+            border: none;
+            border-radius: 5px;
+            padding: 10px 8px;
+            padding-left: 15px;
 
-    li {
-      padding: 5px 0;
+            li {
+                padding: 5px 0;
+            }
+
+            .group-title {
+                padding-bottom: 5px;
+                font-weight: 700;
+                font-size: 16px;
+                text-transform: uppercase;
+            }
+
+            .group-items.flex {
+                display: flex;
+                flex-wrap: wrap;
+
+                button {
+                    flex-grow: 1;
+                    width: 33%;
+                    text-align: left;
+                }
+            }
+
+            .group-items.inline {
+                display: flex;
+                align-items: center;
+                justify-content: left;
+
+                button {
+                    text-align: left;
+                    display: inline;
+                    margin-right: 10px;
+                }
+            }
+
+            button {
+                display: block;
+                margin: 7px 0;
+                padding: 0;
+                font-size: 16px;
+                color: rgba(0, 0, 0, 0.4);
+                border: none;
+                background: transparent;
+                outline: none;
+                transition: color 0.2s;
+
+                &:hover {
+                    color: rgba(0, 0, 0, 0.7);
+                }
+            }
+        }
     }
 
-    .group-title {
-      padding-bottom: 5px;
-      font-weight: 700;
-      font-size: 16px;
-      text-transform: uppercase;
+    .searchbox {
+        position: relative;
+
+        .autocomplete-input {
+            outline: none;
+            box-shadow: none;
+            width: 500px;
+            height: 38px;
+            border-radius: 30px;
+            padding: 0 20px;
+            padding-right: 60px;
+            border: 1px solid #d1d1d1 !important;
+            line-height: 1.5;
+            background-image: none;
+            @media screen and (max-width: 768px) {
+                font-size: 15px;
+            }
+        }
+
+        .action-buttons {
+            position: absolute;
+            top: 0;
+            right: 10px;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .btn-action {
+                margin-right: 5px;
+                color: #c5c5c5;
+                cursor: pointer;
+                transition: color 0.2s;
+
+                &:hover {
+                    color: #aaa;
+                }
+
+                &.btn-clear {
+                    font-size: 25px;
+                }
+
+                &.btn-search {
+                    font-size: 16px;
+                }
+            }
+        }
     }
 
-    .group-items.flex {
-      display: flex;
-      flex-wrap: wrap;
+    @media screen and (max-width: 1220px) {
+        .searchbox .autocomplete-input {
+            max-width: 375px;
+            width: 100%;
+        }
 
-      button {
-        flex-grow: 1;
-        width: 33%;
-        text-align: left;
-      }
+        #category-dropdown .dropdown-menu {
+            width: 520px;
+        }
     }
-
-    .group-items.inline {
-      display: flex;
-      align-items: center;
-      justify-content: left;
-
-      button {
-        text-align: left;
-        display: inline;
-        margin-right: 10px;
-      }
-    }
-
-    button {
-      display: block;
-      margin: 7px 0;
-      padding: 0;
-      font-size: 16px;
-      color: rgba(0, 0, 0, 0.4);
-      border: none;
-      background: transparent;
-      outline: none;
-      transition: color 0.2s;
-
-      &:hover {
-        color: rgba(0, 0, 0, 0.7);
-      }
-    }
-  }
-}
-
-.searchbox {
-  position: relative;
-
-  .autocomplete-input {
-    outline: none;
-    box-shadow: none;
-    width: 500px;
-    height: 38px;
-    border-radius: 30px;
-    padding: 0 20px;
-    padding-right: 60px;
-    border: 1px solid #d1d1d1 !important;
-    line-height: 1.5;
-    background-image: none;
-  }
-
-  .action-buttons {
-    position: absolute;
-    top: 0;
-    right: 10px;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    .btn-action {
-      margin-right: 5px;
-      color: #c5c5c5;
-      cursor: pointer;
-      transition: color 0.2s;
-
-      &:hover {
-        color: #aaa;
-      }
-
-      &.btn-clear {
-        font-size: 25px;
-      }
-
-      &.btn-search {
-        font-size: 16px;
-      }
-    }
-  }
-}
-
-@media screen and (max-width: 1220px) {
-  .searchbox .autocomplete-input {
-    max-width: 375px;
-    width: 100%;
-  }
-
-  #category-dropdown .dropdown-menu {
-    width: 520px;
-  }
-}
 </style>

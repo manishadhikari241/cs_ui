@@ -95,7 +95,6 @@ export default {
             coverUploaded({url}) {
                 this.$axios.$patch(`/posts/${this.itemId}`, {cover: url})
                     .then((response) => {
-                        console.log(response);
                         this.$toast.success('Image updated successfully');
                         this.item.cover = response.cover;
                         this.$emit('updated', {refresh: true});
@@ -106,7 +105,6 @@ export default {
             coverUploaded2({url}) {
                 this.$axios.$patch(`/posts/${this.itemId}`, {cover_2: url})
                     .then((response) => {
-                        console.log(response);
                         this.$toast.success('Image updated successfully');
                         this.item.main_cover = response.main_cover;
                         this.$emit('updated', {refresh: true});
@@ -123,7 +121,6 @@ export default {
                     descriptionEN: this.item.translations[0].description,
                     descriptionCH: this.item.translations[1].description,
                 }).then((response) => {
-                    console.log(response);
                     this.loading = false;
                     this.$toast.success('Post updated successfully');
                     this.$emit('updated', {refresh: true});

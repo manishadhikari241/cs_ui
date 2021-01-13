@@ -34,7 +34,7 @@
             <div class="prop">JPG Image</div>
             <div class="value">
               <div class="mainDesign">
-                <img :src="`${serverURL}/api/v1/image/thumbnail/design/${item.code}/tiny`">
+                <img :src="`/api/v1/image/thumbnail/design/${item.code}/tiny`">
               </div>
               <br>
               <b-form-file placeholder="Upload/Replace JPG Image" @change="uploadImage($event)" v-model="image.item" v-show="!image.loading"></b-form-file>
@@ -109,8 +109,6 @@ export default {
   },
   data() {
     return {
-      serverURL: process.env.NUXT_ENV_SERVER,
-
       tags: [],
       colors: [],
 
@@ -242,7 +240,7 @@ export default {
     downloadZip() {
       this.$axios.$post('/token/generate')
         .then((response) => {
-          window.location.href = `${this.serverURL}/api/download/${this.item.code}?package=extended&token=${response.token}`;
+          window.location.href = `/api/download/${this.item.code}?package=extended&token=${response.token}`;
         })
     },
 

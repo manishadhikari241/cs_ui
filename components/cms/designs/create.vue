@@ -171,15 +171,7 @@ export default {
         })
         .catch(error => {
           this.loading = false;
-          if (error.response.status == 422) {
-            if (error.response.data.errors) {
-              this.$toast.error(error.response.data.errors.tags);
-            }
-          }
-          else{
-            this.$toast.error(error.response.data.error.message);
-
-          }
+          this.$toast.error(error.response.data.error.message);
         });
     },
 

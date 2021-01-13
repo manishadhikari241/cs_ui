@@ -1,6 +1,6 @@
 <template>
-  <div :id="id" class="component designSlider">
-    <div class="designContainer" :style="{'background-position': (sliderValue >= 100 ? '100% 100%' : '-100% -100%'), 'background-size': (sliderValue)+'%', 'background-image': `url(${getBackgroundURL()})`}">
+  <div :class="`component designSlider ${mode}`">
+    <div ref="designContainer" class="designContainer" :style="{'background-position': (sliderValue >= 100 ? '100% 100%' : '-100% -100%'), 'background-size': (sliderValue)+'%', 'background-image': `url(${getBackgroundURL()})`}">
       <img class="empty" src="~/assets/empty.jpg">
       <div v-if="mask === null" class="pending"></div>
       <div class="mask-container" v-if="mask" :style="`background-image: url('/cloudfront/uploads/good/${mask.image}')`"></div>
@@ -9,7 +9,7 @@
           <div class="social fb">
             <ShareNetwork :popup="{width: 400, height: 300}"
               network="facebook"
-              :url="'https://new.collectionstock.com'"
+              :url="`${baseUrl}/api/social/design/${$i18n.locale}/${designCode}`"
               :title="`Design Code: ${designCode}`"
               :quote="`Design Code: ${designCode}`"
             >
@@ -19,7 +19,7 @@
           <div class="social twitter">
             <ShareNetwork :popup="{width: 400, height: 300}"
               network="twitter"
-              :url="'https://new.collectionstock.com'"
+              :url="`${baseUrl}/api/social/design/${$i18n.locale}/${designCode}`"
               :title="`Design Code: ${designCode}`"
               :quote="`Design Code: ${designCode}`"
             >
@@ -29,15 +29,16 @@
           <div class="social twitter">
             <ShareNetwork :popup="{width: 400, height: 300}"
               network="pinterest"
-              :url="'https://new.collectionstock.com'"
+              :url="`${baseUrl}/api/social/design/${$i18n.locale}/${designCode}`"
               :title="`Design Code: ${designCode}`"
               :quote="`Design Code: ${designCode}`"
+              :media="`${baseUrl}/api/v1/image/detail/design/${this.designCode}`"
             >
               <i class="fab fa-pinterest"></i>
             </ShareNetwork>
           </div>
         </div>
-        <a :href="`${serverURL}/api/media/preview/${designCode}`" class="preview">{{ $t('preview') }}</a>
+        <a :href="`/api/media/preview/${designCode}`" class="preview">{{ $t('preview') }}</a>
       </div>
     </div>
     <range-slider
@@ -56,18 +57,12 @@
 </template>
 
 <script>
-import RangeSlider from 'vue-range-slider'
-import 'vue-range-slider/dist/vue-range-slider.css'
-import {BIconChevronUp, BIconPlus, BIconDash} from 'bootstrap-vue'
+import RangeSlider from "vue-range-slider";
+import "vue-range-slider/dist/vue-range-slider.css";
+import { BIconChevronUp, BIconPlus, BIconDash } from "bootstrap-vue";
 
 export default {
-  props: [
-    'id',
-    'designCode',
-    'mask',
-    'designURL',
-    'mode'
-  ],
+  props: ["designCode", "mask", "designURL", "mode"],
   components: {
     RangeSlider,
     BIconChevronUp,
@@ -76,23 +71,25 @@ export default {
   },
   data() {
     return {
-      cloudfrontURL: process.env.NUXT_ENV_CLOUDFRONT,
-      serverURL: process.env.NUXT_ENV_SERVER,
+      baseUrl: process.env.BASE_URL,
       sliderValue: 100,
       bgPositionX: 100,
       bgPositionY: 100
+    };
+  },
+  watch: {
+    sliderValue: function() {
+        this.initDragging();
+
     }
   },
   methods: {
     sliderUp: function() {
-      if (this.sliderValue < 200)
-        this.sliderValue += 10;
+      if (this.sliderValue < 200) this.sliderValue += 10;
     },
     sliderDown: function() {
-      if (this.sliderValue === 10)
-        this.sliderValue = 1;
-      else if (this.sliderValue > 0)
-        this.sliderValue -= 10;
+      if (this.sliderValue === 10) this.sliderValue = 1;
+      else if (this.sliderValue > 0) this.sliderValue -= 10;
     },
     sliderReset: function() {
       this.sliderValue = 100;
@@ -101,65 +98,91 @@ export default {
     },
 
     getBackgroundURL() {
-      if (this.designCode) return `${this.serverURL}/api/v1/image/detail/design/${this.designCode}`;
+      if (this.designCode)
+        return `/api/v1/image/detail/design/${this.designCode}`;
       if (this.mask === null) return null;
       return this.designURL;
     },
 
-
     initDragging() {
-      var container = document.querySelector(`#${this.id} .designContainer`);
+      console.log(this.sliderValue);
 
-      container.addEventListener("touchstart", dragStart, false);
-      container.addEventListener("mousedown", dragStart, false);
-      document.addEventListener("touchend", dragEnd, false);
-      document.addEventListener("mouseup", dragEnd, false);
+      if (this.sliderValue != 100) {
+        var container = this.$refs.designContainer;
+        if (!container) return false;
 
-      let self = this;
+        container.addEventListener("touchstart", dragStart, false);
+        container.addEventListener("mousedown", dragStart, false);
+        document.addEventListener("touchend", dragEnd, false);
+        document.addEventListener("mouseup", dragEnd, false);
 
-      function dragEnd(e) {
-        document.removeEventListener('touchmove', dragging);
-        document.removeEventListener('mousemove', dragging);
-      }
+        let self = this;
 
-      var containerSize, elepos, mousedown, patternBackground, patternBackgroundWidth, zoomLevel;
-
-      function dragStart(e) {
-        e.preventDefault();
-        patternBackground = container;
-        patternBackgroundWidth = container.clientWidth;
-        mousedown = {
-          x: e.pageX || e.touches[0].pageX,
-          y: e.pageY || e.touches[0].pageY
-        };
-        elepos = {
-          x: parseFloat(patternBackground.style.backgroundPosition.split(" ")[0].replace('%', '')),
-          y: parseFloat(patternBackground.style.backgroundPosition.split(" ")[1].replace('%', ''))
-        };
-        zoomLevel = parseInt(self.sliderValue);
-        containerSize = parseInt(patternBackgroundWidth);
-
-        document.addEventListener("touchmove", dragging, false);
-        document.addEventListener("mousemove", dragging, false);
-      }
-
-      function dragging(e) {
-        var actualMovePercentage, mousepos, movePercentage;
-        mousepos = {
-          x: e.pageX || e.changedTouches[0].pageX || mousedown.x,
-          y: e.pageY || e.changedTouches[0].pageY || mousedown.y
-        };
-        if (mousedown !== mousepos) {
-          movePercentage = {
-            x: 100 * (mousepos.x - mousedown.x) / patternBackgroundWidth,
-            y: 100 * (mousepos.y - mousedown.y) / patternBackgroundWidth };
-
-          actualMovePercentage = {
-            x: 0.7 / (1 - zoomLevel / 100) * movePercentage.x,
-            y: 0.7 / (1 - zoomLevel / 100) * movePercentage.y };
-
-          patternBackground.style.backgroundPosition = `${elepos.x + actualMovePercentage.x}% ${elepos.y + actualMovePercentage.y}%`;
+        function dragEnd(e) {
+          document.removeEventListener("touchmove", dragging);
+          document.removeEventListener("mousemove", dragging);
         }
+
+        var containerSize,
+          elepos,
+          mousedown,
+          patternBackground,
+          patternBackgroundWidth,
+          zoomLevel;
+
+        function dragStart(e) {
+          e.preventDefault();
+          patternBackground = container;
+          patternBackgroundWidth = container.clientWidth;
+          mousedown = {
+            x: e.pageX || e.touches[0].pageX,
+            y: e.pageY || e.touches[0].pageY
+          };
+          elepos = {
+            x: parseFloat(
+              patternBackground.style.backgroundPosition
+                .split(" ")[0]
+                .replace("%", "")
+            ),
+            y: parseFloat(
+              patternBackground.style.backgroundPosition
+                .split(" ")[1]
+                .replace("%", "")
+            )
+          };
+          zoomLevel = parseInt(self.sliderValue);
+          containerSize = parseInt(patternBackgroundWidth);
+
+          document.addEventListener("touchmove", dragging, false);
+          document.addEventListener("mousemove", dragging, false);
+        }
+
+        function dragging(e) {
+          var actualMovePercentage, mousepos, movePercentage;
+          mousepos = {
+            x: e.pageX || e.changedTouches[0].pageX || mousedown.x,
+            y: e.pageY || e.changedTouches[0].pageY || mousedown.y
+          };
+          if (mousedown !== mousepos) {
+            movePercentage = {
+              x: 100 * (mousepos.x - mousedown.x) / patternBackgroundWidth,
+              y: 100 * (mousepos.y - mousedown.y) / patternBackgroundWidth
+            };
+
+            actualMovePercentage = {
+              x: 0.7 / (1 - zoomLevel / 100) * movePercentage.x,
+              y: 0.7 / (1 - zoomLevel / 100) * movePercentage.y
+            };
+
+            patternBackground.style.backgroundPosition = `${elepos.x +
+              actualMovePercentage.x}% ${elepos.y + actualMovePercentage.y}%`;
+          }
+        }
+      }
+        if (this.sliderValue == 100) {
+        var container = this.$refs.designContainer;
+        if (!container) return false;
+
       }
     }
   },
@@ -168,7 +191,7 @@ export default {
       this.initDragging();
     });
   }
-}
+};
 </script>
 
 <style lang="scss">
@@ -187,7 +210,7 @@ export default {
       width: 100%;
       height: 100%;
       z-index: 100;
-      background: #fff url('~@/assets/icons/pending.png') no-repeat center;
+      background: #fff url("~@/assets/icons/pending.png") no-repeat center;
       background-size: 60%;
     }
 
@@ -201,6 +224,10 @@ export default {
       background-repeat: no-repeat;
       background-size: 100%;
       background-position: center;
+      //   @media screen and (max-width: 550px) {
+      //  background-repeat: unset;
+
+      //   }
     }
 
     img {
@@ -210,7 +237,7 @@ export default {
     }
 
     .socialBox {
-      background: rgba(255, 255, 255, .9);
+      background: rgba(255, 255, 255, 0.9);
       position: absolute;
       bottom: 0;
       left: 0;
@@ -232,6 +259,11 @@ export default {
         a {
           color: inherit;
         }
+
+        @media screen and (max-width: 1023px) {
+          font-size: 15px;
+          margin-left: 10px;
+        }
       }
 
       .preview {
@@ -241,6 +273,11 @@ export default {
         margin-right: 20px;
         margin-top: 7px;
         font-weight: 600;
+        @media screen and (max-width: 1023px) {
+          font-size: 10px;
+          margin-right: 10px;
+          margin-top: 3px;
+        }
       }
     }
   }

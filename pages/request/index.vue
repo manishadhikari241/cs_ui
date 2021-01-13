@@ -103,7 +103,7 @@
             checkAndRedirect(url) {
                 if (!this.$auth.loggedIn) {
                     this.$bvModal.show("modal-auth");
-                } else if (this.$auth.loggedIn && url == "/request/create") {
+                } else if (this.$auth.loggedIn && url == "/request/create" || url == "/ch/request/create") {
                     this.$axios
                         .$get(`/requests/collection/hasPending`)
                         .then(response => {

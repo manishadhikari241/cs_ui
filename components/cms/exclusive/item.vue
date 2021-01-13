@@ -73,7 +73,10 @@
         <div class="info-row">
           <div class="prop">File</div>
           <div class="value">
-            <img v-if="item.files.length" v-for="(value,key) in item.files" style="height: 200px;" :src="`${cloudfrontURL}/uploads/user/lib-request/${item.files[key].name}`">
+            <template v-if="item.files.length">
+              <img v-for="(value,key) in item.files" :key="`file_${key}`" style="height: 200px; margin-right: 10px;
+    margin-bottom: 10px;" :src="`/cloudfront/uploads/user/lib-request/${item.files[key].name}`">
+            </template>
           </div>
         </div>
         <div class="info-row" v-if="item.status != 2">
@@ -103,7 +106,7 @@
             </div>
             <div v-else>
               <nuxt-link :to="`/cms/designs?id=${item.designs[0].id}`">
-                <img v-if="item.designs.length" style="height: 200px;" :src="`${serverURL}/api/v1/image/thumbnail/design/${item.designs[0].code}/tiny`">
+                <img v-if="item.designs.length" style="height: 200px;" :src="`/api/v1/image/thumbnail/design/${item.designs[0].code}/tiny`">
               </nuxt-link>
             </div>
           </div>
@@ -120,8 +123,6 @@ export default {
     return {
       item: null,
       loading: false,
-      cloudfrontURL: process.env.NUXT_ENV_CLOUDFRONT,
-      serverURL: process.env.NUXT_ENV_SERVER,
       reject: {
         message: ''
       },

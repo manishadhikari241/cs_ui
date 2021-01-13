@@ -1,29 +1,54 @@
 <template>
   <div class="page exclusive">
-    <PageInfo :slug="'exclusive'" />
+    <div class="row">
+      <div class="col-md-6">
+            <PageInfo :slug="'exclusive'" />
     <br />
     <div class="intro">
       <div class="intro-row">
-        <span class="icon"><i class="fas fa-pen"></i></span>
-        <span class="text">{{ $t("exclusive_1") }}</span>
+        <div class="row">
+               <div class="col-md-1 col-1">
+                 <span class="icon"><i class="fas fa-pen"></i></span>
+              </div>
+              <div class="col-md-10 col-10 exclusive-desription">
+                <span class="text">{{ $t("exclusive_1") }}</span>
+              </div>
+          </div>
       </div>
       <div class="intro-row">
+                <div class="row">
+               <div class="col-md-1 col-1 ">
         <span class="icon"><i class="fas fa-key"></i></span>
+              </div>
+              <div class="col-md-10 col-10 exclusive-desription">
         <span class="text">{{ $t("exclusive_2") }}</span>
+              </div>
+          </div>
       </div>
       <div class="intro-row">
+                      <div class="row">
+               <div class="col-md-1 col-1">
         <span class="icon"><i class="fas fa-copyright"></i></span>
+              </div>
+              <div class="col-md-10 col-10 exclusive-desription">
         <span class="text">{{ $t("exclusive_3") }}</span>
+              </div>
+          </div>
       </div>
       <div class="intro-row">
+                            <div class="row">
+               <div class="col-md-1 col-1">
         <span class="icon"><i class="fas fa-fingerprint"></i></span>
+              </div>
+              <div class="col-md-10 col-10 exclusive-desription">
         <span class="text">{{ $t("exclusive_4") }}</span>
+              </div>
+          </div>
       </div>
     </div>
-    <br /><br />
+    <br />
     <div class="buttons">
       <b-button
-        class="mb-2"
         v-if="yourDesignButton"
         @click="checkAndRedirect(localePath('/exclusive/list'))"
         >{{ $t("your_designs") }}</b-button
@@ -34,11 +59,18 @@
             checkAndRedirect(localePath('/exclusive/create'));
           })
         "
-        class="primary mb-2"
+        class="primary"
         >{{ $t("order_a_design") }}
         <span v-if="init.quota">({{ init.quota.exclusive }})</span></b-button
       >
     </div>
+</div>
+      <div class="col-md-6  exclusive-image d-none d-md-block">
+        <img class="img-fluid" src="~/assets/static/exclusive_c.png"/>
+
+      </div>
+
+      </div>
 
     <br /><br /><br />
 
@@ -47,7 +79,7 @@
         <b-col md="7">
           <div class="component pageinfo">
             <div class="pageinfo-head">
-              <h1 class="pageinfo-title">{{ $t("tailor_made") }}</h1>
+              <h1 class="pageinfo-title">{{ $t("exclusively") }}</h1>
             </div>
             <p class="description">{{ $t("just_for_you") }}</p>
           </div>
@@ -57,14 +89,14 @@
             <b>{{ $t("exclusive_ownership_certificate_bold") }}</b>
           </p>
         </b-col>
-        <b-col md="5">
+       <b-col md="5">
           <div class="plan">
             <div class="title">{{ $t("our_pricing") }}</div>
             <br /><br />
             <div class="buttons ">
               <div class="">
                 <b-button
-                  class=" mb-2 w-100 mr-0"
+                  class=" mb-2 mr-0"
                   @click="plan.selected = 0"
                   :class="{ active: plan.selected == 0 }"
                 >
@@ -74,7 +106,7 @@
               </div>
               <div class="">
                 <b-button
-                  class=" mb-2 w-100 mr-0"
+                  class=" mb-2 mr-0"
                   @click="plan.selected = 1"
                   :class="{ active: plan.selected == 1 }"
                 >
@@ -107,6 +139,8 @@
               <b-button class="btn-buy" @click="buy">{{
                 $t("buy_now")
               }}</b-button>
+              <p class="payments-are-made">{{$t('payments_are_made_in_usd')}}
+              </p>
             </div>
           </div>
         </b-col>
@@ -132,26 +166,35 @@
             class="table b-table"
           >
             <thead role="rowgroup">
-              <tr role="row">
-                <th role="columnheader" scope="col" aria-colindex="1">
-                  <div>&nbsp;</div>
-                </th>
-                <th role="columnheader" scope="col" aria-colindex="2">
-                  <div class="standard text-center columnheader">
-                    {{ $t("standard") }}
-                  </div>
-                </th>
-                <th role="columnheader" scope="col" aria-colindex="3">
-                  <div class="extended text-center columnheader">
-                    {{ $t("extended") }}
-                  </div>
-                </th>
-                <th role="columnheader" scope="col" aria-colindex="4">
-                  <div class="extended text-center columnheader">
-                    {{ $t("exclusive") }}
-                  </div>
-                </th>
-              </tr>
+            <tr role="row">
+              <th role="columnheader" scope="col" aria-colindex="1">
+                <div>&nbsp;</div>
+              </th>
+              <th role="columnheader" scope="col" aria-colindex="2">
+                <div class="standard text-center columnheader d-md-none d-sm-flex">
+                  {{ $t("std") }}
+                </div>
+                <div class="standard text-center columnheader d-none d-md-block">
+                  {{ $t("standard") }}
+                </div>
+              </th>
+              <th role="columnheader" scope="col" aria-colindex="3">
+                <div class="extended text-center columnheader d-md-none d-sm-flex">
+                  {{ $t("ext") }}
+                </div>
+                <div class="extended text-center columnheader d-none d-md-block">
+                  {{ $t("extended") }}
+                </div>
+              </th>
+              <th role="columnheader" scope="col" aria-colindex="4">
+                <div class="extended text-center columnheader d-md-none d-sm-flex">
+                  {{ $t("exc") }}
+                </div>
+                <div class="exclusive text-center columnheader d-none d-md-block">
+                  {{ $t("exclusive") }}
+                </div>
+              </th>
+            </tr>
             </thead>
             <tbody role="rowgroup">
               <tr role="row">
@@ -327,7 +370,7 @@ export default {
       yourDesignButton: false,
 
       plan: {
-        selected: 0
+        selected: 1
       }
     };
   },
@@ -341,8 +384,6 @@ export default {
     checkDesignButton() {
       if (this.$auth.loggedIn) {
         this.$axios.$get(`/requests/exclusive/check`).then(response => {
-          console.log(response);
-
           if (
             response.data.length == 0 ||
             Object.keys(response.data).length == 0
@@ -371,7 +412,7 @@ export default {
       if (!this.$auth.loggedIn) this.$bvModal.show("modal-auth");
       else {
         if (this.init.quota["exclusive"] <= 0) {
-          this.$toast.error(this.$t("not_enough_quota"));
+          // this.$toast.error(this.$t("not_enough_quota"));
           this.buy();
         } else callback();
       }
@@ -387,9 +428,39 @@ export default {
 
 <style lang="scss" scoped>
 .page.exclusive {
+     .row .exclusive-image{
+       @media screen and (max-width: 768px) {
+         padding-top: 61px;
+       }
+       .img-fluid {
+         @media screen and (min-width: 1440px) {
+           padding: 0 90px;
+         }
+         @media screen and (min-width: 1220px) and (max-width: 1439px) {
+           padding: 0 90px;
+         }
+         @media screen and (min-width: 1024px) and (max-width: 1219px) {
+           padding: 50px;
+         }
+         @media screen and (min-width: 768px) and (max-width: 1023px) {
+           padding: 0 40px;
+           margin-top: 50px;
+         }
+       }
+      }
   .intro {
+    margin-bottom: 20px;
     .intro-row {
+           .row .exclusive-desription {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+      }
+
+
       margin: 5px 0;
+          margin-bottom: 13px;
+
 
       .icon {
         font-size: 40px;
@@ -397,7 +468,6 @@ export default {
         @media screen and (max-width: 768px) {
           font-size: 27px;
         }
-
       }
 
       .text {
@@ -405,13 +475,16 @@ export default {
         font-size: 20px;
         color: #666;
         @media screen and (max-width: 768px) {
-          font-size: 16px;
+          font-size: 14px;
         }
       }
     }
   }
 
   .buttons {
+    @media screen and (min-width: 425px) and (max-width: 768px) {
+      display: flex;
+    }
     button {
       display: inline-block;
       padding: 10px 25px;
@@ -422,6 +495,7 @@ export default {
       text-decoration: none;
       border-radius: 30px;
       margin-right: 20px;
+      margin-bottom: 20px;
       box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
       transition: all 0.2s;
       border: none;
@@ -435,6 +509,7 @@ export default {
       }
       @media screen and (max-width: 768px) {
         font-size: 14px;
+        width: 200px;
       }
     }
   }
@@ -485,9 +560,10 @@ export default {
           font-size: 16px;
           outline: none;
           box-shadow: none;
+          width: 100%;
           @media screen and (max-width: 768px) {
             font-size: 14px;
-
+            width: 100px;
           }
 
           &.active {
@@ -510,15 +586,29 @@ export default {
           font-size: 60px;
           color: #363636;
           font-weight: 600;
+          @media screen and (max-width: 768px) {
+            font-size: 50px;
+          }
         }
 
         .small {
           font-size: 20px;
           color: $black;
+          @media screen and (max-width: 768px) {
+            font-size: 16px;
+          }
         }
       }
 
       .btn-buy-container {
+        .payments-are-made {
+          margin-top: 19px;
+          font-size: 13px;
+          margin-bottom: 0px;
+          @media screen and (max-width: 768px) {
+            font-size: 10px;
+          }
+        }
         text-align: center;
         margin-top: 20px;
 
@@ -537,11 +627,8 @@ export default {
           @media screen and (max-width: 768px) {
             font-size: 14px;
             width: 135px;
-
-
           }
         }
-
       }
     }
   }

@@ -39,13 +39,10 @@ export default {
     onSuccess (payload) {
       let nonce = payload.nonce;
       this.$emit('onSuccess', nonce);
-      // Do something great with the nonce...
     },
     
     onError (error) {
       let message = error.message;
-      // alert(message);
-      // Whoops, an error has occured while trying to get the nonce
     },
 
     onLoad () {

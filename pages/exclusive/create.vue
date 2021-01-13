@@ -70,8 +70,11 @@
 
                                     <figure>
                                         <img :src="image" style="height:200px; width:200px">
-                                        <button class="remove-image" @click="deleteItem(key,$event)"><i
-                                                class="fa fa-times-circle"></i></button>
+
+                                        <span @click="deleteItem(key,$event)">
+                                               <i class="fa fa-times-circle remove-image" ></i>
+                                        </span>
+
                                     </figure>
                                 </div>
                             </b-col>
@@ -216,7 +219,7 @@
                             <b-col>
                                 <div class="actions">
                                     <button class="send_application" type="submit" :disabled="submitting">{{
-                                        $t('send_application') }}
+                                        $t('order_design') }}
                                     </button>
                                     <button class="back" :disabled="submitting">
                                         <nuxt-link :to="localePath('/exclusive')">{{ $t('back') }}</nuxt-link>
@@ -572,12 +575,14 @@
 
             .remove-image {
                 position: absolute;
-                background: #363636;
-                color: white;
+                background: white;
+                color: #363636;
                 top: -10px;
                 right: -10px;
                 border-radius: 20px;
                 border: none;
+                height:23px;
+                width:23px;
             }
 
             .preview {

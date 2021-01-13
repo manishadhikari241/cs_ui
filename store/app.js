@@ -44,6 +44,9 @@ export const mutations = {
   updateQuota(state, { key, delta }) {
     state.init.quota[key] += delta;
   },
+  updatePlanQuota(state, { delta }) {
+    state.init.plan_quota += delta;
+  },
 
   setAddresses(state, addresses) {
     state.init.addresses = addresses;

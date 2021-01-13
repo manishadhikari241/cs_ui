@@ -60,7 +60,7 @@
           <div class="value">
             <div class="designs-list">
               <div class="design" v-for="(design, $index) in request.designs" :key="design.id">
-                <img :src="`${serverURL}/api/v1/image/thumbnail/design/${design.code}/tiny`">
+                <img :src="`/api/v1/image/thumbnail/design/${design.code}/tiny`">
                 <b-button size="sm" variant="danger" @click="removeDesign($index)">unlink</b-button>
               </div>
             </div>
@@ -137,9 +137,6 @@ export default {
   },
   data() {
     return {
-      cloudfrontURL: process.env.NUXT_ENV_CLOUDFRONT,
-      serverURL: process.env.NUXT_ENV_SERVER,
-
       loading: false,
 
       categories: [],

@@ -5,7 +5,7 @@
       <div class="design-container" v-if="design">
         <Design :design="design" />
         <div class="design-simulator-separator">
-          <div class="line"></div>
+          <div class="line d-none d-sm-none d-md-block"></div>
           <div class="text">{{ $t('try_design_on_product') }}</div>
         </div>
         <Simulator :design="design" />
@@ -34,7 +34,7 @@ export default {
     return {
       meta: [
         { hid: 'description', name: 'description', content: this.pageData.translations[this.$i18n.locale].meta_description },
-        { hid: 'keywords', name: 'keywords', content: this.pageData.translations[this.$i18n.locale].meta_keywords },
+        { hid: 'keywords', name: 'keywords', content: this.pageData.translations[this.$i18n.locale].meta_keywords }
       ]
     }
   },
@@ -65,6 +65,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.page{
+      margin: 25px auto 0;
+}
 .page.designs {
   .design-simulator-separator {
     height: 100px;
@@ -74,6 +77,9 @@ export default {
     align-items: center;
     justify-content: center;
     position: relative;
+        @media screen and (max-width: 767px) {
+      justify-content:flex-start;
+    }
 
     .text {
       background: #fff;

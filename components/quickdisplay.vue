@@ -76,7 +76,7 @@ export default {
     },
 
     getArrowPositionClass() {
-      return (this.selectedIndex%5)*20+10;
+      return (this.selectedIndex%4)*26+10;
     }
   }
 }

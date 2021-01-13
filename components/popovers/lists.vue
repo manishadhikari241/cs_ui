@@ -4,7 +4,6 @@
       <b-popover
         :target="target"
         triggers="click blur"
-        placement="auto"
         custom-class="design-list-popover"
       >
         <template v-slot:title>
@@ -18,7 +17,7 @@
           <div class="list-row">
             <div class="destination">
               <form @submit.prevent="createList">
-                <b-input :placeholder="$t('name_a_new_list')" autocomplete="off" v-model="newListName" :disabled="creatingList" required></b-input>
+                <b-input :placeholder="$t('name_a_list')" autocomplete="off" v-model="newListName" :disabled="creatingList" required></b-input>
               </form>
             </div>
             <div class="action">
@@ -62,6 +61,7 @@ export default {
   },
   data() {
     return {
+      baseUrl: process.env.BASE_URL,
       newListName: '',
       creatingList: false,
       addingToList: -1,
@@ -94,7 +94,7 @@ export default {
     addToList(listId) {
       if (this.addingToList == -1) {
         this.addingToList = listId;
-        this.$axios.$post(`/list/${listId}`, { design_id: this.design.id })
+        this.$axios.$post(`${this.baseUrl}/api/list/${listId}`, { design_id: this.design.id })
           .then((response) => {
             this.addingToList = -1;
 
@@ -146,6 +146,10 @@ export default {
   width: 400px;
   border: 1px solid #000;
   box-shadow: 0 0 15px rgba(0, 0, 0, .7);
+     @media screen and (max-width: 550px) {
+     width: 300px;
+
+            }
 
   .popover-header {
     padding-top: 15px;
@@ -175,6 +179,8 @@ export default {
         input {
           outline: none;
           box-shadow: none;
+                    font-size: 18px;
+
         }
 
         span {

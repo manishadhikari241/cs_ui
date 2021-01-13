@@ -28,7 +28,7 @@
             <div class="prop">Image</div>
             <div class="value">
               <div class="design-preview">
-                <img :src="`${cloudfrontURL}/uploads/good/${item.image}`">
+                <img :src="`/cloudfront/uploads/good/${item.image}`">
               </div>
               <b-form-file v-model="image.item" placeholder="Upload/Replace Image" @change="uploadImage($event)" v-show="!image.loading"></b-form-file>
               <b-spinner label="Loading..." v-show="image.loading"></b-spinner>
@@ -54,8 +54,6 @@ export default {
   props: ['itemId'],
   data() {
     return {
-      cloudfrontURL: process.env.NUXT_ENV_CLOUDFRONT,
-
       item: null,
       loading: false,
       image: {

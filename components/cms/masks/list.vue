@@ -32,7 +32,7 @@
 
     <b-table id="cms-masks-list" :items="items" :fields="fields" :busy="loading" :select-mode="'single'" @row-clicked="select" sticky-header small selectable striped>
       <template v-slot:cell(image)="data">
-        <img style="height: 50px;" :src="`${cloudfrontURL}/uploads/good/${data.item.image}`">
+        <img style="height: 50px;" :src="`/cloudfront/uploads/good/${data.item.image}`">
       </template>
     </b-table>
   </div>
@@ -42,8 +42,6 @@
 export default {
   data() {
     return {
-      cloudfrontURL: process.env.NUXT_ENV_CLOUDFRONT,
-
       items: [],
       perPage: 20,
       currentPage: 1,
