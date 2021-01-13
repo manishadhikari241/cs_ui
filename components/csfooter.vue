@@ -1,26 +1,16 @@
 <template>
-  <div class="component csfooter">
+  <div
+    class="csfooter position-absolute w-100 text-white text-center fixed-bottom "
+  >
     <span>2020 © Collectionstock</span>
   </div>
 </template>
 
-<script>
-export default {
-  
-}
-</script>
-
 <style lang="scss" scoped>
-.component.csfooter {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
+.csfooter {
   height: 50px;
   line-height: 50px;
   background: #231f20;
-  color: #fff;
   margin-top: 50px;
-  text-align: center;
 }
 </style>
