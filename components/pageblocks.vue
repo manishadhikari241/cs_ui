@@ -1,61 +1,71 @@
 <template>
-  <div class="component pageblocks">
-    <b-container class="pageblock-container">
-      <b-row v-for="(block, $index) in blocks" :key="block.id">
-        <!-- <b-row v-for="block in blocks" :key="block.id"> -->
-        <b-col
-          md="6"
-          :order="
-            $index % 2 === 0
-              ? changedirection
-                ? 2
-                : 1
-              : changedirection
-              ? 1
-              : 2
-          "
-        >
-          <div class="pageblock image">
-            <img :src="`${imgBaseURL}/storage/${block.image_url}`" />
-          </div>
-        </b-col>
-
-        <b-col
-          md="6"
-          :order="
-            $index % 2 === 0
-              ? changedirection
+  <div>
+    <div
+      class="component pageblocks "
+      :class="$router.history.current.path == '/' ? 'homey' : ''"
+      v-for="(block, $index) in blocks"
+      :key="block.id"
+    >
+      <b-container class="pageblock-container">
+        <b-row>
+          <!-- <b-row v-for="block in blocks" :key="block.id"> -->
+          <b-col
+            md="6"
+            :order="
+              $index % 2 === 0
+                ? changedirection
+                  ? 2
+                  : 1
+                : changedirection
                 ? 1
                 : 2
-              : changedirection
-              ? 2
-              : 1
-          "
-        >
-          <div class="pageblock text">
-            <div class="d-flex align-items-center">
-              <span class="increment-no" v-if="routeCheck">
-                {{ $index + 1 }}
-              </span>
-              <div>
-                <h1>{{ block.translations[$i18n.locale].title }}</h1>
-                 <p v-if="!routeCheck">{{ block.translations[$i18n.locale].description }}</p>
-                <nuxt-link
-                  :to="localePath(block.button_url)"
-                  v-if="
-                    block.button_url &&
+            "
+          >
+            <div class="pageblock image">
+              <img :src="`${imgBaseURL}/storage/${block.image_url}`" />
+            </div>
+          </b-col>
+
+          <b-col
+            md="6"
+            :order="
+              $index % 2 === 0
+                ? changedirection
+                  ? 1
+                  : 2
+                : changedirection
+                ? 2
+                : 1
+            "
+          >
+            <div class="pageblock text">
+              <div class="d-flex align-items-center">
+                <span class="increment-no" v-if="routeCheck">
+                  {{ $index + 1 }}
+                </span>
+                <div>
+                  <h1>{{ block.translations[$i18n.locale].title }}</h1>
+                  <p v-if="!routeCheck">
+                    {{ block.translations[$i18n.locale].description }}
+                  </p>
+                  <nuxt-link
+                    :to="localePath(block.button_url)"
+                    v-if="
+                      block.button_url &&
+                        block.translations[$i18n.locale].button_text
+                    "
+                    >{{
                       block.translations[$i18n.locale].button_text
-                  "
-                  >{{ block.translations[$i18n.locale].button_text }}</nuxt-link
-                >
+                    }}</nuxt-link
+                  >
+                </div>
               </div>
             </div>
-          </div>
-        </b-col>
-      </b-row>
-    </b-container>
+          </b-col>
+        </b-row>
+      </b-container>
 
-    <!-- <div class="container pageblock-container">
+      <!-- <div class="container pageblock-container">
       <div class="d-flex flex-column" v-for="block in blocks" :key="block.id">
         <div class="pageblock image order-2" >
           <img :src="`${imgBaseURL}/storage/${block.image_url}`" />
@@ -76,6 +86,7 @@
         </div>
       </div>
     </div> -->
+    </div>
   </div>
 </template>
 
@@ -97,15 +108,36 @@ export default {
 
 <style lang="scss" scoped>
 .component.pageblocks {
+  &.homey {
+    padding: 4rem 0;
+    &:nth-child(odd) {
+      background: #e9e9e9;
+    }
+    .container {
+      width: 1200px;
+      margin: 50px auto 0;
+      @media screen and (max-width: 1220px) {
+        width: 90%;
+        padding: 0 20px;
+      }
+      @media screen and (max-width: 767px) {
+        width: 98%;
+        padding: 0 20px;
+      }
+    }
+    .row {
+      margin-bottom: 0 !important;
+    }
+  }
   .pageblock-container {
-    margin: 0;
+    // margin: 0;
+    margin: 0 auto;
     padding: 0;
 
     .row {
-
       align-items: center;
       justify-content: center;
-          margin-bottom: 100px;
+      margin-bottom: 100px;
 
       @media screen and (max-width: 768px) {
         margin-bottom: 80px;
@@ -125,7 +157,8 @@ export default {
         font-weight: 700;
         color: #313131;
         @media screen and (max-width: 768px) {
-font-size: 22px;        }
+          font-size: 22px;
+        }
       }
 
       p {
@@ -135,7 +168,8 @@ font-size: 22px;        }
         font-size: 16px;
         color: #000;
         @media screen and (max-width: 768px) {
-font-size: 14px        }
+          font-size: 14px;
+        }
       }
 
       a {
@@ -158,7 +192,8 @@ font-size: 14px        }
     img {
       max-width: 90%;
       @media screen and (max-width: 768px) {
-max-width: 100%      }
+        max-width: 100%;
+      }
     }
   }
 }
@@ -200,6 +235,5 @@ max-width: 100%      }
   @media screen and (max-width: 768px) {
     font-size: 50px;
   }
-
 }
 </style>

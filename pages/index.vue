@@ -1,14 +1,35 @@
 <template>
-  <div class="page home">
-  <!-- <div class="container"> -->
-    <client-only>
-      <PageInfo :slug="'home'" />
-      <br /><br />
-      <div style="text-align: center" v-if="loading">
-        <b-spinner type="grow" label="Loading..."></b-spinner>
-      </div>
-      <PageBlocks :blocks="blocks" v-if="!loading" />
-    </client-only>
+  <div>
+    <div class="page home">
+      <!-- <div class="container"> -->
+      <client-only>
+        <div class="row">
+          <div class="col-md-6 col-sm-12 col-lg-6">
+            <PageInfo :slug="'home'" />
+            <b-button class="action-btn rounded-btn bg-white text-black "
+              >button
+            </b-button>
+          </div>
+          <div class="col-md-6 col-sm-12 col-lg-6">
+            <img
+              src="https://scontent.fktm3-1.fna.fbcdn.net/v/t1.15752-9/p1080x2048/138576217_252274512983308_531208600061513378_n.jpg?_nc_cat=101&ccb=2&_nc_sid=ae9488&_nc_ohc=7SDrZAzfsoAAX-nHp2i&_nc_ht=scontent.fktm3-1.fna&tp=6&oh=709c2e1973bb7a171c4b8332ad625dc8&oe=6023B45E"
+              class="img-fluid"
+              alt=""
+            />
+          </div>
+        </div>
+
+        <br /><br />
+        <div style="text-align: center" v-if="loading">
+          <b-spinner type="grow" label="Loading..."></b-spinner>
+        </div>
+      </client-only>
+    </div>
+    <!-- <div> -->
+    <!-- <div class="pagecontainer"> -->
+    <PageBlocks :blocks="blocks" v-if="!loading" />
+    <!-- </div> -->
+    <!-- </div> -->
   </div>
 </template>
 
@@ -147,5 +168,13 @@ export default {
       }
     }
   }
+}
+.rounded-btn {
+  background: white;
+  color: grey;
+  border-radius: 20px;
+  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.4);
+  border: none;
+  outline: none;
 }
 </style>
