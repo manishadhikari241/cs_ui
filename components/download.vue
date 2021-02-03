@@ -38,7 +38,18 @@ export default {
             key: this.pkg,
             index: 1
           });
-        } else {
+        }
+        else if( this.pkg =='exclusive'){
+                  if (downloadDetails.consumesQuota) {
+                  if (this.$auth.user.is_existing_user && this.pkg == 'extended')
+                    this.$store.commit("app/updatePlanQuota", {delta: -1});
+                  else
+                    this.$store.commit("app/updateQuota", {key: this.pkg, delta: -1});
+                }
+                window.location.href = `/api/download/${this.code}?package=${this.pkg}&token=${downloadDetails.token}`;
+        }
+        
+        else {
           var packageName = this.pkg.charAt(0).toUpperCase() + this.pkg.slice(1) == 'Standard' ? this.$t('standard'): this.$t('extended');
             const h = this.$createElement;
             var message = h("div", {

@@ -15,27 +15,45 @@
           <div class="item-row">
             <div class="prop">Code</div>
             <div class="value">
-              <b-input type="text" name="code" :value="item.code" :disabled="item.user_id" required></b-input>
+              <b-input type="text" :value="item.code" disabled></b-input>
             </div>
           </div>
           <div class="item-row">
             <div class="prop">Package</div>
             <div class="value">
-              <b-form-select v-model="item.package" :options="packages" name="package" :disabled="item.user_id" required></b-form-select>
+              <b-form-select :options="packages" :value="item.package" disabled></b-form-select>
             </div>
           </div>
           <div class="item-row">
-            <div class="prop">Quantity</div>
+            <div class="prop">{{ item.package == 'discount' ? 'Amount' : 'Quantity' }}</div>
             <div class="value">
-              <b-input type="text" name="quantity" :value="item.quantity" :disabled="item.user_id" required></b-input>
+              <b-input type="text" :value="item.quantity" disabled></b-input>
+            </div>
+          </div>
+          <div class="item-row">
+            <div class="prop">Multi Usage</div>
+            <div class="value">
+              <b-form-checkbox :checked="item.multi ? true : false" disabled></b-form-checkbox>
+            </div>
+          </div>
+          <div class="item-row" v-show="item.multi">
+            <div class="prop">Start Date</div>
+            <div class="value">
+              <b-form-datepicker size="sm" placeholder="Start Date" v-model="item.start_date" required></b-form-datepicker>
+            </div>
+          </div>
+          <div class="item-row" v-show="item.multi">
+            <div class="prop">End Date</div>
+            <div class="value">
+              <b-form-datepicker size="sm" placeholder="End Date" v-model="item.end_date" required></b-form-datepicker>
             </div>
           </div>
         </div>
         <div class="item-actions">
           <div style="text-align: center;">
-            <b-alert show variant="danger" v-if="item.user_id">Used coupons cannot be updated or deleted</b-alert>
+            <b-alert show variant="danger">You can only update start/end dates of multi usage coupons</b-alert>
           </div>
-          <b-button variant="primary" type="submit" :disabled="loading || item.user_id"><i class="far fa-edit"></i>&nbsp;&nbsp;Update</b-button>
+          <b-button variant="primary" type="submit" :disabled="loading || item.user_id" v-if="item.multi"><i class="far fa-edit"></i>&nbsp;&nbsp;Update</b-button>
         </div>
       </form>
     </div>
@@ -54,6 +72,7 @@ export default {
         { value: 'extended', text: 'Extended' },
         { value: 'simulator', text: 'Simulator' },
         { value: 'exclusive', text: 'Exclusive' },
+        { value: 'discount', text: 'Discount' }
       ]
     }
   },
@@ -71,11 +90,8 @@ export default {
 
     update(e) {
       this.loading = true;
-      this.$axios.$patch(`/cms/coupons/${this.itemId}`, {
-        code: e.target.elements.code.value,
-        pkg: e.target.elements.package.value,
-        quantity: e.target.elements.quantity.value,
-      }).then((response) => {
+      this.$axios.$patch(`/cms/coupons/${this.itemId}`, this.item)
+      .then((response) => {
         this.loading = false;
         this.$toast.success('Coupon updated successfully');
         this.$emit('updated', { refresh: true });

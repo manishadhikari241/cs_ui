@@ -5,6 +5,7 @@
       <div class="title ignorePrint">
         <span><i class="far fa-edit"></i>&nbsp;&nbsp;ID: {{ item.id }}</span>
         <div>
+          <b-button variant="primary" size="sm" @click="loginAs" v-if="$auth.user.role_id == 1" :disabled="impersonating">Login As</b-button>
           <b-button variant="outline-secondary" size="sm" @click="cancel">Cancel</b-button>
         </div>
       </div>
@@ -218,6 +219,25 @@
                 </div>
               </b-card-text>
             </b-tab>
+                  <b-tab  title="Newsletter">
+              <b-card-text>
+                <div class="general">
+            <b-table  class="payment-history" :items="item.concent_histories" :fields="fields" :responsive="'md'" striped>
+
+                                 <template v-slot:cell(created_at)="data">
+                                    <span>{{ $moment(data.item.created_at).format('DD-MM-YYYY') }}</span>
+                                </template>
+                                <template v-slot:cell(subscribe)="data">
+                                 <span v-if="data.item.subscribe==1" >{{ data.index == 0 ? $t('active_newsletter') + $t('current') :$t('active_newsletter')}}</span>
+                                 <span v-if="data.item.subscribe==0" >{{ data.index == 0 ? $t('inactive_newsletter') + $t('current') :$t('inactive_newsletter')}}</span>
+
+
+                                </template> 
+
+                            </b-table>
+                </div>
+              </b-card-text>
+            </b-tab>
           </b-tabs>
         </b-card>
       </div>
@@ -235,6 +255,16 @@ export default {
   data() {
     return {
       item: null,
+            fields: [
+        {
+          key: "created_at",
+          label: this.$t("newsletter_date")
+        },
+        {
+          key: "subscribe",
+          label: this.$t("newsletter_status")
+        }
+      ],
       loading: false,
       creatorPrivileges: {
         loading: false
@@ -281,7 +311,9 @@ export default {
 
       members: {
         reference: ''
-      }
+      },
+
+      impersonating: false
     };
   },
   methods: {
@@ -392,6 +424,22 @@ export default {
           window.location.reload();
         })
         .catch(error => {
+          this.$toast.error(error.response.data.error.message);
+        });
+    },
+
+    loginAs() {
+      this.impersonating = true;
+      this.$axios.$post(`/cms/users/${this.itemId}/impersonate`)
+        .then((response) => {
+          this.impersonating = false;
+          this.$auth.setUserToken(response.token)
+            .then(() => {
+              window.location.href = this.localePath('/');
+            });
+        })
+        .catch(error => {
+          this.impersonating = false;
           this.$toast.error(error.response.data.error.message);
         });
     }

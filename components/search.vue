@@ -324,6 +324,7 @@
             },
 
             search() {
+                $nuxt.$emit('search');
                 let searchDesigns = !this.isCollectionRoute();
                 this.$store.dispatch("search/search", {
                     searchDesigns,
@@ -334,10 +335,12 @@
                 let autocompleteInput = document.querySelector(
                     ".searchbox .autocomplete-input"
                 );
+
                 autocompleteInput.blur();
             },
 
             onSearchKeywordUpdate() {
+                
                 let keyword = this.$route.query.keyword || "";
                 let season = this.$route.query.season || "";
                 this.setSearchTmpTerm(this.$route.query.keyword);
@@ -350,6 +353,7 @@
         watch: {
             $route() {
                 this.onSearchKeywordUpdate();
+                
             }
         },
         mounted() {
@@ -369,7 +373,7 @@
             outline: none;
             font-size: 17px;
             @media screen and (max-width: 768px) {
-                font-size: 15px;
+                font-size: 16px;
             }
         }
 

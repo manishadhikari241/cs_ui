@@ -6,7 +6,8 @@
         <b-container v-if="loaded">
             <b-row>
                 <b-col md="6">
-                    <DesignSlider ref="designSlider" :mode="'simulator'" :designURL="designURL" :designCode="design ? design.code : null" :mask="currentMaskIndex !== null ? (tab === 1 ? goods[currentMaskIndex] : requests[currentMaskIndex]['good']) : null" />
+                   <DesignSlider ref="designSlider" :mode="'simulator'" :designURL="designURL" :designCode="design ? design.code : null" :mask="byProductMask != '' ? byProductMask : currentMaskIndex !== null ? (tab === 1 ? goods[currentMaskIndex] : requests[currentMaskIndex]['good']) : null" />
+                       <!-- <DesignSlider ref="designSlider" :mode="'simulator'" :designURL="designURL" :designCode="design ? design.code : null" :mask="currentMaskIndex !== null ? (tab === 1 ? goods[currentMaskIndex] : requests[currentMaskIndex]['good']) : null" /> -->
                     <br/>
                 </b-col>
                 <b-col md="6">
@@ -164,6 +165,7 @@ export default {
   data() {
     return {
       loaded: false,
+      byProductMask: "",
 
       designURL: require("~/assets/empty.jpg"),
 
@@ -213,6 +215,9 @@ export default {
           return false;
         } else {
           this.currentMaskIndex = null;
+          if (!this.requests.length) {
+            if (this.init.quota.simulator) this.showRequestForm();
+          }
         }
       } else {
         this.currentMaskIndex = 0;
@@ -226,13 +231,11 @@ export default {
 
     setMask(index) {
       this.currentMaskIndex = index;
+      this.byProductMask = "";
     },
 
     getGoodBackgroundURL() {
-      if (this.design)
-        return `/api/v1/image/detail/design/${
-          this.design.code
-        }`;
+      if (this.design) return `/api/v1/image/detail/design/${this.design.code}`;
       else return this.designURL;
     },
 
@@ -262,10 +265,10 @@ export default {
       });
       this.$bvModal
         .msgBoxConfirm(message, {
-                  title: 'a',
-                        hideHeaderClose: false,
-                        centered: true,
-                        headerClass:"confirm-box-header-confirm",
+          title: "a",
+          hideHeaderClose: false,
+          centered: true,
+          headerClass: "confirm-box-header-confirm",
           bodyClass: "confirm-box-body",
           footerClass: "confirm-box-footer",
           okVariant: "delete-btn",
@@ -362,6 +365,7 @@ export default {
           this.resetRequest();
           this.requestFormVisible = false;
           this.requests.push(response);
+          console.log(response);
         })
         .catch(error => {
           this.submitting = false;
@@ -461,6 +465,7 @@ export default {
       }
     }
   },
+
   mounted() {
     this.$nextTick(() => {
       this.load();
@@ -468,6 +473,11 @@ export default {
     });
   },
   created() {
+    this.$nuxt.$on("setMaskGood", data => {
+        console.log('pugiraxa')
+        this.byProductMask = data;
+    });
+
     this.$nuxt.$on("payment-success", this.paymentSuccess);
     this.$nuxt.$on("login", async () => {
       if (this.plusButtonClicked) this.awaitingPlusButtonResolve = true;
@@ -556,21 +566,18 @@ export default {
       background: $brand;
       color: #fff;
       border: none;
-         @media screen and (max-width: 768px) {
-          padding: 9px 37px;
-
-    }
-
+      @media screen and (max-width: 768px) {
+        padding: 9px 37px;
+      }
     }
 
     &.btn-drag-to-board {
       background: $black;
       color: #fff;
       border: none;
-          @media screen and (max-width: 768px) {
-          padding: 9px 34px;
-
-    }
+      @media screen and (max-width: 768px) {
+        padding: 9px 34px;
+      }
     }
   }
 }
@@ -676,11 +683,9 @@ export default {
   border: 1px solid #9f9f9f;
   border-radius: 0.25rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-     @media screen and (max-width: 768px) {
-      font-size: 11px;
-    }
-
-
+  @media screen and (max-width: 768px) {
+    height: 31px;
+  }
 }
 
 .component.simulator {
@@ -741,21 +746,19 @@ export default {
           background: #fff;
           color: $black;
         }
-         &.btn-drag-to-board {
-
-              @media screen and (max-width: 768px) {
-          padding: 9px 34px;
-
-    }}
+        &.btn-drag-to-board {
+          @media screen and (max-width: 768px) {
+            padding: 9px 34px;
+          }
+        }
 
         &.btn-save-result {
           background: $brand;
           color: #fff;
           border: none;
-              @media screen and (max-width: 768px) {
-          padding: 9px 37px;
-
-    }
+          @media screen and (max-width: 768px) {
+            padding: 9px 37px;
+          }
         }
       }
       @media screen and (max-width: 768px) {
@@ -765,7 +768,7 @@ export default {
         display: flex;
         flex-wrap: wrap;
         margin-right: 14px;
-            margin-bottom: 16px;
+        margin-bottom: 16px;
       }
     }
     .tab-buttons {
@@ -839,12 +842,12 @@ export default {
       }
     }
     .requestForm {
-         @media screen and (max-width: 768px) {
-           font-size: 11px;
-            ::placeholder {
-                font-size: 11px;
-            }
-         }
+      @media screen and (max-width: 768px) {
+        font-size: 11px;
+        ::placeholder {
+          font-size: 11px;
+        }
+      }
       .go-back {
         outline: none;
         background: none;
@@ -876,9 +879,8 @@ export default {
           margin-bottom: 0px;
           margin-top: 5px;
         }
-          @media screen and (max-width: 550px) {
+        @media screen and (max-width: 550px) {
           font-size: 12px;
-
         }
 
         .bi-info {
@@ -887,10 +889,9 @@ export default {
           vertical-align: -0.15em;
           color: #818181;
           font-size: 23px;
-           @media screen and (max-width: 550px) {
-          font-size: 17px;
-
-        }
+          @media screen and (max-width: 550px) {
+            font-size: 17px;
+          }
         }
       }
       .input-container {
@@ -1011,8 +1012,6 @@ export default {
         margin-bottom: 5px;
         margin-top: 10px;
 
-
-
         button {
           font-size: 12.75px;
         }
@@ -1120,7 +1119,7 @@ export default {
         width: 100%;
         max-height: 400px;
         .good-container {
-          width: 165px;
+          width: 160px;
           height: 169px;
         }
       }

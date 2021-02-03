@@ -3,11 +3,10 @@
     <div v-if="!data" style="text-align: center"><b-spinner type="grow" label="Spinning"></b-spinner></div>
     <client-only>
       <div v-if="data">
-        <b-container class="go-back">
+        <div class="go-back">
           <button @click="goBack"><b-icon-chevron-left></b-icon-chevron-left> {{ $t('back') }}</button>
-        </b-container>
+        </div>
 
-        <b-container>
           <b-row>
             <b-col sm="6" class="description-col order-1">
               <div class="basic">
@@ -41,96 +40,131 @@
               </div>
             </b-col>
           </b-row>
-        </b-container>
 
-        <b-container class="designs">
+        <div class="designs">
           <h3 class="title">{{ $t('design_collection') }}</h3>
+                <div class="sub-title">
+ 
+  <b-tabs content-class="mt-3" align="left">
+    <b-tab @click="switchMode('1')" :title="$t('view_by_design')" active>
+        <DesignList v-if="mode==1" :designs="data.designs" />
+    </b-tab>
+     </b-tab>
+      <b-tab disabled :title="'|'">
+    </b-tab>
+    <b-tab @click="switchMode('2')" :title="$t('view_by_product')">
+                      <DesignList v-if="mode==2" :goods="data.byProduct" :isGoods="true" :designs="data.designs" />
+      </b-tab>
+  </b-tabs>
+</div>
+
           <br>
-          <DesignList :designs="data.designs" />
-        </b-container>
+          <!-- {{data.designs}} -->
+    
+        </div>
       </div>
     </client-only>
   </div>
 </template>
 
 <script>
-import { BIconChevronLeft } from 'bootstrap-vue';
-import DesignList from '~/components/designlist';
+import { BIconChevronLeft } from "bootstrap-vue";
+import DesignList from "~/components/designlist";
 
 export default {
   components: {
     BIconChevronLeft,
     DesignList
   },
-  asyncData (context) {
-    return context.$axios.get('/pages/collections')
-      .then((res) => {
-        return { pageData: res.data }
-      })
+  asyncData(context) {
+    return context.$axios.get("/pages/collections").then(res => {
+      return { pageData: res.data };
+    });
   },
   head() {
     return {
       meta: [
-        { hid: 'description', name: 'description', content: this.pageData.translations[this.$i18n.locale].meta_description },
-        { hid: 'keywords', name: 'keywords', content: this.pageData.translations[this.$i18n.locale].meta_keywords },
+        {
+          hid: "description",
+          name: "description",
+          content: this.pageData.translations[this.$i18n.locale]
+            .meta_description
+        },
+        {
+          hid: "keywords",
+          name: "keywords",
+          content: this.pageData.translations[this.$i18n.locale].meta_keywords
+        }
       ]
-    }
+    };
   },
   data() {
     return {
       data: null,
-    }
+      mode:1
+    };
   },
   methods: {
+    switchMode(mode){
+$nuxt.$emit('closequick');
+this.mode=mode;
+    },
     load() {
-      this.$axios.$get(`/collections/${this.$route.params.id}?scope[]=user&scope[]=designs&scope[]=moodboards&scope[]=categories&scope[]=goods&scope[]=season`)
-        .then((response) => {
+      this.$axios
+        .$get(
+          `/collections/${
+            this.$route.params.id
+          }?scope[]=user&scope[]=designs&scope[]=moodboards&scope[]=categories&scope[]=goods&scope[]=season`
+        )
+        .then(response => {
           this.data = response;
-        }).catch((error) => {
+        })
+        .catch(error => {
           this.$toast.error(error.response.data.error.message);
           setTimeout(() => {
-            this.$router.push(this.localePath('/collections'));
+            this.$router.push(this.localePath("/collections"));
           }, 1000);
         });
     },
 
     hasMoodBoard() {
-      return this.data.moodboards.length
+      return this.data.moodboards.length;
     },
 
     getMoodBoardURL() {
-      if (this.data.moodboards.length == 1 || this.$i18n.locale == 'en')
-        return this.data.moodboards[0].moodboard
-      return this.data.moodboards[1].moodboard
+      if (this.data.moodboards.length == 1 || this.$i18n.locale == "en")
+        return this.data.moodboards[0].moodboard;
+      return this.data.moodboards[1].moodboard;
     },
 
     hasDesigns() {
-      return this.data.designs.length
+      return this.data.designs.length;
     },
 
     parseDesignerAvatarURL() {
       let avatar = this.data.user.avatar;
-      return avatar.substring(avatar.lastIndexOf('/')+1);
+      return avatar.substring(avatar.lastIndexOf("/") + 1);
     },
 
     getTitle() {
-      return this.data.translations[this.$i18n.locale == 'en' ? 0 : 1].title;
+      return this.data.translations[this.$i18n.locale == "en" ? 0 : 1].title;
     },
 
     getDescription() {
-      return this.data.translations[this.$i18n.locale == 'en' ? 0 : 1].description;
+      return this.data.translations[this.$i18n.locale == "en" ? 0 : 1]
+        .description;
     },
 
     goBack() {
       this.$router.back();
     }
   },
-  mounted () {
+  mounted() {
     this.$nextTick(() => {
       this.load();
-    })
+    });
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -171,6 +205,7 @@ export default {
   .moodboard-col {
     img {
       max-width: 100%;
+      pointer-events: none;
     }
 
     .disclaimer {
@@ -178,7 +213,7 @@ export default {
       padding: 0;
       font-size: 12px;
       color: #969696;
-        @media screen and (max-width: 768px) {
+      @media screen and (max-width: 768px) {
         font-size: 9px;
       }
     }
@@ -202,7 +237,7 @@ export default {
 
         img {
           width: 65px;
-          height: 65px;;
+          height: 65px;
         }
       }
 
@@ -238,7 +273,6 @@ export default {
       @media screen and (max-width: 1024px) {
         font-size: 16.5px;
       }
-
     }
 
     .properties {
@@ -254,7 +288,6 @@ export default {
         @media screen and (max-width: 1024px) {
           font-size: 12.75px;
         }
-
       }
 
       a {
@@ -277,7 +310,6 @@ export default {
         margin-top: 20px;
         font-size: 12.75px;
       }
-
     }
   }
 
@@ -292,9 +324,13 @@ export default {
         font-size: 16.5px;
       }
     }
+    .sub-title a {
+      font-size: 25px;
+      font-weight: 600;
+      color: black;
+    }
   }
 }
-
 
 @media screen and (max-width: 767px) {
   .page.collection {

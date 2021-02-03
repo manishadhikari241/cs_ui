@@ -129,7 +129,6 @@
                             width: 300px;
                         }
                         @media screen and (max-width: 500px) {
-                            font-size: 12px;
                             width: 100%;
                         }
                         &.success {

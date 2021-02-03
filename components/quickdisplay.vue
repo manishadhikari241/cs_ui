@@ -1,27 +1,28 @@
 <template>
   <div>
-
     <div class="component quickdisplay ignorePrint" id="quickdisplay">
       <div class="quickdisplay-arrow" :style="`left: ${getArrowPositionClass()}%`"><b-icon-triangle-fill></b-icon-triangle-fill></div>
       <div class="component-container design-component">
         <div class="header">
           <span>{{$t('design_detail')}}</span>
           <div class="action-buttons">
-            <b-button @click="$emit('fullscreen', 1)"><b-icon-arrows-fullscreen></b-icon-arrows-fullscreen></b-button>
+            <b-button @click="$emit('fullscreen', 1)" v-if="!isExclusive"><b-icon-arrows-fullscreen></b-icon-arrows-fullscreen></b-button>
             <b-button @click="close"><b-icon-x-circle-fill></b-icon-x-circle-fill></b-button>
           </div>
         </div>
         <div class="design-component-container">
           <Design :design="design" />
-          <b-button class="navigate-qd back" @click="$emit('navigate', false)"><b-icon-chevron-left></b-icon-chevron-left></b-button>
-          <b-button class="navigate-qd forward" @click="$emit('navigate', true)"><b-icon-chevron-right></b-icon-chevron-right></b-button>
+          <template v-if="!isExclusive">
+            <b-button class="navigate-qd back" @click="$emit('navigate', false)"><b-icon-chevron-left></b-icon-chevron-left></b-button>
+            <b-button class="navigate-qd forward" @click="$emit('navigate', true)"><b-icon-chevron-right></b-icon-chevron-right></b-button>
+          </template>
         </div>
       </div>
       <div class="component-container simulator-component">
         <div class="header">
           <span>{{$t('try_design_on_product')}}</span>
           <div class="action-buttons">
-            <b-button @click="$emit('fullscreen', 2)"><b-icon-arrows-fullscreen></b-icon-arrows-fullscreen></b-button>
+            <b-button @click="$emit('fullscreen', 2)" v-if="!isExclusive"><b-icon-arrows-fullscreen></b-icon-arrows-fullscreen></b-button>
             <b-button @click="toggleSimulator">
               <b-icon-arrow-bar-up v-show="simulatorVisible"></b-icon-arrow-bar-up>
               <b-icon-arrow-bar-down v-show="!simulatorVisible"></b-icon-arrow-bar-down>
@@ -30,8 +31,10 @@
         </div>
         <div class="simulator-component-container" v-show="simulatorVisible">
           <Simulator :design="design" />
-          <b-button class="navigate-qd back" @click="$emit('navigate', false)"><b-icon-chevron-left></b-icon-chevron-left></b-button>
-          <b-button class="navigate-qd forward" @click="$emit('navigate', true)"><b-icon-chevron-right></b-icon-chevron-right></b-button>
+          <template v-if="!isExclusive">
+            <b-button class="navigate-qd back" @click="$emit('navigate', false)"><b-icon-chevron-left></b-icon-chevron-left></b-button>
+            <b-button class="navigate-qd forward" @click="$emit('navigate', true)"><b-icon-chevron-right></b-icon-chevron-right></b-button>
+          </template>
         </div>
       </div>
     </div>
@@ -40,9 +43,17 @@
 </template>
 
 <script>
-import Design from '~/components/design';
-import Simulator from '~/components/simulator';
-import {BIconXCircleFill, BIconArrowBarUp, BIconArrowBarDown, BIconTriangleFill, BIconChevronLeft, BIconChevronRight, BIconArrowsFullscreen} from 'bootstrap-vue'
+import Design from "~/components/design";
+import Simulator from "~/components/simulator";
+import {
+  BIconXCircleFill,
+  BIconArrowBarUp,
+  BIconArrowBarDown,
+  BIconTriangleFill,
+  BIconChevronLeft,
+  BIconChevronRight,
+  BIconArrowsFullscreen
+} from "bootstrap-vue";
 
 export default {
   components: {
@@ -56,19 +67,16 @@ export default {
     BIconChevronRight,
     BIconArrowsFullscreen
   },
-  props: [
-    'design',
-    'selectedIndex'
-  ],
+  props: ["design", "selectedIndex", "isExclusive"],
   data() {
     return {
       simulatorVisible: true,
       fullScreenMode: null
-    }
+    };
   },
   methods: {
     close() {
-      this.$emit('close');
+      this.$emit("close");
     },
 
     toggleSimulator() {
@@ -76,10 +84,15 @@ export default {
     },
 
     getArrowPositionClass() {
-      return (this.selectedIndex%4)*26+10;
+      return (this.selectedIndex % 4) * 26 + 10;
     }
+  },
+  mounted() {
+    this.$nuxt.$on("closequick", () => {
+      this.close();
+    });
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -87,7 +100,7 @@ export default {
   position: relative;
   width: 100%;
   height: 100%;
-  box-shadow: 0 0 10px rgba(0, 0, 0, .5);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   border-radius: 8px;
 
   .quickdisplay-arrow {

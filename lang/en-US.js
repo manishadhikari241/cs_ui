@@ -34,6 +34,8 @@ export default {
     exclusive_nav: 'Tailor-Made',
     request_nav: 'Request',
     extra: 'Extra',
+    single_design_exclusive: 'design',
+
 
     read_more: 'Read More',
     upload_design: 'Upload Design',
@@ -486,4 +488,47 @@ export default {
 
     send_request:'SEND REQUEST',
     order_design:'ORDER DESIGN',
+
+    exclusive_design_ownership_certificate:'Exclusive Design Ownership Certificate',
+    because_the_design_was_created:'Because the design was created on your specific request, you agree to the fullest extent permitted by law, to indemnify and keep the Studio indemnified, against any liabilities, costs, expenses, damages and losses (including any direct, indirect or consequential losses, loss of profit, loss of reputation and all interest, penalties and legal costs and all other professional costs and expenses) suffered or incurred by you arising out of the use of this Design, including any claim made against you for actual or alleged infringement of a third party intellectual property rights arising out of or in connection therewith.',
+    it_is_also_your_obligation:'It is also your obligation and responsibility, as being the Owner of the Design, to check the possibility of copyright infringement before commercialising and/or bringing the design into the market.',
+    you_agree_to_accept_the_exclusive: 'You agree to accept the Exclusive Request Terms and Conditions.',
+    ownership_certificate_download:'Ownership Certificate',
+    important_ownership:'Important',
+
+    starts_from:'Starts from',
+    starts_price:'$2/',
+    design_homepage:'design',
+    view_pricing: 'VIEW PRICING',
+
+    continue: 'continue',
+    please_scan_wechat: 'Please Scan the following QR code and click continue',
+    please_do_not_close_browser:'Please DO NOT CLOSE YOUR BROWSER after authorization. You will be redirected back to this page to finish the payment',
+    total_payment:'TOTAL',
+
+    view_by_design:'View By Design',
+    view_by_product: 'View by Product',
+
+
+    news_letter:'Newsletter Status',
+    news_letter_menu: 'Newsletter',
+    here_you_can: 'Here you can control the consent to receive our Newsletter and latest offers',
+    your_current_status: 'Your current status to receive our Newsletter and latest offers:',
+    your_news_letter_history:'Your Newsletter Status History',
+    newsletter_date:'DATE',
+    newsletter_status: 'STATUS',
+    inactive_newsletter:'Inactive',
+    active_newsletter: 'Active',
+    current:' (Current)',
+    activate_newsletter:'Activate Newsletter',
+    inactivate_newsletter: 'Inactivate Newsletter',
+    inactivate_message:'By selecting inactivate newsletter, you will not further receive our Newsletters and latest offers. For more details check our Privacy Policy.',
+    activate_message: 'By selecting activate newsletter, you agree to receive our Newsletters and latest offers. For more details check our privacy policy.',
+    btn_confirm:'Confirm',
+    btn_cancel:'Cancel',
+
+    enter_coupon_code: 'Enter coupon code',
+    apply_coupon: 'Apply'
+
+
 }

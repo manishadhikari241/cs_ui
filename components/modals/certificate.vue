@@ -5,7 +5,7 @@
 <!--        <span class="ml-5 ignorePrint">Exclusive Design Ownership Certificate</span>-->
 <!--      </template>-->
       <template #modal-header="{ close }">
-        <span class="modal-title">Exclusive Design Ownership Certificate</span>
+        <span class="modal-title">{{$t('exclusive_design_ownership_certificate')}}</span>
         <div class="action-buttons">
           <b-button @click="close()"><b-icon-x-circle-fill></b-icon-x-circle-fill></b-button>
         </div>
@@ -40,8 +40,8 @@
               <b-col md="6">
                 <img class="img-icons" :src="`${cert.img}`">
               </b-col>
-              <b-col md="6">
-                <div class="prop">{{ $t('cert_design') }}</div>
+              <b-col md="6" class="details">
+                <div class="prop pt-0">{{ $t('cert_design') }}</div>
                 <div class="value">{{ cert.design }}</div>
                 <div class="prop">{{ $t('delivery_date') }}</div>
                 <div class="value">{{ cert.delivery_date }}</div>
@@ -60,15 +60,15 @@
 
           <div class="cert-footer">
             <b-col>
-              <div class="text mt-3"> <b>{{$t('important')}}</b> </div>
+              <div class="text mt-3"> <b>{{$t('important_ownership')}}</b> </div>
               <div class="text">
-                Because the design was created on your specific request, you agree to the fullest extent permitted by law, to indemnify and keep the Studio indemnified, against any liabilities, costs, expenses, damages and losses (including any direct, indirect or consequential losses, loss of profit, loss of reputation and all interest, penalties and legal costs and all other professional costs and expenses) suffered or incurred by you arising out of the use of this Design, including any claim made against you for actual or alleged infringement of a third party intellectual property rights arising out of or in connection therewith.
+               {{$t('because_the_design_was_created')}}
               </div>
               <div class="text">
-                It is also your obligation and responsibility, as being the Owner of the Design, to check the possibility of copyright infringement before commercialising and/or bringing the design into the market.
+               {{$t('it_is_also_your_obligation')}}
               </div>
               <div class="text">
-                You agree to accept the Exclusive Request Terms and Conditions.
+               {{$t('you_agree_to_accept_the_exclusive')}}
               </div>
             </b-col>
           </div>
@@ -136,6 +136,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 @media print {
   /deep/ .cert-modal > .modal-header {
    display: none;
@@ -229,7 +230,13 @@ export default {
 
 .cert-details {
   font-size: 14px;
+.details{
+  
+  @media screen and (min-width: 990px) {
+  margin-left:-45px;
 
+  }
+}
   .prop {
     font-weight: 700;
     padding: 10px;
@@ -254,8 +261,12 @@ export default {
   padding: 10px;
   border-style: solid;
   border-color: #ebebeb;
-  margin:10px;
+    margin: 5px 47px;
+      @media screen and (max-width: 768px) {
+    margin: 5px 23px;
 
+  }
+    
   .logo {
     margin-bottom: 10px;
 
@@ -272,19 +283,19 @@ export default {
 }
 
 .img-icons {
-  height: 250px;
-  width: 250px;
+height: 275px;
+    width: 275px;
   display: block;
-  margin: 10px auto;
+    margin: 6px 34px;
   @media screen and (min-width: 768px) and (max-width: 1023px) {
     height: 200px;
     width: 200px;
-    margin: 20px auto;
+    margin: 6px auto;
   }
 
   @media screen and (max-width: 767px) {
-    height: 200px;
-    width: 200px;
+height: 292px;
+    width: 96%;
     margin: 10px;
   }
 }

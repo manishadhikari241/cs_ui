@@ -221,7 +221,7 @@
                                     <button class="send_application" type="submit" :disabled="submitting">{{
                                         $t('order_design') }}
                                     </button>
-                                    <button class="back" :disabled="submitting">
+                                    <button class="back" :disabled="submitting" type="button">
                                         <nuxt-link :to="localePath('/exclusive')">{{ $t('back') }}</nuxt-link>
                                     </button>
                                 </div>

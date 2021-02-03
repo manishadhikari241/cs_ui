@@ -230,11 +230,13 @@ export default {
       formData.append('descriptionEN', this.request.descriptionEN);
       formData.append('descriptionCH', this.request.descriptionCH);
       formData.append('moodboardEN', this.request.moodboardEN);
-      formData.append('moodboardCH', this.request.moodboardCH);
+      if (this.request.moodboardCH)
+        formData.append('moodboardCH', this.request.moodboardCH);
       formData.append('designs', selectedDesigns);
       formData.append('categories', selectedCategories);
       formData.append('goods', selectedGoods);
-      formData.append('season', selectedSeason);
+      if (selectedSeason)
+        formData.append('season', selectedSeason);
 
       this.loading = true;
 

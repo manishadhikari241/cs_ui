@@ -6,12 +6,13 @@
       <div class="mask-container" v-if="mask" :style="`background-image: url('/cloudfront/uploads/good/${mask.image}')`"></div>
       <div class="socialBox" v-if="mode != 'simulator' && mode != 'fs'">
         <div>
+          
           <div class="social fb">
             <ShareNetwork :popup="{width: 400, height: 300}"
               network="facebook"
+                            :title="``"
+
               :url="`${baseUrl}/api/social/design/${$i18n.locale}/${designCode}`"
-              :title="`Design Code: ${designCode}`"
-              :quote="`Design Code: ${designCode}`"
             >
               <i class="fab fa-facebook-f"></i>
             </ShareNetwork>
@@ -20,7 +21,7 @@
             <ShareNetwork :popup="{width: 400, height: 300}"
               network="twitter"
               :url="`${baseUrl}/api/social/design/${$i18n.locale}/${designCode}`"
-              :title="`Design Code: ${designCode}`"
+              :title="``"
               :quote="`Design Code: ${designCode}`"
             >
               <i class="fab fa-twitter"></i>
@@ -30,9 +31,9 @@
             <ShareNetwork :popup="{width: 400, height: 300}"
               network="pinterest"
               :url="`${baseUrl}/api/social/design/${$i18n.locale}/${designCode}`"
-              :title="`Design Code: ${designCode}`"
-              :quote="`Design Code: ${designCode}`"
-              :media="`${baseUrl}/api/v1/image/detail/design/${this.designCode}`"
+              :title="``"
+              :quote="``"
+              :media="`${baseUrl}/api/media/preview/${this.designCode}`"
             >
               <i class="fab fa-pinterest"></i>
             </ShareNetwork>
@@ -111,10 +112,10 @@ export default {
         var container = this.$refs.designContainer;
         if (!container) return false;
 
-        container.addEventListener("touchstart", dragStart, false);
-        container.addEventListener("mousedown", dragStart, false);
-        document.addEventListener("touchend", dragEnd, false);
-        document.addEventListener("mouseup", dragEnd, false);
+        container.addEventListener("touchstart", dragStart,  { passive: false });
+        container.addEventListener("mousedown", dragStart,  { passive: false });
+        document.addEventListener("touchend", dragEnd, { passive: false });
+        document.addEventListener("mouseup", dragEnd,  { passive: false });
 
         let self = this;
 
@@ -221,7 +222,7 @@ export default {
       width: 100%;
       height: 100%;
       z-index: 100;
-      background-repeat: no-repeat;
+      // background-repeat: no-repeat;
       background-size: 100%;
       background-position: center;
       //   @media screen and (max-width: 550px) {

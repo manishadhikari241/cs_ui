@@ -101,7 +101,7 @@
         },
         data() {
             return {
-                itemsPerPage: 10,
+                itemsPerPage: 6,
                 maxPageForGuest: 2,
                 seasons: [
                     {id: 8, en: "All", ch: "一般"},
@@ -124,16 +124,21 @@
                             }&page=${this.page + 1}`
                     )
                     .then(response => {
-                        this.$store.commit("collections/setPage", response.current_page);
-                        this.$store.commit("collections/setMaxPage", response.last_page);
-                        this.$store.commit("collections/setTotal", response.total);
-                        this.$store.commit("collections/appendData", response.data);
-                        this.$refs.infload.stateChanger.loaded();
-                        let maxNofPages = this.$auth.loggedIn
-                            ? this.maxPage
-                            : this.maxPageForGuest;
-                        if (this.page >= maxNofPages)
+                        let maxNofPages = this.$auth.loggedIn ? this.maxPage : this.maxPageForGuest;
+                        if (this.page < maxNofPages) {
+                            this.$store.commit("collections/setPage", response.current_page);
+                            this.$store.commit("collections/setMaxPage", response.last_page);
+                            this.$store.commit("collections/setTotal", response.total);
+                            this.$store.commit("collections/appendData", response.data);
+                            this.$refs.infload.stateChanger.loaded();
+                        } else if (this.page == maxNofPages) {
+                            this.$store.commit("collections/setPage", response.current_page);
+                            this.$refs.infload.stateChanger.loaded();
+                        } else {
                             this.$refs.infload.stateChanger.complete();
+                            if (!this.$auth.loggedIn)
+                                this.$bvModal.show('modal-auth');
+                        }
                     });
             },
 
@@ -155,6 +160,11 @@
             },
 
             search() {
+                    window.scroll({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      })
                 this.$store.dispatch("search/search", {
                     searchDesigns: false,
                     term: this.term,
@@ -178,7 +188,14 @@
         },
         mounted() {
             this.$nextTick(function () {
-                if (this.$refs.infload) this.resetList();
+                if (this.$refs.infload && !this.data.length) this.resetList();
+            });
+        },
+        created() {
+            this.$nuxt.$on("login", () => {
+                if (this.$refs.infload) {
+                    this.$refs.infload.stateChanger.reset();
+                }
             });
         }
     };

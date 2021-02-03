@@ -1,6 +1,7 @@
 <template>
   <div class="page lists">
     <PageInfo :slug="'lists'" :button="$t('create_new_list')" :buttonId="'create-list-btn'" />
+    
     <br class="list-break">
     <b-table :items="init.lists" :fields="fields" :responsive="'md'" striped hover :busy="init.lists === undefined" @row-clicked="onRowClick" show-empty>
       <template v-slot:table-busy>
@@ -122,6 +123,7 @@ export default {
       creating: false
     };
   },
+
   methods: {
     getRandomDesigns(list) {
       if (!list.products.length) return [];

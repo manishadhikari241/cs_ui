@@ -87,7 +87,7 @@
         },
         methods: {
             loadMore() {
-                this.$axios.$get(`posts`).then(response => {
+                this.$axios.$get(`/posts?page=${this.page+1}`).then(response => {
                     this.page = response.current_page;
                     this.maxPage = response.last_page;
                     this.total = response.total;

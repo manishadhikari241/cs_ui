@@ -49,8 +49,7 @@
                                 <div class="title">
                                     <span>{{ $t('invoice') }} # {{ invoice.id }}</span>
                                     <div class="row buttons d-flex">
-                                        <button class="btn-back ignorePrint" @click="showInvoice(null)"><i
-                                                class="fa fa-arrow-left" aria-hidden="true"></i> {{ $t('back') }}
+                                        <button class="btn-back ignorePrint" @click="showInvoice(null)"><b-icon-chevron-left></b-icon-chevron-left> {{ $t('back') }}
                                         </button>
                                         <button size="sm" @click="print" class="btn-print ignorePrint">{{
                                             $t('print_invoice') }}
@@ -74,8 +73,9 @@
                                     <div class="value">{{ $moment(invoice.created_at).format('DD/MM/YYYY') }}</div>
                                     <div class="prop">{{ $t('payment_method') }}</div>
                                     <div class="value">
-                                        <span v-if="invoice.channel != 'coupon'">{{ $t('credit_card') }}</span>
                                         <span v-if="invoice.channel == 'coupon'">{{ $t('coupon') }}</span>
+                                        <span v-else-if="invoice.channel == 'braintree'">{{ $t('credit_card') }}</span>
+                                        <span v-else>{{ invoice.channel }}</span>
                                     </div>
                                     <div class="prop">{{ $t('billing_details') }}</div>
                                     <div class="value" v-if="invoice.billing_details">{{ invoice.billing_details }}</div>
@@ -104,7 +104,7 @@
                                         <div v-else-if="invoice.package == 'simulator'">
                                             <p>{{$t('product_simulator')}} - ${{ invoice.amount }} {{$t('for')}} {{ invoice.quantity
                                                 }}
-                                                {{$t('product')}}{{$i18n.locale == "en" ? "s" : ""}} </p>
+                                                {{$t('product')}}{{$i18n.locale == "en" && invoice.quantity > 1 ? "s" : ""}} </p>
                                             <p>{{$t('add_your_own_product_into')}}</p>
                                         </div>
                                         <div v-else>
@@ -447,7 +447,7 @@
                     color: $black;
                     border: 1px solid $black;
                     border-radius: 30px;
-                    padding: 5px 11px;
+                    padding: 2px 13px;
                     background-color: #fff;
                     font-weight: 700;
                     margin-right: 20px;
@@ -466,6 +466,8 @@
                     font-weight: 700;
                     text-transform: uppercase;
                     outline: none;
+                        margin-right: 20px;
+
                 }
                 .buttons {
                     margin-top: auto;

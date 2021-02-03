@@ -35,6 +35,7 @@ export default {
     exclusive_nav: '客制化的',
     request_nav: '请求',
     extra: '其他',
+    single_design_exclusive:'个设计',
 
 
     read_more: '阅读更多',
@@ -166,7 +167,7 @@ export default {
     multi_user: '多用户',
     resale_items: '转售项目',
     tailor_made: '客制化',
-    exclusively: '客制化',
+    exclusively: '独家性',
     copyright_owned: '拥有版权',
     buy: '购买',
     design: '设计',
@@ -486,6 +487,49 @@ export default {
 
     send_request: '发送请求',
     order_design: '订购设计',
+
+    exclusive_design_ownership_certificate: '独家设计所有权证书',
+    because_the_design_was_created: '由于设计是根据您的具体要求创建的，因此您同意在法律允许的最大范围内，赔偿并保持工作室和/或Collectionstock免于承担任何责任，成本，费用，损害和损失(包括任何直接，间接或您因使用本设计而遭受或产生的间接损失，利润损失，声誉损失以及所有利息，罚款和法律费用以及所有其他专业费用和开支)因您使用本设计而遭受或招致的任何行为，包括因实际或涉嫌侵犯第三方因此产生或与之相关的知识产权而对您提出的任何索赔。',
+    it_is_also_your_obligation: '作为设计的拥有者,您有义务和责任在商业化和/或将设计投入市场之前检查版权侵权的可能性。',
+    you_agree_to_accept_the_exclusive: '您同意接受独家设计的条款及细则。',
+    ownership_certificate_download: '独家所有权证书',
+    important_ownership: '重要事项',
+
+ 
+
+    starts_from: '由',
+    starts_price: '$ 2 /',
+    design_homepage: '設計起',
+    view_pricing: '查看價格',
+
+
+    continue: '继续',
+    please_scan_wechat: '请扫描以下二维条码，然后单击继续',
+    please_do_not_close_browser: '授权后请勿关闭浏览器。 您将被重新返回此页面以完成付款',
+    total_payment:'总额',
+
+    view_by_design: '按设计查看',
+    view_by_product: '按产品查看',
+
+    news_letter: '邮箱通讯状态',
+    news_letter_menu:'邮件通讯',
+    here_you_can: '在这里，您可以同意接受我们的新闻通讯和最新优惠',
+    your_current_status: '您的当前状态以接收我们的新闻通讯和最新优惠',
+    your_news_letter_history: '您的通讯状态记录',
+    newsletter_date: '日期',
+    newsletter_status: '状态',
+    inactive_newsletter: '不启用',
+    active_newsletter: '启用',
+    current: ' (目前)',
+    activate_newsletter: '激活通讯',
+    inactivate_newsletter: '不激活通讯',
+    inactivate_message: '通过选择取消通讯，您将不会再收到我们的通讯和最新优惠。 有关更多详情，请查看我们的隐私政策',
+    activate_message: '通过选择激活通讯，您同意接收我们的通讯和最新优惠。 有关更多详情，请查看我们的隐私政策',
+    btn_confirm: '确认',
+    btn_cancel: '取消',
+
+    enter_coupon_code: '输入优惠券代码',
+    apply_coupon: '应用'
 
 
 }

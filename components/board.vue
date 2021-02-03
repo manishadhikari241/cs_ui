@@ -126,7 +126,7 @@ export default {
 
       img {
         height: 70px;
-        @media screen and (max-width: 768px) {
+        @media screen and (max-width: 767px) {
           height: 55px;
         }
       }
@@ -142,13 +142,16 @@ export default {
         font-weight: 700;
         height: 35px;
         min-width: 50px;
-        @media screen and (max-width: 768px) {
+        @media screen and (max-width: 767px) {
           font-size: 20px;
         }
-      }
 
-      span:focus {
-        outline: 1px solid $brand;
+        &:focus {
+          outline: 2px solid $brand;
+          @media screen and (max-width: 767px) {
+            outline: none;
+          }
+        }
       }
 
       button {
@@ -159,7 +162,7 @@ export default {
         outline: none;
         font-size: 25px;
         font-weight: 700;
-        @media screen and (max-width: 768px) {
+        @media screen and (max-width: 767px) {
           font-size: 20px;
         }
       }
@@ -192,6 +195,9 @@ export default {
             margin-right: 20px;
             margin-top: 5px;
             display: none;
+            @media screen and (max-width: 767px) {
+              display: block;
+            }
 
             button {
               background: none;
@@ -200,6 +206,9 @@ export default {
               margin-left: 10px;
               outline: none;
               font-size: 25px;
+              @media screen and (max-width: 767px) {
+                font-size: 20px;
+              }
             }
           }
         }
@@ -213,6 +222,10 @@ export default {
           background: transparent;
           box-shadow: none;
           outline: none;
+
+          &:focus {
+            outline: 1px solid $brand;
+          }
         }
       }
     }
@@ -223,11 +236,11 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
-      @media screen and (max-width: 767px) {
-        display: block !important;
-        button{
-                    margin-bottom: 10px;
-        }
+        @media screen and (max-width: 767px) {
+          display: block !important;
+          button {
+            margin-bottom: 10px;
+          }
       }
     }
     margin-top: 30px;
@@ -246,7 +259,7 @@ export default {
       padding: 8px 20px;
       text-transform: uppercase;
       transition: all 0.2s;
-      @media screen and (max-width: 768px) {
+      @media screen and (max-width: 767px) {
         font-size: 14px;
       }
 

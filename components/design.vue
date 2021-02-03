@@ -28,12 +28,12 @@
               <div class="value col-md-8">
                 <div class="large-text">
                   <span>{{ design.design_name }}</span>
-                  <nuxt-link
+                  <!-- <nuxt-link
                     :to="localePath('/designs?keyword=new')"
                     class="top100"
                     v-if="isNew()"
                   >{{ $t("new") }}</nuxt-link
-                  >
+                  > -->
                   <nuxt-link
                     :to="localePath('/designs?keyword=new')"
                     class="top100"
@@ -75,7 +75,7 @@
                     <p class="detail">
                       {{ $t("all_copyright_belongs_to_you") }}
                     </p>
-                    <p @click="showCert(design)" class="h5 cert"><b-icon-file-earmark-arrow-down></b-icon-file-earmark-arrow-down><u class="ml-2">Ownership Certificate</u></p>
+                    <!-- <p @click="showCert(design)" class="h5 cert"><b-icon-file-earmark-arrow-down></b-icon-file-earmark-arrow-down><u class="ml-2">{{$t('ownership_certificate_download')}}</u></p> -->
                   </div>
                 </div>
               </div>
@@ -520,8 +520,13 @@ export default {
         }
 
         .prop {
-          width: 150px;
-
+          display:flex;
+          align-items: baseline;
+          margin-bottom: 10px;
+          width: 100%;
+ .large-text{
+   margin-right: 20px;
+ }
           .small-text {
             font-weight: 600;
             font-size: 10px;

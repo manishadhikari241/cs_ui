@@ -51,7 +51,7 @@
         </div>
         <div class="detail">
           <div class="prop">{{ $t('reference_file') }}:</div>
-          <div class="value file" v-if="request && request.files" style="display: flex; overflow:scroll;">
+          <div class="value file" v-if="request && request.files" style="display: block;">
             <img v-for="(key,value) in request.files" :key="`img_${value}`" :src="`/cloudfront/uploads/user/lib-request/${request.files[value].name}`">
           </div>
         </div>
@@ -74,17 +74,6 @@ export default {
 </script>
 
 <style lang="scss">
-::-webkit-scrollbar{
-  color:black;
-}
-  .modal-title {
-    width: 100%;
-    text-align: center;
-    font-weight: bold;
-    @media screen and (max-width: 768px) {
- font-size: 18px;
-    }
-  }
 #modal-request {
   header {
     background-color: $black;
@@ -92,6 +81,16 @@ export default {
 
     button {
       color: #fff;
+    }
+  }
+
+
+  .modal-title {
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    @media screen and (max-width: 768px) {
+      font-size: 18px;
     }
   }
 
@@ -123,7 +122,7 @@ export default {
     .value {
       width: 40%;
       flex-grow: 1;
-      word-break: break-all;
+      word-break: break-word;
       display: flex;
     overflow: auto;
     }

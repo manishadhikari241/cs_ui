@@ -270,7 +270,7 @@
                                     >
                                         {{ $t("send_request") }}
                                     </button>
-                                    <button class="back" :disabled="submitting">
+                                    <button class="back" :disabled="submitting" type="button">
                                         <nuxt-link :to="localePath('/request')">{{
                                             $t("back")
                                             }}

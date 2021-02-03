@@ -120,13 +120,14 @@
           </li>
           <li
             class="nav-item change-lang"
-            v-if="$i18n.locale == 'en'"
+            v-if="$i18n.locale == 'en' && $auth.loggedIn"
+
           >
             <a :href="switchLocalePath('ch')" class="nav-link">简体</a>
           </li>
           <li
             class="nav-item change-lang"
-            v-if="$i18n.locale == 'ch'"
+            v-if="$i18n.locale == 'ch' && $auth.loggedIn"
           >
             <a :href="switchLocalePath('en')" class="nav-link">English</a>
           </li>

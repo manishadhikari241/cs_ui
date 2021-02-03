@@ -103,7 +103,7 @@
           <b-col class="right">
             <div v-show="mode == 'default'">
               <div class="total">
-                TOTAL ${{
+                {{$t('total_payment')}} ${{
                   init.pricing[
                     `${pkg.key}_${pkg.index == 0 ? "min" : "max"}_count`
                   ] *
@@ -124,6 +124,13 @@
                   :$t('product')}}{{init.pricing[`${pkg.key}_${pkg.index == 0 ? "min" : "max"}_count`] > 1 ? $i18n.locale == "en" ?
                 "s" : "" : "" }}
               </div>
+
+              <div class="coupon-container">
+                <b-input v-model="coupon.code" :placeholder="$t('enter_coupon_code')" autocomplete="off" @keyup="coupon.amount = null"></b-input>
+                <b-button @click="checkCoupon" :disabled="coupon.loading">{{$t('apply_coupon')}}</b-button>
+                <span class="result" v-if="coupon.amount">-${{ coupon.amount }}</span>
+              </div>
+
               <div class="methods">
                 <div :class="{'active': paymentMethod == 'braintree'}" @click="updatePaymentMethod('braintree')">
                   <b-icon-circle-fill v-if="paymentMethod == 'braintree'"></b-icon-circle-fill>
@@ -167,8 +174,8 @@
               </div>
 
               <Braintree ref="braintree" @onSuccess="buyBraintree" v-if="paymentMethod == 'braintree'" v-show="!paying" />
-              <Alipay ref="alipay" @status="updatePayingStatus" :info="getPurchaseInfo()" v-else-if="paymentMethod == 'alipay'" v-show="!paying" />
-              <Wechat ref="wechat" @status="updatePayingStatus" :info="getPurchaseInfo()" v-else v-show="!paying" />
+              <Alipay ref="alipay" @status="updatePayingStatus" :info="getPurchaseInfo()" :coupon="coupon.code" v-else-if="paymentMethod == 'alipay'" v-show="!paying" />
+              <Wechat ref="wechat" @status="updatePayingStatus" :info="getPurchaseInfo()" :coupon="coupon.code" @bgcheck="startStripeBackgroundCheck" v-else v-show="!paying" />
               <div style="text-align: center" v-if="paying">
                 <b-spinner type="grow" label="Loading..."></b-spinner>
               </div>
@@ -313,6 +320,8 @@
         </b-row>
       </b-container>
     </b-modal>
+
+    <StripeCheck ref="stripe" />
   </div>
 </template>
 
@@ -323,6 +332,7 @@ import Braintree from "~/components/braintree";
 import Alipay from "~/components/alipay";
 import Wechat from "~/components/wechat";
 import Multiselect from "vue-multiselect";
+import StripeCheck from "~/components/modals/stripecheck";
 import "vue-multiselect/dist/vue-multiselect.min.css";
 
 export default {
@@ -334,6 +344,7 @@ export default {
     Alipay,
     Wechat,
     Multiselect,
+    StripeCheck
   },
   computed: {
     ...mapState("app", ["init"]),
@@ -353,6 +364,11 @@ export default {
       mode: "default",
       billingAddress: null,
       countries: [],
+      coupon: {
+        loading: false,
+        code: '',
+        amount: null
+      },
 
       newAddress: {
         first_name: this.$auth.user.first_name
@@ -375,14 +391,22 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-
       this.loadCountries();
+
+      if (this.$route.query.CP) {
+        this.$refs.stripe.startCheck(this.$route.query.CP);
+      }
     });
   },
   methods: {
+    startStripeBackgroundCheck(id) {
+      this.$refs.stripe.startCheck(id);
+      this.$bvModal.hide("modal-payments");
+    },
  
     selectPackage(key, index) {
       this.$store.commit("payments/setPackage", { key, index });
+      this.updateWechat();
     },
 
     loadCountries() {
@@ -459,6 +483,25 @@ export default {
       this.paying = status;
     },
 
+    checkCoupon() {
+      this.coupon.loading = true;
+      this.coupon.amount = null;
+      this.$axios.$get(`/coupons/${this.coupon.code}`)
+        .then((response) => {
+          this.coupon.loading = false;
+          this.coupon.amount = response.amount;
+          this.updateWechat();
+        }).catch((error) => {
+          this.coupon.loading = false;
+          this.$toast.error(error.response.data.error.message);
+        });
+    },
+
+    updateWechat() {
+      if (this.$refs.wechat)
+        setTimeout(() => { this.$refs.wechat.init(); }, 500);
+    },
+
     buyBraintree(nonce) {
       let purchaseInfo = this.getPurchaseInfo();
       this.paying = true;
@@ -469,7 +512,8 @@ export default {
           package: purchaseInfo.pkg,
           package_type: purchaseInfo.package_type,
           billing_details: purchaseInfo.billingDetails,
-          vat_number: purchaseInfo.vatNumber
+          vat_number: purchaseInfo.vatNumber,
+          coupon: this.coupon.code
         })
         .then((response) => {
           this.paying = false;
@@ -491,17 +535,23 @@ export default {
     },
 
     handleModalClose() {
+      this.paymentMethod = 'braintree';
+
       this.addBillingCheck = false;
       this.mode = "default";
       this.billingAddress = null;
+
+      this.coupon.loading = false;
+      this.coupon.code = '';
+      this.coupon.amount = null;
     },
   },
   watch: {
     addBillingCheck(newValue, oldValue) {
       if (newValue) this.mode = "billing";
       else this.billingAddress = null;
-    },
-  }
+    }
+  },
 };
 </script>
 
@@ -635,6 +685,44 @@ export default {
       .total-details {
         font-size: 18px;
         margin: 5px 0;
+      }
+
+      .coupon-container {
+        margin: 15px 0;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+
+        input {
+          width: 200px;
+          height: 30px;
+          font-size: 16px;
+          border-radius: 30px;
+          border: 1px solid $black;
+          padding: 0 10px;
+          outline: none;
+          box-shadow: none;
+        }
+
+        button {
+          height: 30px;
+          font-size: 12px;
+          color: $black;
+          font-weight: bold;
+          border-radius: 30px;
+          border: 1px solid $black;
+          padding: 3px 25px;
+          outline: none;
+          box-shadow: none;
+          background-color: #fff;
+          margin-left: 15px;
+        }
+
+        .result {
+          margin-left: 15px;
+          font-weight: bold;
+          color: lightseagreen;
+        }
       }
 
       .methods {

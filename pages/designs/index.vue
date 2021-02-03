@@ -157,18 +157,21 @@
                 1}&sort=-pseudo_downloads`;
                 let requestURL = this.isTop ? topURL : defaultURL;
                 this.$axios.$get(requestURL + "&scope[]=keywords").then(response => {
-                    this.page = response.current_page;
-                    this.maxPage = response.last_page;
-                    this.total = response.total;
-                    this.data.push(...response.data);
-                    this.$refs.infload.stateChanger.loaded();
-                    let maxNofPages = this.$auth.loggedIn
-                        ? this.isTop
-                            ? 5
-                            : this.maxPage
-                        : this.maxPageForGuest;
-                    if (this.page >= maxNofPages)
+                    let maxNofPages = this.$auth.loggedIn ? (this.isTop ? 5 : this.maxPage) : this.maxPageForGuest;
+                    if (this.page < maxNofPages) {
+                        this.page = response.current_page;
+                        this.maxPage = response.last_page;
+                        this.total = response.total;
+                        this.data.push(...response.data);
+                        this.$refs.infload.stateChanger.loaded();
+                    } else if (this.page == maxNofPages) {
+                        this.page = response.current_page;
+                        this.$refs.infload.stateChanger.loaded();
+                    } else {
                         this.$refs.infload.stateChanger.complete();
+                        if (!this.$auth.loggedIn)
+                            this.$bvModal.show('modal-auth');
+                    }
                 });
             },
 
@@ -207,7 +210,14 @@
             this.getColors();
             this.$nextTick(function () {
                 this.randomKey = Math.floor(Math.random() * 100);
-                if (this.$refs.infload) this.resetList();
+                if (this.$refs.infload && !this.data.length) this.resetList();
+            });
+        },
+        created() {
+            this.$nuxt.$on("login", () => {
+                if (this.$refs.infload) {
+                    this.$refs.infload.stateChanger.reset();
+                }
             });
         }
     };

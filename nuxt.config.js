@@ -15,7 +15,7 @@ export default {
       { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'icon', type: 'image/x-icon', href: '/cs_logo.png' },
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap' },
     ],
   },
@@ -45,6 +45,7 @@ export default {
     '~/plugins/vue-html2canvas.client',
     '~/plugins/vue-wysiwyg',
     '~/plugins/vue-export-csv',
+    '~plugins/ga.client'
   ],
   /*
   ** Nuxt.js dev-modules
@@ -93,10 +94,10 @@ export default {
     'vue-social-sharing/nuxt',
     // proxy
     '@nuxtjs/proxy',
-    // stripe
+
     ['nuxt-stripe-module', {
       publishableKey: 'pk_test_51I7SCXB57doRnvtAc60yems9UKaWkw5yDOx3yQqZHAkP376GABJT19OuFzieLrMmhQWVm8wS8KKhdYP7muoBPU3o0018kiy6Vz',
-    }],
+    }]
   ],
 
   /*
@@ -141,7 +142,7 @@ export default {
   */
   toast: {
     position: 'bottom-right',
-    duration: 4000,
+    duration: 3000,
     theme: 'outline'
   },
   /*

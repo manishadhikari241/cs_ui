@@ -4,6 +4,8 @@
       <b-popover
         :target="target"
         triggers="click blur"
+                    placement="top"
+
         custom-class="design-list-popover"
       >
         <template v-slot:title>

@@ -93,7 +93,7 @@ export default {
             },
 
             coverUploaded({url}) {
-                this.$axios.$patch(`/posts/${this.itemId}`, {cover: url})
+                this.$axios.$patch(`cms/posts/${this.itemId}`, {cover: url})
                     .then((response) => {
                         this.$toast.success('Image updated successfully');
                         this.item.cover = response.cover;
@@ -103,7 +103,7 @@ export default {
                 });
             },
             coverUploaded2({url}) {
-                this.$axios.$patch(`/posts/${this.itemId}`, {cover_2: url})
+                this.$axios.$patch(`cms/posts/${this.itemId}`, {cover_2: url})
                     .then((response) => {
                         this.$toast.success('Image updated successfully');
                         this.item.main_cover = response.main_cover;
@@ -143,7 +143,7 @@ export default {
                     .then(value => {
                         if (value) {
                             let itemId = this.itemId;
-                            this.$axios.$delete(`/posts/${itemId}`)
+                            this.$axios.$delete(`/cms/posts/${itemId}`)
                                 .then((response) => {
                                     this.$toast.success('Post deleted successfully');
                                     this.cancel();

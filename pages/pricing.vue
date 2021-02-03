@@ -20,7 +20,7 @@
               </div>
                     <div class="buttons">
                             <b-button class="mb-2 mr-0" @click="plan.selected = 0"
-                                      :class="{ active: plan.selected == 0 }">
+                                      :class="[{ active: plan.selected == 0 },plan.package=='simulator' || plan.package =='exclusive' ? 'resp' :'']">                                      
                                 {{ init.pricing[`${plan.package}_min_count`] }}
                                 {{ plan.package =='standard' || plan.package =='extended' ? $t('download') :
                                 plan.package=='exclusive'?$t('single_design')
@@ -30,11 +30,11 @@
                             <b-button
                                     class="mb-2 mr-0"
                                     @click="plan.selected = 1"
-                                    :class="{ active: plan.selected == 1 }"
+                                    :class="[{ active: plan.selected == 1 },plan.package=='simulator' || plan.package =='exclusive' ? 'resp' :'']"
                             >
                                 {{ init.pricing[`${plan.package}_max_count`] }}
                                 {{ plan.package =='standard' || plan.package =='extended' ? $t('download') :
-                                plan.package=='exclusive'?$t('single_design')
+                                plan.package=='exclusive'?  $t('single_design')
                                 :$t('product')}}{{init.pricing[`${plan.package}_max_count`] > 1 ? $i18n.locale == "en" ?
                                 "s" : "" : "" }}
                             </b-button>
@@ -409,6 +409,10 @@
         justify-content: center;
         margin-right: 10px;
 
+.resp{
+  padding-left: 20px;
+  padding-right: 20px;
+}
         button {
           margin: 0 15px;
           border: 1px solid $black;

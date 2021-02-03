@@ -14,7 +14,6 @@ export const mutations = {
 
   setDefaultPackage(state,{index}){
     state.pkg.index = index;
-    console.log(state.pkg.index);
   }
 
 }

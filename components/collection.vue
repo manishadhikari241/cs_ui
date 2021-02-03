@@ -42,6 +42,7 @@
                             </div>
                         </div>
                         <div class="short-description" v-html="getDescription()"></div>
+                    
                     </div>
                     <div class="read-more">
                         <nuxt-link :to="localePath(`/collections/${data.id}`)">{{$t('read_more')}}
@@ -70,6 +71,7 @@
                 
             }
         },
+
         methods: {
             hasMoodBoard() {
                 return this.data.moodboards.length
@@ -95,8 +97,13 @@
             },
 
             getDescription() {
-                return this.data.translations[this.$i18n.locale == 'en' ? 0 : 1].description;
+                return this.data.translations[this.$i18n.locale == 'en' ? 0 : 1].description.substring(0,345) + '...';
             },
+            //             getDescription() {
+            //     var description=  this.data.translations[this.$i18n.locale == 'en' ? 0 : 1].description;
+            //     return description.substring(0,description.lastIndexOf(' ', 345)) + '...';
+            // },
+
 
             searchKeyword(keyword) {
                 this.$store.dispatch('search/search', {
@@ -127,6 +134,7 @@
 
                 img {
                     height: 100%;
+                    pointer-events: none;
                 }
             }
         }

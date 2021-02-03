@@ -92,6 +92,14 @@ export default {
     this.$nuxt.$on("login", () => {
       this.init();
     });
+
+    this.$nuxt.$on("logout", () => {
+      this.$nextTick(() => {
+        setTimeout(() => {
+          window.location.href = this.localePath('/');
+        }, 500);
+      });
+    });
   }
 };
 </script>
@@ -189,4 +197,12 @@ body {
     display: none !important;
   }
 }
+@media only screen and (max-width: 600px){
+.toasted-container.bottom-left .toasted, .toasted-container.bottom-right .toasted, .toasted-container.top-left .toasted, .toasted-container.top-right .toasted {
+    display: flex;
+    justify-content: center;
+    float:none;
+}
+}
+
 </style>

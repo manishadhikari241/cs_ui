@@ -7,6 +7,7 @@
           <b-button variant="outline-success" :disabled="loading" :class="{'active': searchTerm.value == 'extended'}" @click="search('extended')">Extended</b-button>
           <b-button variant="outline-info" :disabled="loading" :class="{'active': searchTerm.value == 'simulator'}" @click="search('simulator')">Simulator</b-button>
           <b-button variant="outline-danger" :disabled="loading" :class="{'active': searchTerm.value == 'exclusive'}" @click="search('exclusive')">Exclusive</b-button>
+          <b-button variant="outline-secondary" :disabled="loading" :class="{'active': searchTerm.value == 'discount'}" @click="search('discount')">Discount</b-button>
         </b-button-group>
       </div>
       <div>
@@ -33,6 +34,14 @@
         <b-badge variant="success" v-if="data.item.package == 'extended'">{{ data.item.package }}</b-badge>
         <b-badge variant="info" v-if="data.item.package == 'simulator'">{{ data.item.package }}</b-badge>
         <b-badge variant="danger" v-if="data.item.package == 'exclusive'">{{ data.item.package }}</b-badge>
+        <b-badge variant="secondary" v-if="data.item.package == 'discount'">{{ data.item.package }}</b-badge>
+      </template>
+      <template v-slot:cell(multi)="data">
+        <b-badge variant="success" v-if="data.item.multi">True</b-badge>
+        <b-badge variant="danger" v-else>False</b-badge>
+      </template>
+      <template v-slot:cell(quantity)="data">
+        <span>{{ data.item.package == 'discount' ? '$' : '' }}{{ data.item.quantity }}</span>
       </template>
       <template v-slot:cell(user_id)="data">
         <nuxt-link :to="`/cms/users?id=${data.item.user_id}`">{{ data.item.user_id }}</nuxt-link>
@@ -61,6 +70,10 @@ export default {
         {
           key: 'package',
           label: 'Package'
+        },
+        {
+          key: 'multi',
+          label: 'Multi Usage'
         },
         {
           key: 'quantity',

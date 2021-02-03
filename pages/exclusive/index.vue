@@ -66,7 +66,7 @@
     </div>
 </div>
       <div class="col-md-6  exclusive-image d-none d-md-block">
-        <img class="img-fluid" src="~/assets/static/exclusive_c.png"/>
+        <img class="img-fluid" src="~/assets/static/version_2_C.png"/>
 
       </div>
 
@@ -101,7 +101,7 @@
                   :class="{ active: plan.selected == 0 }"
                 >
                   {{ init.pricing.exclusive_min_count }}
-                  {{ $t("single_design") }}
+                  {{ $t("single_design_exclusive") }}
                 </b-button>
               </div>
               <div class="">
@@ -433,14 +433,12 @@ export default {
          padding-top: 61px;
        }
        .img-fluid {
-         @media screen and (min-width: 1440px) {
-           padding: 0 90px;
+         @media screen and (min-width: 1281px) {
+    padding: 64px 103px 10px 45px;
          }
-         @media screen and (min-width: 1220px) and (max-width: 1439px) {
-           padding: 0 90px;
-         }
-         @media screen and (min-width: 1024px) and (max-width: 1219px) {
-           padding: 50px;
+ 
+         @media screen and (min-width: 1024px) and (max-width: 1280px) {
+    padding: 64px 103px 10px 45px;
          }
          @media screen and (min-width: 768px) and (max-width: 1023px) {
            padding: 0 40px;
@@ -495,8 +493,8 @@ export default {
       text-decoration: none;
       border-radius: 30px;
       margin-right: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+      margin-bottom: 8px;
+      // box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
       transition: all 0.2s;
       border: none;
       white-space: nowrap;

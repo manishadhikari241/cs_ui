@@ -117,11 +117,7 @@
                                         <!--:multiple="false">-->
                                         <!--</multiselect>-->
                                         <!--</div>-->
-                                        <div class="row">
-                                            <b-col md="4" lg="3">
                                                 <div class="prop">{{$t('country_region')}}</div>
-                                            </b-col>
-                                            <b-col md="8" lg="9">
                                                 <div class="value">
                                                     <multiselect
                                                             :select-label="$t('enter_to_select')"
@@ -136,11 +132,8 @@
                                                             :custom-label="countryLabel"
                                                             :multiple="false">
                                                     </multiselect>
-                                                </div>
-                                            </b-col>
-                                        </div>
 
-
+</div>
                                     </div>
                                     <div class="info-row">
                                         <div class="prop">{{$t('vat_number')}}</div>
@@ -309,8 +302,8 @@
                 mode: null,
                 loading: false,
                 newAddress: {
-                    first_name: "",
-                    last_name: "",
+                    first_name: this.$auth.user.first_name ? this.$auth.user.first_name: "",
+                    last_name: this.$auth.user.first_name ? this.$auth.user.last_name: "",
                     company: "",
                     address1: "",
                     address2: "",
@@ -508,6 +501,15 @@ display: block                }
 
             }
             .info-row {
+                .country_select{
+                    width:400px;
+                           @media screen and (max-width: 768px) {
+                    width:300px;
+                }
+                                @media screen and (max-width: 550px) {
+                    width:100%;
+                }
+                }
                 display: flex;
                 padding: 5px 0;
                 width: 100%;

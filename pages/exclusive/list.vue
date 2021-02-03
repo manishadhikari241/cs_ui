@@ -12,21 +12,15 @@
                 <b-spinner type="grow" label="Loading..."></b-spinner>
             </div>
             <div class="list" v-if="!loading">
-                <b-container class="designs">
+                <div class="designs">
                   <client-only>
                     <DesignList :is-exclusive="true"
                                 @showInfo="showInfo"
                                 @deleteDesign="deleteDesign"
                                 @checkQuota="checkQuota"
-                                :designs="allDesign" v-if="mode == 'grid'" />
-                    <b-table :items="allDesign" :fields="fields" :responsive="'md'" striped v-if="mode == 'table'">
-                      <template v-slot:cell(design)="data">
-                        <img class="design-preview" :src="`/api/v1/image/thumbnail/design/${data.item.code}/tiny`">
-                      </template>
-                    </b-table>
-    <!--                <infinite-loading @infinite="loadMore" ref="infload"></infinite-loading>-->
+                                :designs="allDesign" />
                   </client-only>
-                </b-container>
+                </div>
             </div>
         </div>
 
@@ -54,7 +48,6 @@
                 plan: {
                     selected: 0
                 },
-                mode: "grid",
                 type: "all",
                 fields: [
                     {
@@ -96,6 +89,7 @@
                             designs.push(Object.assign(element.designs[0], {
                               request_id: element.id,
                               request_name: element.name,
+                              request_status: element.status
                             }));
                           } else {
                             designs.push({
@@ -103,12 +97,13 @@
                               code: `code_${pseudo_design_id}`,
                               request_id: element.id,
                               request_name: element.name,
-                              status: element.status
+                              request_status: element.status
                             })
                             pseudo_design_id ++
                           }
                         });
-                        this.allDesign = designs;
+                        this.allDesign.push({id: 'plus'});
+                        this.allDesign.push(...designs);
                     });
             },
             deleteDesign(id) {
@@ -132,6 +127,9 @@
                                 .delete(`requests/exclusive/${id}/delete-reject`)
                                 .then(response => {
                                     this.$toast.success(response.data.message);
+                                    this.requests = [];
+                                    this.designs = [];
+                                    this.allDesign = [];
                                     this.load();
                                 });
                         }
@@ -179,13 +177,21 @@
     };
 </script>
 
+<style lang="scss">
+    .page.request-list {
+        .socialBox {
+            display: none !important;
+        }
+    }
+</style>
+
 <style lang="scss" scoped>
     .component.pageinfo {
         .pageinfo-description-exclusive {
             max-width: 98%;
             margin: 0;
             padding: 0;
-            color: #bbb;
+            // color: #bbb;
             font-size: 20px;
 
             a {
@@ -220,8 +226,8 @@
                 justify-content: center;
                 position: relative;
                 margin-bottom: 20px;
-                height: 250px;
-                width: 250px;
+                height: 287px;
+                width: 287px;
                 margin: 0 auto;
 
                 @media screen and (max-width: 768px) and (min-width: 500px) {

@@ -116,8 +116,8 @@ export default {
   }
   .btn-modal-quota-close {
     position: absolute;
-    top: 0;
-    right: 20px;
+        top: -18px;
+    right: 4px;
     border: none;
     background: transparent;
     outline: none;
@@ -179,7 +179,7 @@ border: none;
           color: $black;
 
           .package-title {
-            font-size: 20px;
+            font-size: 21px;
             font-weight: 600;
             text-transform: uppercase;
           }

@@ -129,9 +129,6 @@
             this.$nuxt.$on("login", () => {
                 this.checkRequestButton();
             });
-            this.$nuxt.$on("logout", () => {
-                this.checkRequestButton();
-            });
         }
     };
 </script>

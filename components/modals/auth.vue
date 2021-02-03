@@ -22,7 +22,14 @@
                             </div>
                             <div class="sponsors">
                                 <p><strong>{{ $t('some_of_our_clients') }}:</strong></p>
-                                <img src="~/assets/sponsors.png">
+                                     <div class="d-flex">
+                                             <div class="image mr-5" v-for="(client, index) in clients" :key="`client_${index}`" >
+                   <img class="img-fluid" :src="client.image">
+
+                    </div>
+                                  </div> 
+                          
+                                <!-- <img src="~/assets/sponsors.png"> -->
                             </div>
                         </div>
                     </b-col>
@@ -133,7 +140,7 @@
                                         v-model="resetInfo.password_confirmation" :placeholder="$t('confirm_new_password')"
                                         minlength="8" required></b-input>
                                 <div class="buttons">
-                                    <b-button type="submit" :disabled="loading">{{ $t('confirm') }}</b-button>
+                                    <b-button class="reset-btn" type="submit" :disabled="loading">{{ $t('confirm') }}</b-button>
                                 </div>
                             </form>
                         </div>
@@ -156,6 +163,7 @@ export default {
   },
   data: function() {
     return {
+      clients:'',
       loading: false,
       share: null,
       loginInfo: {
@@ -190,9 +198,14 @@ export default {
     };
   },
   computed: {
-    ...mapState("authmodal", ["mode"])
+    ...mapState("authmodal", ["mode"]),
   },
   methods: {
+        clientLoad() {
+      this.$axios.$get(`/app/init`).then(res => {
+        this.clients = res.clients;
+      });
+    },
     toggleLoading: function() {
       this.loading = !this.loading;
     },
@@ -203,6 +216,7 @@ export default {
 
     init: function() {
       this.$axios.$get("/app/init").then(response => {
+        console.log(response);
         this.$store.commit("app/setInit", response);
       });
     },
@@ -341,6 +355,8 @@ export default {
   },
 
   mounted: function() {
+    this.clientLoad();
+
     if (!this.$auth.loggedIn) {
       if (this.$route.query.EV == 1) {
         this.$toast.success(this.$t("email_verified_login_now"));
@@ -404,11 +420,10 @@ export default {
     color: #aaa;
     cursor: pointer;
     z-index: 999;
-  @media screen and (max-width: 500px) {
-    top: -43px;
-    right: 1px;
-  }
-
+    @media screen and (max-width: 500px) {
+      top: -37px;
+      right: 2px;
+    }
   }
   .vti__dropdown-list {
     z-index: 2;
@@ -480,8 +495,11 @@ export default {
         font-weight: 700;
         @media screen and (max-width: 768px) {
           font-size: 25px;
-              padding-left: 10px;
-
+          padding-left: 20px;
+        }
+        @media screen and (max-width: 550px) {
+          font-size: 25px;
+          padding-left: 10px;
         }
       }
 
@@ -555,10 +573,9 @@ export default {
           font-weight: 600;
           margin-right: 10px;
           margin-bottom: 10px;
-             @media screen and (max-width: 320px) {
-width: 76px;
+          @media screen and (max-width: 320px) {
+            width: 76px;
           }
-           
         }
         .forgot_password {
           border-radius: 30px;
@@ -598,11 +615,9 @@ width: 76px;
           margin: 0;
           padding: 0;
           font-size: 18px;
-             @media screen and (max-width: 540px) {
-          font-size: 16px;
-              padding-left: 10px;
-
-
+          @media screen and (max-width: 540px) {
+            font-size: 16px;
+            padding-left: 10px;
           }
         }
 
@@ -637,7 +652,6 @@ width: 76px;
             font-weight: 600;
             margin-right: 10px;
             margin-bottom: 10px;
-            
           }
           .forgot_password {
             border-radius: 30px;
@@ -804,8 +818,7 @@ width: 76px;
 
         .notice {
           font-size: 16px;
-              padding-left: 10px;
-
+          padding-left: 10px;
         }
       }
     }

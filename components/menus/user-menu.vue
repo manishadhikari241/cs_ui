@@ -9,8 +9,8 @@
       <nuxt-link :to="localePath('/user/payment-history')">{{ $t('payment_history') }}</nuxt-link>
       <nuxt-link :to="localePath('/user/profile')">{{ $t('user_information') }}</nuxt-link>
       <nuxt-link :to="localePath('/user/password')">{{ $t('password') }}</nuxt-link>
-      <nuxt-link to="/user/address">{{$t('address_book')}}</nuxt-link>
-      <!-- <nuxt-link to="/user/newsletter">Newsletter</nuxt-link> -->
+      <nuxt-link :to="localePath('/user/address')">{{$t('address_book')}}</nuxt-link>
+      <nuxt-link :to="localePath('/user/newsletter')">{{$t('news_letter_menu')}}</nuxt-link>
     </div>
     <br><br>
   </div>
